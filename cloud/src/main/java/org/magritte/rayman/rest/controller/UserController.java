@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(name = "/user")
 public class UserController {
@@ -16,7 +18,7 @@ public class UserController {
     private UserService userService;
 
     //ENDPOINT
-    @GetMapping
+    @GetMapping("/user")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
     public UserResponse getUser(@RequestParam Integer id){
@@ -24,8 +26,13 @@ public class UserController {
         return new UserResponse(user);
     }
 
-    /*@PostMapping
-    public void createUser(Integer id, @RequestBody UserRequest request){
-        //TODO hacer
-    }*/
+    @GetMapping("/users")
+    List<User> all() {
+        return userService.findAll();
+    }
+
+    @PostMapping("/user")
+    public void createUser(Integer id, @RequestBody User new_user){
+        userService.save(new_user);
+    }
 }
