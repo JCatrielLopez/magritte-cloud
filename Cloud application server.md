@@ -45,11 +45,11 @@ spring.datasource.password=admin
 	-   NO hacer `new` de una clase anotada con estas anotaciones porque se “mata” la inyección de dependencias.
 -   ***Swagger***: API Client (para realizar llamados HTTP y poder probar la API)
 	-   agregar en `build.gradle` las siguientes dos dependencias `SpringFox Swagger` y anotar con `@EnableSwagger2` en la clase principal anotada con `SpringBootApplication`
-		-   compile group: `io.springfox`, name: `springfox-swagger2`, version: `2.9.2`
-		-   compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+		-   `compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'`
+		-   `compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'`
 	-   Facilita el uso de la API ya que provee JSONs según el objeto que esperan los endpoints
 	-   Además provee funcionalidad para exportar una documentación de la API (endpoints, interfaces de request y response)
--   DBeaver: Cliente de BD para manejarla mediante interfaz gráfica.
+-   ***DBeaver***: Cliente de BD para manejarla mediante interfaz gráfica.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTI5NTcwNzM2MSwtMTI2NzQ0NTUyXX0=
+eyJoaXN0b3J5IjpbLTIwODIwOTE2OTUsLTEyNjc0NDU1Ml19
 -->
