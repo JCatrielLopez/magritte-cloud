@@ -37,11 +37,7 @@ spring.datasource.password=admin
 ```
 - Spring Data: provee funcionalidad de consultas a la BD sin escribir SQL
 	-   Queries by method name
-	-   [JPA Repositories](https://docs.spring.io/spring-data/jpa/docs/1.5.0.RELEASE/reference/html/jpa.repositories.html)
-    
-
--   Puntos 2.3 hasta 2.3.2 inclusive.
-    
+	-   [JPA Repositories](https://docs.spring.io/spring-data/jpa/docs/1.5.0.RELEASE/reference/html/jpa.repositories.html) → Puntos 2.3 hasta 2.3.2 inclusive.
 
 -   Anotaciones Spring Beans: @RestController, @Service, @Repository y @Component
     
@@ -73,5 +69,5 @@ spring.datasource.password=admin
 
 -   DBeaver: Cliente de BD para manejarla mediante interfaz gráfica.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEyNjc0NDU1Ml19
+eyJoaXN0b3J5IjpbLTQzMTI3NTk1MSwtMTI2NzQ0NTUyXX0=
 -->
