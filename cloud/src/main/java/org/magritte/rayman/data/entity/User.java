@@ -16,6 +16,7 @@ public class User {
     @Id
     @EqualsAndHashCode.Include
     @ToString.Include
+    @GeneratedValue
     private Integer id;
 
     private String dni;
@@ -25,6 +26,13 @@ public class User {
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Exercise> exercise;
+
+    public User(String dni, String name, String lastname, String password){
+        this.dni = dni;
+        this.name = name;
+        this.lastname = lastname;
+        this.password = password;
+    }
 }
 
 
