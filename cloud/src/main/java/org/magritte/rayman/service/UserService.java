@@ -14,7 +14,6 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    // TODO Cambiar "Internal Server Error" por "User not found".
     public User getUserById(Integer id) {
         return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
     }
@@ -25,5 +24,10 @@ public class UserService {
 
     public List<User> findAll() {
         return userRepository.findAll();
+    }
+
+    public void deleteById(Integer id){
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        userRepository.delete(user);
     }
 }
