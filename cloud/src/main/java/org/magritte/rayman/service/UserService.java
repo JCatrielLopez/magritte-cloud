@@ -15,7 +15,7 @@ public class UserService {
     private UserRepository userRepository;
 
     public User getUserById(Integer id) {
-        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
     }
 
     public void save(User user) {
@@ -27,7 +27,7 @@ public class UserService {
     }
 
     public void deleteById(Integer id){
-        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
         userRepository.delete(user);
     }
 }
