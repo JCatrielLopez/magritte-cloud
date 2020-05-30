@@ -30,14 +30,4 @@ public class UserService {
         User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
         userRepository.delete(user);
     }
-
-    public char login(String dni, String password){
-        User user = userRepository.findByDni(dni).orElseThrow(() -> new UserNotFoundException(dni));
-        if(user.getPassword().equals(password)){
-            return user.getClase();
-        }
-        else{
-            throw new UserNotValidException(dni);
-        }
-    }
 }
