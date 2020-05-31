@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.Set;
 
+@SuppressWarnings({"unused", "FieldMayBeFinal", "FieldCanBeLocal"})
 @Getter
 @Setter
 @NoArgsConstructor
@@ -23,15 +24,18 @@ public class User {
     private String name;
     private String lastname;
     private String password;
+    private String email;
+
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Exercise> exercise;
 
-    public User(String dni, String name, String lastname, String password){
+    public User(String dni, String name, String lastname, String password, String email) {
         this.dni = dni;
         this.name = name;
         this.lastname = lastname;
         this.password = password;
+        this.email = email;
     }
 }
 
