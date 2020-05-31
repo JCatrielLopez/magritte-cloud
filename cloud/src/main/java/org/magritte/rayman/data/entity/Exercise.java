@@ -22,6 +22,7 @@ public class Exercise {
     @EqualsAndHashCode.Include
     private Integer id;
 
+    // Hay que acomodar segun la base de datos, excercise no existe mas
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "exercise")
     private Set<User> users;
 }

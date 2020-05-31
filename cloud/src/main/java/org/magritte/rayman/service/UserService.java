@@ -27,8 +27,7 @@ public class UserService {
     }
 
     public void deleteById(Integer id){
-        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
-        userRepository.delete(user);
+        userRepository.delete(userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id)));
     }
 
     public char login(String dni, String password){

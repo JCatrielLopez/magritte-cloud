@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.Set;
 
+@SuppressWarnings({"unused", "FieldMayBeFinal", "FieldCanBeLocal"})
 @Getter
 @Setter
 @NoArgsConstructor
