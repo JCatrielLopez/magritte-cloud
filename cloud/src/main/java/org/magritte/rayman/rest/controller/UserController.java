@@ -26,6 +26,13 @@ public class UserController {
         return new UserResponse(user);
     }
 
+    @GetMapping("/user/login")
+    public char login(@RequestParam String dni, @RequestParam String password){
+        //Va a devolver la clase la cual pertenece este usuario si es que coincide la password con el parametro
+        //Esto en la aplicacion desprende a una u otra actividad segun la clase.
+        return userService.login(dni, password);
+    }
+
     @GetMapping("/users")
     List<User> all() {
         return userService.findAll();

@@ -29,4 +29,14 @@ public class UserService {
     public void deleteById(Integer id){
         userRepository.delete(userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id)));
     }
+
+    public char login(String dni, String password){
+        User user = userRepository.findByDni(dni).orElseThrow(() -> new UserNotFoundException(dni));
+        if(user.getPassword().equals(password)){
+            return user.getClase();
+        }
+        else{
+            throw new UserNotValidException(dni);
+        }
+    }
 }
