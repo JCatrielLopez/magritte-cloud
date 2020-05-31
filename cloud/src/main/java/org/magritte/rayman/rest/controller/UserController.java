@@ -35,4 +35,9 @@ public class UserController {
     public void createUser(Integer id, @RequestBody User new_user){
         userService.save(new_user);
     }
+
+    @DeleteMapping("/user")
+    public void deleteEmployee(@RequestParam Integer id) {
+        userService.deleteById(id);
+    }
 }
