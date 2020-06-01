@@ -1,0 +1,46 @@
+package org.magritte.rayman.data.entity;
+
+import lombok.*;
+
+import javax.persistence.*;
+import java.util.Date;
+import java.util.Set;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
+@ToString(onlyExplicitlyIncluded = true)
+@Entity
+public class Patient extends User {
+
+    @ToString.Include
+    private Date birthdate;
+
+    @ToString.Include
+    private char gender;
+
+    @ToString.Include
+    private int height;
+
+    @ToString.Include
+    private float weight;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Include
+    private Medic medic;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(referencedColumnName = "idPatient")
+    private Set<PatientRoutineDataSet> patientRoutineDataSets;
+
+    public Patient(String dni, String name, String lastname, String password, String email,
+                   Date birthdate, char gender, int height, float weight) {
+        super(dni, name, lastname, password, email);
+        this.birthdate = birthdate;
+        this.gender = gender;
+        this.height = height;
+        this.weight = weight;
+    }
+
+}

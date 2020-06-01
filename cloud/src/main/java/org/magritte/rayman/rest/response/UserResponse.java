@@ -15,8 +15,6 @@ public class UserResponse {
     private String name;
     private String lastname;
     private String email;
-//    private Set<ExerciseResponse> exercises//TODO este no tiene que mostrar los datos del usuario LOOP ALERT!
-
 
     public UserResponse(User user) {
         this.id = user.getId();
@@ -24,6 +22,5 @@ public class UserResponse {
         this.name = user.getName();
         this.lastname = user.getLastname();
         this.email = user.getEmail();
-        //this.exericises = //mapear exercises a Set<ExerciseResponse>
     }
 }
