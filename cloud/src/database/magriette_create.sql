@@ -1,12 +1,40 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2020-05-26 22:23:58.356
+-- Last modification date: 2020-06-01 10:58:30.084
 
 -- tables
--- Table: accesory
-CREATE TABLE accesory (
-    idAccesory serial  NOT NULL,
+-- Table: AccessoryData
+CREATE TABLE AccessoryData (
+    id serial  NOT NULL,
+    idAccessory int  NOT NULL,
+    idData int  NOT NULL,
+    CONSTRAINT mide_unique_idAccessory_idData UNIQUE (idAccessory, idData) NOT DEFERRABLE  INITIALLY IMMEDIATE,
+    CONSTRAINT AccessoryData_pk PRIMARY KEY (id)
+);
+
+-- Table: PatientRoutineDataSet
+CREATE TABLE PatientRoutineDataSet (
+    id serial  NOT NULL,
+    idPatient int  NOT NULL,
+    idRoutine int  NOT NULL,
+    idDataSet int  NOT NULL,
+    CONSTRAINT PatientRoutineDataSet_unique_idPatient_idRoutine_idDataSet UNIQUE (idPatient, idRoutine, idDataSet) NOT DEFERRABLE  INITIALLY IMMEDIATE,
+    CONSTRAINT PatientRoutineDataSet_pk PRIMARY KEY (id)
+);
+
+-- Table: RoutineAccessory
+CREATE TABLE RoutineAccessory (
+    id serial  NOT NULL,
+    idRoutine int  NOT NULL,
+    idAccessory int  NOT NULL,
+    CONSTRAINT utiliza_unique_idRoutine_idAccessory UNIQUE (idRoutine, idAccessory) NOT DEFERRABLE  INITIALLY IMMEDIATE,
+    CONSTRAINT RoutineAccessory_pk PRIMARY KEY (id)
+);
+
+-- Table: accessory
+CREATE TABLE accessory (
+    idAccessory serial  NOT NULL,
     name varchar(15)  NOT NULL,
-    CONSTRAINT accesory_pk PRIMARY KEY (idAccesory)
+    CONSTRAINT accessory_pk PRIMARY KEY (idAccessory)
 );
 
 -- Table: data
@@ -19,36 +47,10 @@ CREATE TABLE data (
 -- Table: dataSet
 CREATE TABLE dataSet (
     idDataSet serial  NOT NULL,
-    idMakes int  NOT NULL,
     dataType varchar(20)  NOT NULL,
     measurement int  NOT NULL,
     unit varchar(3)  NOT NULL,
     CONSTRAINT dataSet_pk PRIMARY KEY (idDataSet)
-);
-
--- Table: isAssociated
-CREATE TABLE isAssociated (
-    idAssociated serial  NOT NULL,
-    medic_idUser int  NOT NULL,
-    patient_idUser int  NOT NULL,
-    CONSTRAINT isAssociated_pk PRIMARY KEY (idAssociated)
-);
-
--- Table: makes
-CREATE TABLE makes (
-    idMakes serial  NOT NULL,
-    idUser int  NOT NULL,
-    idRoutine int  NOT NULL,
-    CONSTRAINT makes_pk PRIMARY KEY (idMakes)
-);
-
--- Table: measure
-CREATE TABLE measure (
-    idMeasure serial  NOT NULL,
-    idAccesory int  NOT NULL,
-    idData int  NOT NULL,
-    CONSTRAINT mide_unique_accesorio_dato UNIQUE (idAccesory, idData) NOT DEFERRABLE  INITIALLY IMMEDIATE,
-    CONSTRAINT measure_pk PRIMARY KEY (idMeasure)
 );
 
 -- Table: medic
@@ -67,6 +69,7 @@ CREATE TABLE patient (
     gender char(1)  NOT NULL,
     height int  NOT NULL,
     weight decimal(6,3)  NOT NULL,
+    idMedic int  NOT NULL,
     CONSTRAINT patient_pk PRIMARY KEY (idUser)
 );
 
@@ -76,44 +79,33 @@ CREATE TABLE routine (
     creatorName varchar(15)  NOT NULL,
     routineName varchar(15)  NOT NULL,
     totalTime time  NOT NULL,
-    dificulty int  NOT NULL,
+    difficulty int  NOT NULL,
     CONSTRAINT routine_pk PRIMARY KEY (idRoutine)
 );
 
 -- Table: session
 CREATE TABLE session (
-    idSesion serial  NOT NULL,
-    idS serial  NOT NULL,
-    idRutina int  NOT NULL,
+    id serial  NOT NULL,
+    idRoutine int  NOT NULL,
     name varchar(15)  NOT NULL,
     numberOfSeries int  NOT NULL,
     numberOfRepetitions int  NOT NULL,
     exerciseTime time  NOT NULL,
     breakTime time  NOT NULL,
-    CONSTRAINT sesion_unique_sesion_rutina UNIQUE (idS, idRutina) NOT DEFERRABLE  INITIALLY IMMEDIATE,
-    CONSTRAINT session_pk PRIMARY KEY (idSesion)
+    CONSTRAINT sesion_unique_sesion_rutina UNIQUE (idRoutine) NOT DEFERRABLE  INITIALLY IMMEDIATE,
+    CONSTRAINT session_pk PRIMARY KEY (id)
 );
 
 -- Table: user
 CREATE TABLE "user" (
     idUser serial  NOT NULL,
     dni varchar(9)  NOT NULL,
-    name varchar(15)  NOT NULL,
+    firstname varchar(15)  NOT NULL,
     lastname varchar(15)  NOT NULL,
     password varchar(13)  NOT NULL,
     email varchar(50)  NOT NULL,
-    userType char(1)  NOT NULL,
     CONSTRAINT unique_user_dni UNIQUE (dni) NOT DEFERRABLE  INITIALLY IMMEDIATE,
     CONSTRAINT user_pk PRIMARY KEY (idUser)
-);
-
--- Table: uses
-CREATE TABLE uses (
-    idUses serial  NOT NULL,
-    idRoutine int  NOT NULL,
-    idAccesory int  NOT NULL,
-    CONSTRAINT utiliza_unique_rutina_accesorio UNIQUE (idRoutine, idAccesory) NOT DEFERRABLE  INITIALLY IMMEDIATE,
-    CONSTRAINT uses_pk PRIMARY KEY (idUses)
 );
 
 -- foreign keys
@@ -137,28 +129,34 @@ ALTER TABLE patient ADD CONSTRAINT Paciente_User
     INITIALLY IMMEDIATE
 ;
 
--- Reference: dataSet_realiza (table: dataSet)
-ALTER TABLE dataSet ADD CONSTRAINT dataSet_realiza
-    FOREIGN KEY (idMakes)
-    REFERENCES makes (idMakes)
+-- Reference: makes_dataSet (table: PatientRoutineDataSet)
+ALTER TABLE PatientRoutineDataSet ADD CONSTRAINT makes_dataSet
+    FOREIGN KEY (idDataSet)
+    REFERENCES dataSet (idDataSet)  
+    NOT DEFERRABLE 
+    INITIALLY IMMEDIATE
+;
+
+-- Reference: makes_patient (table: PatientRoutineDataSet)
+ALTER TABLE PatientRoutineDataSet ADD CONSTRAINT makes_patient
+    FOREIGN KEY (idPatient)
+    REFERENCES patient (idUser)  
+    NOT DEFERRABLE 
+    INITIALLY IMMEDIATE
+;
+
+-- Reference: mide_accesorio (table: AccessoryData)
+ALTER TABLE AccessoryData ADD CONSTRAINT mide_accesorio
+    FOREIGN KEY (idAccessory)
+    REFERENCES accessory (idAccessory)
     ON DELETE  CASCADE 
     ON UPDATE  CASCADE 
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
 ;
 
--- Reference: mide_accesorio (table: measure)
-ALTER TABLE measure ADD CONSTRAINT mide_accesorio
-    FOREIGN KEY (idAccesory)
-    REFERENCES accesory (idAccesory)
-    ON DELETE  CASCADE 
-    ON UPDATE  CASCADE 
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE
-;
-
--- Reference: mide_dato (table: measure)
-ALTER TABLE measure ADD CONSTRAINT mide_dato
+-- Reference: mide_dato (table: AccessoryData)
+ALTER TABLE AccessoryData ADD CONSTRAINT mide_dato
     FOREIGN KEY (idData)
     REFERENCES data (idData)
     ON DELETE  CASCADE 
@@ -167,8 +165,16 @@ ALTER TABLE measure ADD CONSTRAINT mide_dato
     INITIALLY IMMEDIATE
 ;
 
--- Reference: realiza_rutina (table: makes)
-ALTER TABLE makes ADD CONSTRAINT realiza_rutina
+-- Reference: patient_medic (table: patient)
+ALTER TABLE patient ADD CONSTRAINT patient_medic
+    FOREIGN KEY (idMedic)
+    REFERENCES medic (idUser)  
+    NOT DEFERRABLE 
+    INITIALLY IMMEDIATE
+;
+
+-- Reference: realiza_rutina (table: PatientRoutineDataSet)
+ALTER TABLE PatientRoutineDataSet ADD CONSTRAINT realiza_rutina
     FOREIGN KEY (idRoutine)
     REFERENCES routine (idRoutine)
     ON DELETE  CASCADE 
@@ -177,39 +183,9 @@ ALTER TABLE makes ADD CONSTRAINT realiza_rutina
     INITIALLY IMMEDIATE
 ;
 
--- Reference: realiza_user (table: makes)
-ALTER TABLE makes ADD CONSTRAINT realiza_user
-    FOREIGN KEY (idUser)
-    REFERENCES "user" (idUser)
-    ON DELETE  CASCADE 
-    ON UPDATE  CASCADE 
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE
-;
-
--- Reference: seAsocia_Medico (table: isAssociated)
-ALTER TABLE isAssociated ADD CONSTRAINT seAsocia_Medico
-    FOREIGN KEY (medic_idUser)
-    REFERENCES medic (idUser)
-    ON DELETE  CASCADE 
-    ON UPDATE  CASCADE 
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE
-;
-
--- Reference: seAsocia_Paciente (table: isAssociated)
-ALTER TABLE isAssociated ADD CONSTRAINT seAsocia_Paciente
-    FOREIGN KEY (patient_idUser)
-    REFERENCES patient (idUser)
-    ON DELETE  CASCADE 
-    ON UPDATE  CASCADE 
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE
-;
-
 -- Reference: sesion_rutina (table: session)
 ALTER TABLE session ADD CONSTRAINT sesion_rutina
-    FOREIGN KEY (idRutina)
+    FOREIGN KEY (idRoutine)
     REFERENCES routine (idRoutine)
     ON DELETE  CASCADE 
     ON UPDATE  CASCADE 
@@ -217,18 +193,18 @@ ALTER TABLE session ADD CONSTRAINT sesion_rutina
     INITIALLY IMMEDIATE
 ;
 
--- Reference: utiliza_accesorio (table: uses)
-ALTER TABLE uses ADD CONSTRAINT utiliza_accesorio
-    FOREIGN KEY (idAccesory)
-    REFERENCES accesory (idAccesory)
+-- Reference: utiliza_accesorio (table: RoutineAccessory)
+ALTER TABLE RoutineAccessory ADD CONSTRAINT utiliza_accesorio
+    FOREIGN KEY (idAccessory)
+    REFERENCES accessory (idAccessory)
     ON DELETE  CASCADE 
     ON UPDATE  CASCADE 
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
 ;
 
--- Reference: utiliza_rutina (table: uses)
-ALTER TABLE uses ADD CONSTRAINT utiliza_rutina
+-- Reference: utiliza_rutina (table: RoutineAccessory)
+ALTER TABLE RoutineAccessory ADD CONSTRAINT utiliza_rutina
     FOREIGN KEY (idRoutine)
     REFERENCES routine (idRoutine)
     ON DELETE  CASCADE 

@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2020-05-26 22:23:58.356
+-- Last modification date: 2020-06-01 10:58:30.084
 
 -- foreign keys
 ALTER TABLE medic
@@ -8,48 +8,45 @@ ALTER TABLE medic
 ALTER TABLE patient
     DROP CONSTRAINT Paciente_User;
 
-ALTER TABLE dataSet
-    DROP CONSTRAINT dataSet_realiza;
+ALTER TABLE PatientRoutineDataSet
+    DROP CONSTRAINT makes_dataSet;
 
-ALTER TABLE measure
+ALTER TABLE PatientRoutineDataSet
+    DROP CONSTRAINT makes_patient;
+
+ALTER TABLE AccessoryData
     DROP CONSTRAINT mide_accesorio;
 
-ALTER TABLE measure
+ALTER TABLE AccessoryData
     DROP CONSTRAINT mide_dato;
 
-ALTER TABLE makes
+ALTER TABLE patient
+    DROP CONSTRAINT patient_medic;
+
+ALTER TABLE PatientRoutineDataSet
     DROP CONSTRAINT realiza_rutina;
-
-ALTER TABLE makes
-    DROP CONSTRAINT realiza_user;
-
-ALTER TABLE isAssociated
-    DROP CONSTRAINT seAsocia_Medico;
-
-ALTER TABLE isAssociated
-    DROP CONSTRAINT seAsocia_Paciente;
 
 ALTER TABLE session
     DROP CONSTRAINT sesion_rutina;
 
-ALTER TABLE uses
+ALTER TABLE RoutineAccessory
     DROP CONSTRAINT utiliza_accesorio;
 
-ALTER TABLE uses
+ALTER TABLE RoutineAccessory
     DROP CONSTRAINT utiliza_rutina;
 
 -- tables
-DROP TABLE accesory;
+DROP TABLE AccessoryData;
+
+DROP TABLE PatientRoutineDataSet;
+
+DROP TABLE RoutineAccessory;
+
+DROP TABLE accessory;
 
 DROP TABLE data;
 
 DROP TABLE dataSet;
-
-DROP TABLE isAssociated;
-
-DROP TABLE makes;
-
-DROP TABLE measure;
 
 DROP TABLE medic;
 
@@ -60,8 +57,6 @@ DROP TABLE routine;
 DROP TABLE session;
 
 DROP TABLE "user";
-
-DROP TABLE uses;
 
 -- End of file.
 
