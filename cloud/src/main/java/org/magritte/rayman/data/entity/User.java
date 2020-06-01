@@ -43,7 +43,7 @@ public abstract class User {
     @ToString.Include
     private String email;
 
-    public User(String dni, String name, String lastname, String password, String email) {
+    public User(String dni, String name, String lastname, String password, String email, char c){
         this.dni = dni;
         this.name = name;
         this.lastname = lastname;
