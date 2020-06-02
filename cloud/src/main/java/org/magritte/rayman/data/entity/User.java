@@ -3,31 +3,45 @@ package org.magritte.rayman.data.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Set;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(onlyExplicitlyIncluded = true)
+@Inheritance(strategy = InheritanceType.JOINED)
 @Entity
-public class User {
+public abstract class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq_gen")
+    @SequenceGenerator(sequenceName = "user_iduser_seq", name = "user_seq_gen")
+    @Column(nullable = false)
     @EqualsAndHashCode.Include
-    @ToString.Include
-    @GeneratedValue
     private Integer id;
-
+    
+    @ToString.Include
+    @NotNull
+    @Size(max = 9)
     private String dni;
-    private String name;
-    private String lastname;
-    private String password;
-    private String email;
-    private char clase; //Tipo de usuario(medico = m o paciente = p)
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Exercise> exercise;
+    @Size(max = 15)
+    @ToString.Include
+    private String name;
+
+    @Size(max = 15)
+    @ToString.Include
+    private String lastname;
+
+    @Size(max = 13)
+    @ToString.Include
+    private String password;
+
+    @Size(max = 50)
+    @ToString.Include
+    private String email;
 
     public User(String dni, String name, String lastname, String password, String email, char c){
         this.dni = dni;
@@ -35,8 +49,11 @@ public class User {
         this.lastname = lastname;
         this.password = password;
         this.email = email;
-        this.clase = c;
     }
+
+    //    @NonNull
+//    private char userType;
+
 }
 
 

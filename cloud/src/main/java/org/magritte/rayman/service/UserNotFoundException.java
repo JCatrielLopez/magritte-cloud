@@ -1,8 +1,8 @@
 package org.magritte.rayman.service;
 
-class UserNotFoundException extends RuntimeException {
+public class UserNotFoundException extends RuntimeException {
 
-    UserNotFoundException(Integer id) {
+    public UserNotFoundException(Integer id) {
         super("Could not find user " + id);
     }
 
