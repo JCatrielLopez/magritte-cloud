@@ -20,7 +20,6 @@ public class Data {
     @EqualsAndHashCode.Include
     private Integer idData;
 
-    @Size(max = 20)
     @ToString.Include
     private String dataType;
 

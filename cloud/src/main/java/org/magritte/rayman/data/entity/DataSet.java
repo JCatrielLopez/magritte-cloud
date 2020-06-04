@@ -20,14 +20,12 @@ public class DataSet {
     @EqualsAndHashCode.Include
     private Integer idDataSet;
 
-    @Size(max = 20)
     @ToString.Include
     private String dataType;
 
     @ToString.Include
     private int measurement;
 
-    @Size(max = 3)
     @ToString.Include
     private String unit;
 
