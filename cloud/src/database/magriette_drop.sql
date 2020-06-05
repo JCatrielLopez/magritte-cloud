@@ -1,11 +1,11 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2020-06-01 10:58:30.084
+-- Last modification date: 2020-06-04 21:29:48.876
 
 -- foreign keys
-ALTER TABLE medic
+ALTER TABLE Medic
     DROP CONSTRAINT Medico_User;
 
-ALTER TABLE patient
+ALTER TABLE Patient
     DROP CONSTRAINT Paciente_User;
 
 ALTER TABLE PatientRoutineDataSet
@@ -20,13 +20,13 @@ ALTER TABLE AccessoryData
 ALTER TABLE AccessoryData
     DROP CONSTRAINT mide_dato;
 
-ALTER TABLE patient
+ALTER TABLE Patient
     DROP CONSTRAINT patient_medic;
 
 ALTER TABLE PatientRoutineDataSet
     DROP CONSTRAINT realiza_rutina;
 
-ALTER TABLE session
+ALTER TABLE Session
     DROP CONSTRAINT sesion_rutina;
 
 ALTER TABLE RoutineAccessory
@@ -36,27 +36,27 @@ ALTER TABLE RoutineAccessory
     DROP CONSTRAINT utiliza_rutina;
 
 -- tables
+DROP TABLE Accessory;
+
 DROP TABLE AccessoryData;
+
+DROP TABLE Data;
+
+DROP TABLE DataSet;
+
+DROP TABLE Medic;
+
+DROP TABLE Patient;
 
 DROP TABLE PatientRoutineDataSet;
 
+DROP TABLE Routine;
+
 DROP TABLE RoutineAccessory;
 
-DROP TABLE accessory;
+DROP TABLE Session;
 
-DROP TABLE data;
-
-DROP TABLE dataSet;
-
-DROP TABLE medic;
-
-DROP TABLE patient;
-
-DROP TABLE routine;
-
-DROP TABLE session;
-
-DROP TABLE "user";
+DROP TABLE "User";
 
 -- End of file.
 

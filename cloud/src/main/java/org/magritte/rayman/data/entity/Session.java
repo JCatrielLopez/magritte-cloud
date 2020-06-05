@@ -24,7 +24,6 @@ public class Session {
     @ToString.Include
     private Routine routine;
 
-    @Size(max = 15)
     @ToString.Include
     private String name;
 

@@ -21,11 +21,9 @@ public class Routine {
     @EqualsAndHashCode.Include
     private Integer idRoutine;
 
-    @Size(max = 15)
     @ToString.Include
     private String creatorName;
 
-    @Size(max = 15)
     @ToString.Include
     private String routineName;
 

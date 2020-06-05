@@ -13,7 +13,6 @@ import javax.validation.constraints.Size;
 @Entity
 public class Medic extends User {
 
-    @Size(max = 30)
     @ToString.Include
     private String specialization;
 

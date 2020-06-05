@@ -20,7 +20,6 @@ public class Accessory {
     @EqualsAndHashCode.Include
     private Integer idAccessory;
 
-    @Size(max = 15)
     @ToString.Include
     private String name;
 
