@@ -41,7 +41,6 @@ public class Routine {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Session> sessions;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(referencedColumnName = "idRoutine")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "routine")
     private Set<PatientRoutineDataSet> patientRoutineDataSet;
 }

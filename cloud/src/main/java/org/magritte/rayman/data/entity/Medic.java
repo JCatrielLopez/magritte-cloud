@@ -22,7 +22,7 @@ public class Medic extends User {
 
     public Medic(String dni, String name, String lastname, String password,
                  String email, String specialization, int license) {
-        super(dni, name, lastname, password, email);
+        super(dni, name, lastname, password, email, 'm');
         this.specialization = specialization;
         this.license = license;
     }

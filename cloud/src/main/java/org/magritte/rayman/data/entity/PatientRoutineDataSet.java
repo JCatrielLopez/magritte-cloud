@@ -20,11 +20,14 @@ public class PatientRoutineDataSet {
     private Integer id;
 
     @ToString.Include
+    @ManyToOne
     private Patient patient;
 
     @ToString.Include
+    @ManyToOne
     private Routine routine;
 
     @ToString.Include
+    @ManyToOne
     private DataSet dataSet;
 }

@@ -33,7 +33,7 @@ public class UserService {
     public char login(String dni, String password){
         User user = userRepository.findByDni(dni).orElseThrow(() -> new UserNotFoundException(dni));
         if(user.getPassword().equals(password)){
-            return user.getClase();
+            return user.getUserType();
         }
         else{
             throw new UserNotValidException(dni);

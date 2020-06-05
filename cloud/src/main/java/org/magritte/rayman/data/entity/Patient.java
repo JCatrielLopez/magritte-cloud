@@ -30,13 +30,12 @@ public class Patient extends User {
     @ToString.Include
     private Medic medic;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(referencedColumnName = "idPatient")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "patient")
     private Set<PatientRoutineDataSet> patientRoutineDataSets;
 
     public Patient(String dni, String name, String lastname, String password, String email,
                    Date birthdate, char gender, int height, float weight) {
-        super(dni, name, lastname, password, email);
+        super(dni, name, lastname, password, email, 'p');
         this.birthdate = birthdate;
         this.gender = gender;
         this.height = height;

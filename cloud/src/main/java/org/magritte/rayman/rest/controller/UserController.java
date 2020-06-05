@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,10 +42,11 @@ public class UserController {
         return userService.findAll();
     }
 
-    @GetMapping // Por defecto /user te da todos
-    List<User> all() {
-        return userService.findAll();
+    @PostMapping("/user")
+    public void createUser(@Valid @RequestBody User new_user){
+        userService.save(new_user);
     }
+
 //TODO
 //    @PostMapping("/medic")
 //    public void createMedic(@RequestBody MedicRequest request){
