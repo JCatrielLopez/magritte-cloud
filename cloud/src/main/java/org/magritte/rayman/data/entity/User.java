@@ -45,9 +45,13 @@ public abstract class User {
         this.email = email;
     }
 
-    //    @NonNull
-//    private char userType;
-
+    public User(String dni, String name, String lastname, String email){
+        this.dni = dni;
+        this.name = name;
+        this.lastname = lastname;
+        this.password = password;
+        this.email = email;
+    }
 }
 
 

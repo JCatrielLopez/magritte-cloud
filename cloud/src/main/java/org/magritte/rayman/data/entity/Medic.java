@@ -26,4 +26,10 @@ public class Medic extends User {
         this.license = license;
     }
 
+    public Medic(String dni, String name, String lastname,
+                 String email, String specialization, int license) {
+        super(dni, name, lastname, email);
+        this.specialization = specialization;
+        this.license = license;
+    }
 }

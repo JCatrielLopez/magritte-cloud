@@ -17,8 +17,9 @@ public class MedicRequest extends UserRequest {
 
     @NotNull
     private int license;
-//TODO
-//    public Medic toNewEntity() {
-//        return new Medic(getSpecialization(), getLicense());
-//    }
+
+    public Medic toNewEntity() {
+        return new Medic(getDni(), getName(), getLastname(),
+                getEmail(), getSpecialization(), getLicense());
+    }
 }

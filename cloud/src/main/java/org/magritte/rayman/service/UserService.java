@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 
 @Service
@@ -15,7 +16,9 @@ public class UserService {
     private UserRepository userRepository;
 
     public User getUserById(Integer id) {
-        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+        return userRepository
+                .findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
     }
 
     public void save(User user) {
@@ -30,13 +33,11 @@ public class UserService {
         userRepository.delete(user);
     }
 
-    public char login(String dni, String password){
-        User user = userRepository.findByDni(dni).orElseThrow(() -> new UserNotFoundException(dni));
-        if(user.getPassword().equals(password)){
-            return user.getClase();
-        }
-        else{
-            throw new UserNotValidException(dni);
-        }
+    public User login(String dni, String password){
+        User user = userRepository
+                .findByDni(dni)
+                .orElseThrow(() -> new UserNotFoundException(dni));
+        if (!Objects.equals(user.getPassword(), password)) throw new UserNotValidException();
+        return user;
     }
 }

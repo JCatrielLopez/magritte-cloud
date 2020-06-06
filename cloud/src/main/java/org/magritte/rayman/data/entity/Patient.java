@@ -43,4 +43,13 @@ public class Patient extends User {
         this.weight = weight;
     }
 
+    public Patient(String dni, String name, String lastname, String email,
+                   Date birthdate, char gender, int height, float weight) {
+        super(dni, name, lastname, email);
+        this.birthdate = birthdate;
+        this.gender = gender;
+        this.height = height;
+        this.weight = weight;
+    }
+
 }
