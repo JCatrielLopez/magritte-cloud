@@ -1,6 +1,7 @@
 package org.magritte.rayman.data.entity;
 
 import lombok.*;
+import org.magritte.rayman.data.repository.UserRepository;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -14,6 +15,7 @@ import javax.validation.constraints.Size;
 @ToString(onlyExplicitlyIncluded = true)
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity
+@Table(name = "Usuarios", uniqueConstraints = @UniqueConstraint(columnNames = "dni"))
 public class User {
 
     @Id
@@ -45,6 +47,8 @@ public class User {
     @Email
     private String email;
 
+    private char userType;
+
     public User(String dni, String name, String lastname, String password, String email, char c){
         this.dni = dni;
         this.name = name;
@@ -53,8 +57,6 @@ public class User {
         this.email = email;
         this.userType = c;
     }
-
-    private char userType;
 
 }
 

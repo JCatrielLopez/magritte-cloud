@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -19,6 +20,9 @@ public class Medic extends User {
 
     @ToString.Include
     private int license;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "medic")
+    private Set<Patient> patients;
 
     public Medic(String dni, String name, String lastname, String password,
                  String email, String specialization, int license) {

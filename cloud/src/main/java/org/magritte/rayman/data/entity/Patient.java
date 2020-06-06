@@ -1,6 +1,7 @@
 package org.magritte.rayman.data.entity;
 
 import lombok.*;
+import org.magritte.rayman.data.repository.UserRepository;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -26,9 +27,13 @@ public class Patient extends User {
     @ToString.Include
     private float weight;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @ToString.Include
-    private Medic medic;
+    private Set<Medic> medics;
+
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @ToString.Include
+//    private Medic medic;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "patient")
     private Set<PatientRoutineDataSet> patientRoutineDataSets;
@@ -41,5 +46,4 @@ public class Patient extends User {
         this.height = height;
         this.weight = weight;
     }
-
 }

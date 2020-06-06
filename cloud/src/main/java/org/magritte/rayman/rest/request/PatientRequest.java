@@ -3,15 +3,14 @@ package org.magritte.rayman.rest.request;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.magritte.rayman.data.entity.Medic;
 
 import javax.validation.constraints.NotNull;
+
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class MedicRequest extends UserRequest {
-
+public class PatientRequest {
 
     @NotNull
     private String dni;
@@ -29,9 +28,14 @@ public class MedicRequest extends UserRequest {
     private String email;
 
     @NotNull
-    private String specialization;
+    private String birthdate;
 
     @NotNull
-    private int license;
+    private char gender;
 
+    @NotNull
+    private Integer height;
+
+    @NotNull
+    private Float weight;
 }
