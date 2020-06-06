@@ -13,6 +13,21 @@ import javax.validation.constraints.NotNull;
 public class MedicRequest extends UserRequest {
 
     @NotNull
+    private String dni;
+
+    @NotNull
+    private String name;
+
+    @NotNull
+    private String lastname;
+
+    @NotNull
+    private String password;
+
+    @NotNull
+    private String email;
+
+    @NotNull
     private String specialization;
 
     @NotNull

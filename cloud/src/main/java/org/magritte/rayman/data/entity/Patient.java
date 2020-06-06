@@ -1,8 +1,16 @@
 package org.magritte.rayman.data.entity;
 
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.util.Date;
 import java.util.Set;
 
@@ -30,13 +38,12 @@ public class Patient extends User {
     @ToString.Include
     private Medic medic;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(referencedColumnName = "idPatient")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "patient")
     private Set<PatientRoutineDataSet> patientRoutineDataSets;
 
     public Patient(String dni, String name, String lastname, String password, String email,
                    Date birthdate, char gender, int height, float weight) {
-        super(dni, name, lastname, password, email);
+        super(dni, name, lastname, password, email, 'P');
         this.birthdate = birthdate;
         this.gender = gender;
         this.height = height;
@@ -51,5 +58,4 @@ public class Patient extends User {
         this.height = height;
         this.weight = weight;
     }
-
 }

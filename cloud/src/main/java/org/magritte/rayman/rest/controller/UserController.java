@@ -1,10 +1,10 @@
 package org.magritte.rayman.rest.controller;
 
 import org.magritte.rayman.data.entity.User;
+import org.magritte.rayman.exceptions.UserNotFoundException;
 import org.magritte.rayman.rest.request.MedicRequest;
 import org.magritte.rayman.rest.request.PatientRequest;
 import org.magritte.rayman.rest.response.UserResponse;
-import org.magritte.rayman.service.UserNotFoundException;
 import org.magritte.rayman.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -46,8 +47,11 @@ public class UserController {
      * @return User: medic or patient depending on the case
      */
     @GetMapping("/user/login")
-    public User login(@RequestParam String dni, @RequestParam String password) {
-        return userService.login(dni, password);
+    @ResponseStatus(code = HttpStatus.OK)
+    public UserResponse login(@RequestParam String dni, @RequestParam String password) {
+        UserResponse userResponse = userService.login(dni, password);
+        if (Objects.nonNull(userResponse)) throw new UserNotFoundException();
+        return userResponse;
     }
 
     /**
@@ -70,11 +74,17 @@ public class UserController {
         userService.save(request.toNewEntity());
     }
 
+    @PostMapping("/user/patient/{id}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public void registerMedic(@PathVariable Integer id) {
+        userService.registerMedic(id);
+    }
+
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable Integer id) {
         User userToDelete = Optional.of(id)
                 .map(userService::getUserById)
-                .orElseThrow(() -> new UserNotFoundException(id));
+                .orElseThrow(UserNotFoundException::new);
         userService.delete(userToDelete);
     }
 }

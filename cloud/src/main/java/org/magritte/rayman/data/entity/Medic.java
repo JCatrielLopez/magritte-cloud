@@ -1,9 +1,16 @@
 package org.magritte.rayman.data.entity;
 
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-import javax.persistence.*;
-import javax.validation.constraints.Size;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -19,9 +26,12 @@ public class Medic extends User {
     @ToString.Include
     private int license;
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "medic")
+    private Set<Patient> patients;
+
     public Medic(String dni, String name, String lastname, String password,
                  String email, String specialization, int license) {
-        super(dni, name, lastname, password, email);
+        super(dni, name, lastname, password, email, 'M');
         this.specialization = specialization;
         this.license = license;
     }

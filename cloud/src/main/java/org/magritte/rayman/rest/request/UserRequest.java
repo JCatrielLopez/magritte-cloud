@@ -12,15 +12,13 @@ import lombok.ToString;
 @AllArgsConstructor
 public abstract class UserRequest {
 
-    @ToString.Include
     private String dni;
 
-    @ToString.Include
     private String name;
 
-    @ToString.Include
     private String lastname;
 
-    @ToString.Include
     private String email;
+
+    private char type;
 }
