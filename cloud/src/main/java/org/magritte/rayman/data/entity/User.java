@@ -1,8 +1,10 @@
 package org.magritte.rayman.data.entity;
 
 import lombok.*;
+import org.magritte.rayman.data.repository.UserRepository;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -13,11 +15,12 @@ import javax.validation.constraints.Size;
 @ToString(onlyExplicitlyIncluded = true)
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity
-public abstract class User {
+@Table(name = "Usuarios", uniqueConstraints = @UniqueConstraint(columnNames = "dni"))
+public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq_gen")
-    @SequenceGenerator(sequenceName = "user_iduser_seq", name = "user_seq_gen")
+//    @SequenceGenerator(name = "seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(nullable = false)
     @EqualsAndHashCode.Include
     private Integer id;
@@ -35,18 +38,19 @@ public abstract class User {
     private String password;
 
     @ToString.Include
+    @Email
     private String email;
 
-    public User(String dni, String name, String lastname, String password, String email){
+    private char userType;
+
+    public User(String dni, String name, String lastname, String password, String email, char c){
         this.dni = dni;
         this.name = name;
         this.lastname = lastname;
         this.password = password;
         this.email = email;
+        this.userType = c;
     }
-
-    //    @NonNull
-//    private char userType;
 
 }
 

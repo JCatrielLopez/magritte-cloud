@@ -29,7 +29,6 @@ public class DataSet {
     @ToString.Include
     private String unit;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(referencedColumnName = "idDataSet")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "dataSet")
     private Set<PatientRoutineDataSet> patientRoutineDataSet;
 }

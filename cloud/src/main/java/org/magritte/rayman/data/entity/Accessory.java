@@ -27,7 +27,7 @@ public class Accessory {
 //            joinColumns = @JoinColumn(referencedColumnName = "idAccesory"),
 //            inverseJoinColumns = @JoinColumn(referencedColumnName = "idRoutine")
 //    )
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "accessory")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "accessories")
     private Set<Routine> routines;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
