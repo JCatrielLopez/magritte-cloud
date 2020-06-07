@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2020-06-04 21:29:48.876
+-- Last modification date: 2020-06-07 00:52:00.925
 
 -- tables
 -- Table: Accessory
@@ -106,6 +106,7 @@ CREATE TABLE "User" (
     lastname varchar(15)  NOT NULL,
     password varchar(13)  NOT NULL,
     email varchar(50)  NOT NULL,
+    userType char(1)  NOT NULL,
     CONSTRAINT unique_DNI UNIQUE (dni) NOT DEFERRABLE  INITIALLY IMMEDIATE,
     CONSTRAINT unique_email UNIQUE (email) NOT DEFERRABLE  INITIALLY IMMEDIATE,
     CONSTRAINT User_pk PRIMARY KEY (idUser)
