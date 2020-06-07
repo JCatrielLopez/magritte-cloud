@@ -27,7 +27,7 @@ import java.util.Set;
 public class Routine {
 
     public static final String ID = "idRoutine";
-    public static final String NAME_TABLE = "Routine";
+    public static final String NAME_TABLE = "routine";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,7 +47,8 @@ public class Routine {
     @ToString.Include
     private int difficulty;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = NAME_TABLE)
     private Set<Accessory> accessories;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = NAME_TABLE)

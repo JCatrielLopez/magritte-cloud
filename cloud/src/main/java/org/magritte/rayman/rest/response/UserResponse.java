@@ -20,7 +20,7 @@ public class UserResponse {
     public UserResponse(User user) {
         this.id = user.getId();
         this.dni = user.getDni();
-        this.name = user.getName();
+        this.name = user.getFirstname();
         this.lastname = user.getLastname();
         this.email = user.getEmail();
         this.userType = getUserType();

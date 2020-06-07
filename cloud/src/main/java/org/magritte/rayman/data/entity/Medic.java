@@ -21,7 +21,7 @@ import java.util.Set;
 public class Medic extends User {
 
     public static final char MEDIC = 'M';
-    public static final String NAME_TABLE = "Medic";
+    public static final String NAME_TABLE = "medic";
 
     @ToString.Include
     private String specialization;

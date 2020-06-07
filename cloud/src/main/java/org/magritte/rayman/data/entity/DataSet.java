@@ -24,7 +24,7 @@ import java.util.Set;
 @Entity
 public class DataSet {
 
-    public static final String NAME_TABLE = "DataSet";
+    public static final String NAME_TABLE = "dataSet";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

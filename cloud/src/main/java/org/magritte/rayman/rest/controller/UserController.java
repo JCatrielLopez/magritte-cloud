@@ -32,7 +32,7 @@ public class UserController {
     private UserService userService;
 
     //ENDPOINT
-    @GetMapping("/{id}")
+    @GetMapping("/user/{id}")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
     public UserResponse getUser(@PathVariable Integer id) {
@@ -77,11 +77,11 @@ public class UserController {
 
     @PostMapping("/user/patient/{id}")
     @ResponseStatus(code = HttpStatus.OK)
-    public void registerMedic(@PathVariable Integer id) {
-        userService.signUpMedic(id);
+    public void setMedicToPatient(@PathVariable Integer idPatient, @RequestParam Integer idMedic) {
+        userService.setMedicToPatient(idPatient, idMedic);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/user/{id}")
     public void deleteUser(@PathVariable Integer id) {
         User userToDelete = Optional.of(id)
                 .map(userService::getUserById)

@@ -34,7 +34,7 @@ public class MedicRequest extends UserRequest {
     private int license;
 
     public Medic toNewEntity() {
-        return new Medic(getDni(), getName(), getLastname(),
+        return new Medic(getDni(), getName(), getLastname(), getPassword(),
                 getEmail(), getSpecialization(), getLicense());
     }
 }

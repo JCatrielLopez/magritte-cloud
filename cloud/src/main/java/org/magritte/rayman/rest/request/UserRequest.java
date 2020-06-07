@@ -17,6 +17,8 @@ public abstract class UserRequest {
 
     private String lastname;
 
+    private String password;
+
     private String email;
 
     private char type;

@@ -1,15 +1,20 @@
 package org.magritte.rayman.service;
 
+import org.magritte.rayman.data.entity.Medic;
+import org.magritte.rayman.data.entity.Patient;
 import org.magritte.rayman.data.entity.User;
 import org.magritte.rayman.data.repository.UserRepository;
 import org.magritte.rayman.exceptions.UserNotFoundException;
+import org.magritte.rayman.rest.response.MedicResponse;
+import org.magritte.rayman.rest.response.PatientResponse;
 import org.magritte.rayman.rest.response.UserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
+
+import static org.magritte.rayman.data.entity.Medic.MEDIC;
 
 @Service
 public class UserService {
@@ -24,7 +29,6 @@ public class UserService {
     }
 
     public void save(User user) {
-
         userRepository.save(user);
     }
 
@@ -41,22 +45,15 @@ public class UserService {
                 .findByDni(dni)
                 .orElseThrow(UserNotFoundException::new);
         if (!Objects.equals(user.getPassword(), password)) return null;
-        return new UserResponse(user);
+        return user.getUserType() == MEDIC ? new MedicResponse((Medic) user) : new PatientResponse((Patient) user);
     }
 
-    public void signUpMedic(Integer id) {
-        // TODO
-        Optional<User> patient = userRepository.findById(id);
-//        User medic = userRepository.findByDni(dni).orElseThrow(() -> new UserNotFoundException("Medic not found!"));
-//        patient.setMedic(medic);
-//        userRepository.save(patient);
-        User user = null;
-        if (patient.isPresent()) {
-            user = patient.get();
-        }
-        assert user != null;
-        System.out.println(user.toString());
-        //        userRepository.setMedicToPatient(id, medic.getId());
+    public void setMedicToPatient(Integer idPatient, Integer idMedic) {
+        User patient = userRepository.findById(idPatient).orElseThrow(UserNotFoundException::new);
+        User medic = userRepository.findById(idMedic).orElseThrow(UserNotFoundException::new);
+        ((Patient) patient).setMedic((Medic) medic);
+        userRepository.save(patient);
+//        userRepository.setMedicToPatient(id, medic.getId());
     }
 }
 
