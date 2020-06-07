@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2020-06-04 21:29:48.876
+-- Last modification date: 2020-06-07 02:08:56.652
 
 -- tables
 -- Table: Accessory
@@ -37,22 +37,22 @@ CREATE TABLE DataSet (
 
 -- Table: Medic
 CREATE TABLE Medic (
-    idUser int  NOT NULL,
+    id int  NOT NULL,
     specialization varchar(30)  NOT NULL,
     license int  NOT NULL,
     CONSTRAINT unique_license UNIQUE (license) NOT DEFERRABLE  INITIALLY IMMEDIATE,
-    CONSTRAINT Medic_pk PRIMARY KEY (idUser)
+    CONSTRAINT Medic_pk PRIMARY KEY (id)
 );
 
 -- Table: Patient
 CREATE TABLE Patient (
-    idUser int  NOT NULL,
+    id int  NOT NULL,
     birthdate date  NOT NULL,
     gender char(1)  NOT NULL,
     height int  NOT NULL,
     weight decimal(6,3)  NOT NULL,
     idMedic int  NULL,
-    CONSTRAINT Patient_pk PRIMARY KEY (idUser)
+    CONSTRAINT Patient_pk PRIMARY KEY (id)
 );
 
 -- Table: PatientRoutineDataSet
@@ -100,22 +100,23 @@ CREATE TABLE Session (
 
 -- Table: User
 CREATE TABLE "User" (
-    idUser serial  NOT NULL,
+    id serial  NOT NULL,
     dni varchar(9)  NOT NULL,
     firstname varchar(15)  NOT NULL,
     lastname varchar(15)  NOT NULL,
     password varchar(13)  NOT NULL,
     email varchar(50)  NOT NULL,
+    userType char(1)  NOT NULL,
     CONSTRAINT unique_DNI UNIQUE (dni) NOT DEFERRABLE  INITIALLY IMMEDIATE,
     CONSTRAINT unique_email UNIQUE (email) NOT DEFERRABLE  INITIALLY IMMEDIATE,
-    CONSTRAINT User_pk PRIMARY KEY (idUser)
+    CONSTRAINT User_pk PRIMARY KEY (id)
 );
 
 -- foreign keys
 -- Reference: Medico_User (table: Medic)
 ALTER TABLE Medic ADD CONSTRAINT Medico_User
-    FOREIGN KEY (idUser)
-    REFERENCES "User" (idUser)
+    FOREIGN KEY (id)
+    REFERENCES "User" (id)
     ON DELETE  CASCADE 
     ON UPDATE  CASCADE 
     NOT DEFERRABLE 
@@ -124,8 +125,8 @@ ALTER TABLE Medic ADD CONSTRAINT Medico_User
 
 -- Reference: Paciente_User (table: Patient)
 ALTER TABLE Patient ADD CONSTRAINT Paciente_User
-    FOREIGN KEY (idUser)
-    REFERENCES "User" (idUser)
+    FOREIGN KEY (id)
+    REFERENCES "User" (id)
     ON DELETE  CASCADE 
     ON UPDATE  CASCADE 
     NOT DEFERRABLE 
@@ -145,7 +146,7 @@ ALTER TABLE PatientRoutineDataSet ADD CONSTRAINT makes_dataSet
 -- Reference: makes_patient (table: PatientRoutineDataSet)
 ALTER TABLE PatientRoutineDataSet ADD CONSTRAINT makes_patient
     FOREIGN KEY (idPatient)
-    REFERENCES Patient (idUser)
+    REFERENCES Patient (id)
     ON DELETE  CASCADE 
     ON UPDATE  CASCADE 
     NOT DEFERRABLE 
@@ -175,7 +176,7 @@ ALTER TABLE AccessoryData ADD CONSTRAINT mide_dato
 -- Reference: patient_medic (table: Patient)
 ALTER TABLE Patient ADD CONSTRAINT patient_medic
     FOREIGN KEY (idMedic)
-    REFERENCES Medic (idUser)
+    REFERENCES Medic (id)
     ON DELETE  SET NULL 
     ON UPDATE  CASCADE 
     NOT DEFERRABLE 

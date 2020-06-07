@@ -12,7 +12,6 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class MedicRequest extends UserRequest {
 
-
     @NotNull
     private String dni;
 
@@ -34,4 +33,8 @@ public class MedicRequest extends UserRequest {
     @NotNull
     private int license;
 
+    public Medic toNewEntity() {
+        return new Medic(getDni(), getName(), getLastname(),
+                getEmail(), getSpecialization(), getLicense());
+    }
 }

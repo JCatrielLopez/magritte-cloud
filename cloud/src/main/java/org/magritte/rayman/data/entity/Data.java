@@ -1,9 +1,18 @@
 package org.magritte.rayman.data.entity;
 
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-import javax.persistence.*;
-import javax.validation.constraints.Size;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import java.util.Set;
 
 @Getter
@@ -14,6 +23,8 @@ import java.util.Set;
 @Entity
 public class Data {
 
+    public static final String NAME_TABLE = "Data";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
@@ -23,6 +34,6 @@ public class Data {
     @ToString.Include
     private String dataType;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "data")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = NAME_TABLE)
     private Set<Accessory> accessories;
 }

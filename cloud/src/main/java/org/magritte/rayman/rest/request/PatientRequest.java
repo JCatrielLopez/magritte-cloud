@@ -3,39 +3,45 @@ package org.magritte.rayman.rest.request;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.magritte.rayman.data.entity.Patient;
 
 import javax.validation.constraints.NotNull;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-
-@Getter
 @Setter
 @NoArgsConstructor
-public class PatientRequest {
+public class PatientRequest extends UserRequest {
 
     @NotNull
-    private String dni;
+    private Date birthdate;
 
     @NotNull
-    private String name;
-
-    @NotNull
-    private String lastname;
-
-    @NotNull
-    private String password;
-
-    @NotNull
-    private String email;
-
-    @NotNull
-    private String birthdate;
-
-    @NotNull
+    @Getter
     private char gender;
 
     @NotNull
-    private Integer height;
+    @Getter
+    private int height;
 
     @NotNull
-    private Float weight;
+    @Getter
+    private float weight;
+
+    public Patient toNewEntity() {
+        return new Patient(getDni(), getName(), getLastname(), getEmail(),
+                getBirthdate(), getGender(), getHeight(), getWeight());
+    }
+
+    public Date getBirthdate() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        try {
+            return dateFormat.parse(birthdate.toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

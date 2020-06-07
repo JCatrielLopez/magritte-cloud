@@ -1,12 +1,19 @@
 package org.magritte.rayman.data.entity;
 
-import lombok.*;
-import org.magritte.rayman.data.repository.UserRepository;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.SequenceGenerator;
 
 @Getter
 @Setter
@@ -15,16 +22,18 @@ import javax.validation.constraints.Size;
 @ToString(onlyExplicitlyIncluded = true)
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity
-@Table(name = "Usuarios", uniqueConstraints = @UniqueConstraint(columnNames = "dni"))
-public class User {
+public abstract class User {
+
+    private static final String GENERATOR = "user_seq_gen";
+    private static final String SEQUENCE = "user_id_seq";
 
     @Id
-//    @SequenceGenerator(name = "seq")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = GENERATOR)
+    @SequenceGenerator(sequenceName = SEQUENCE, name = GENERATOR)
     @Column(nullable = false)
     @EqualsAndHashCode.Include
     private Integer id;
-    
+
     @ToString.Include
     private String dni;
 
@@ -38,20 +47,27 @@ public class User {
     private String password;
 
     @ToString.Include
-    @Email
     private String email;
 
+    @ToString.Include
     private char userType;
 
-    public User(String dni, String name, String lastname, String password, String email, char c){
+    public User(String dni, String name, String lastname, String password, String email, char userType) {
         this.dni = dni;
         this.name = name;
         this.lastname = lastname;
         this.password = password;
         this.email = email;
-        this.userType = c;
+        this.userType = userType;
     }
 
+    public User(String dni, String name, String lastname, String email, char userType) {
+        this.dni = dni;
+        this.name = name;
+        this.lastname = lastname;
+        this.email = email;
+        this.userType = userType;
+    }
 }
 
 
