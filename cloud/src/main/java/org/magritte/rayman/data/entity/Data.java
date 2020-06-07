@@ -23,7 +23,7 @@ import java.util.Set;
 @Entity
 public class Data {
 
-    public static final String NAME_TABLE = "Data";
+    public static final String NAME_TABLE = "data";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

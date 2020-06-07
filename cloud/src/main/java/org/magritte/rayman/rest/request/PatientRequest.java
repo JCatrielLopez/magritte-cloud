@@ -16,7 +16,7 @@ import java.util.Date;
 public class PatientRequest extends UserRequest {
 
     @NotNull
-    private Date birthdate;
+    private String birthdate;
 
     @NotNull
     @Getter
@@ -31,14 +31,14 @@ public class PatientRequest extends UserRequest {
     private float weight;
 
     public Patient toNewEntity() {
-        return new Patient(getDni(), getName(), getLastname(), getEmail(),
+        return new Patient(getDni(), getName(), getLastname(), getPassword(), getEmail(),
                 getBirthdate(), getGender(), getHeight(), getWeight());
     }
 
     public Date getBirthdate() {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            return dateFormat.parse(birthdate.toString());
+            return dateFormat.parse(birthdate);
         } catch (ParseException e) {
             e.printStackTrace();
             return null;

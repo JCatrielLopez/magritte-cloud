@@ -24,7 +24,7 @@ import java.util.Set;
 public class Patient extends User {
 
     public static final char PATIENT = 'P';
-    public static final String NAME_TABLE = "Patient";
+    public static final String NAME_TABLE = "patient";
     public static final String ID = "idPatient";
 
     @ToString.Include
@@ -44,8 +44,8 @@ public class Patient extends User {
     private Medic medic;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = NAME_TABLE)
-    @JoinColumn(referencedColumnName = ID)
-    private Set<PatientRoutineDataSet> patientRoutineDataSets;
+//    @JoinColumn(referencedColumnName = ID)
+    private Set<PatientRoutineDataSet> patientRoutineDataSet;
 
     public Patient(String dni, String name, String lastname, String password, String email,
                    Date birthdate, char gender, int height, float weight) {

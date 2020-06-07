@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 @Getter
 @Setter
@@ -21,15 +22,16 @@ import javax.persistence.SequenceGenerator;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(onlyExplicitlyIncluded = true)
 @Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "Usuario")
 @Entity
 public abstract class User {
 
-    private static final String GENERATOR = "user_seq_gen";
-    private static final String SEQUENCE = "user_id_seq";
+    private static final String GENERATOR = "usuario_seq_gen";
+    private static final String SEQUENCE = "usuario_id_seq";
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = GENERATOR)
-    @SequenceGenerator(sequenceName = SEQUENCE, name = GENERATOR)
+    @SequenceGenerator(sequenceName = SEQUENCE, name = GENERATOR, allocationSize = 1)
     @Column(nullable = false)
     @EqualsAndHashCode.Include
     private Integer id;
@@ -38,7 +40,7 @@ public abstract class User {
     private String dni;
 
     @ToString.Include
-    private String name;
+    private String firstname;
 
     @ToString.Include
     private String lastname;
@@ -54,7 +56,7 @@ public abstract class User {
 
     public User(String dni, String name, String lastname, String password, String email, char userType) {
         this.dni = dni;
-        this.name = name;
+        this.firstname = name;
         this.lastname = lastname;
         this.password = password;
         this.email = email;
@@ -63,7 +65,7 @@ public abstract class User {
 
     public User(String dni, String name, String lastname, String email, char userType) {
         this.dni = dni;
-        this.name = name;
+        this.firstname = name;
         this.lastname = lastname;
         this.email = email;
         this.userType = userType;

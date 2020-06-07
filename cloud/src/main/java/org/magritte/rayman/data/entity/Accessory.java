@@ -27,8 +27,8 @@ import java.util.Set;
 public class Accessory {
 
     public static final String ID = "idAccessory";
-    public static final String NAME_TABLE = "Accessory";
-    public static final String NAME_TABLE_MANY_TO_MANY_ROUTINE = "RoutineAccessory";
+    public static final String NAME_TABLE = "accessories";
+    public static final String NAME_TABLE_MANY_TO_MANY_ROUTINE = "routineAccessory";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,8 +43,8 @@ public class Accessory {
             joinColumns = @JoinColumn(referencedColumnName = Accessory.ID),
             inverseJoinColumns = @JoinColumn(referencedColumnName = Routine.ID)
     )
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = NAME_TABLE)
-    private Set<Routine> routines;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Routine> routine;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Data> data;

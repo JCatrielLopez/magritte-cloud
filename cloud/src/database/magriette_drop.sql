@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2020-06-04 21:29:48.876
+-- Last modification date: 2020-06-07 22:00:07.044
 
 -- foreign keys
 ALTER TABLE Medic
@@ -56,7 +56,7 @@ DROP TABLE RoutineAccessory;
 
 DROP TABLE Session;
 
-DROP TABLE "User";
+DROP TABLE Usuario;
 
 -- End of file.
 
