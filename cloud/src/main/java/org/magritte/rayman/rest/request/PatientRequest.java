@@ -7,6 +7,7 @@ import org.magritte.rayman.data.entity.Patient;
 
 import javax.validation.constraints.NotNull;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -35,12 +36,12 @@ public class PatientRequest extends UserRequest {
     }
 
     public Date getBirthdate() {
-        DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         try {
-            return df.parse(birthdate.toString());
-        } catch (java.text.ParseException e) {
+            return dateFormat.parse(birthdate.toString());
+        } catch (ParseException e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 }

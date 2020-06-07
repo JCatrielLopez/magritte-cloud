@@ -1,5 +1,6 @@
 package org.magritte.rayman.rest.controller;
 
+import org.jetbrains.annotations.NotNull;
 import org.magritte.rayman.data.entity.User;
 import org.magritte.rayman.exceptions.UserNotFoundException;
 import org.magritte.rayman.rest.request.MedicRequest;
@@ -65,19 +66,19 @@ public class UserController {
     }
 
     @PostMapping("/medic")
-    public void createMedic(@RequestBody MedicRequest request) {
+    public void createMedic(@RequestBody @NotNull MedicRequest request) {
         userService.save(request.toNewEntity());
     }
 
     @PostMapping("/patient")
-    public void createPatient(@RequestBody PatientRequest request) {
+    public void createPatient(@RequestBody @NotNull PatientRequest request) {
         userService.save(request.toNewEntity());
     }
 
     @PostMapping("/user/patient/{id}")
     @ResponseStatus(code = HttpStatus.OK)
     public void registerMedic(@PathVariable Integer id) {
-        userService.registerMedic(id);
+        userService.signUpMedic(id);
     }
 
     @DeleteMapping("/{id}")

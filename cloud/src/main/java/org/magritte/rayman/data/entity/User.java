@@ -14,8 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 @Getter
 @Setter
@@ -24,11 +22,14 @@ import javax.persistence.UniqueConstraint;
 @ToString(onlyExplicitlyIncluded = true)
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity
-public class User {
+public abstract class User {
+
+    private static final String GENERATOR = "user_seq_gen";
+    private static final String SEQUENCE = "user_id_seq";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq_gen")
-    @SequenceGenerator(sequenceName = "user_iduser_seq", name = "user_seq_gen")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = GENERATOR)
+    @SequenceGenerator(sequenceName = SEQUENCE, name = GENERATOR)
     @Column(nullable = false)
     @EqualsAndHashCode.Include
     private Integer id;

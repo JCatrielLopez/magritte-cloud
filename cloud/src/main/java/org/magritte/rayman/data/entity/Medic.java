@@ -20,26 +20,27 @@ import java.util.Set;
 @Entity
 public class Medic extends User {
 
+    public static final char MEDIC = 'M';
+    public static final String NAME_TABLE = "Medic";
+
     @ToString.Include
     private String specialization;
 
     @ToString.Include
     private int license;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "medic")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = NAME_TABLE)
     private Set<Patient> patients;
 
     public Medic(String dni, String name, String lastname, String password,
                  String email, String specialization, int license) {
-        super(dni, name, lastname, password, email, 'M');
+        super(dni, name, lastname, password, email, MEDIC);
         this.specialization = specialization;
         this.license = license;
     }
 
     public Medic(String dni, String name, String lastname,
                  String email, String specialization, int license) {
-        super(dni, name, lastname, email);
-        this.specialization = specialization;
-        this.license = license;
+        this(dni, name, lastname, null, email, specialization, license);
     }
 }

@@ -44,7 +44,7 @@ public class UserService {
         return new UserResponse(user);
     }
 
-    public void registerMedic(Integer id) {
+    public void signUpMedic(Integer id) {
         // TODO
         Optional<User> patient = userRepository.findById(id);
 //        User medic = userRepository.findByDni(dni).orElseThrow(() -> new UserNotFoundException("Medic not found!"));
