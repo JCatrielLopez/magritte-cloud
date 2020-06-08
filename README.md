@@ -1,6 +1,8 @@
 # rayman-magritte
 Repositorio para proyecto de ingeniería del software.
 
+[![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
+
 ## Docker con PostgreSQL
 
   ### [Crear el container](https://hub.docker.com/_/postgres)
