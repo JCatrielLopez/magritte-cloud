@@ -6,13 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.time.LocalTime;
 
 @Getter
@@ -31,20 +25,25 @@ public class Session {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Include
+    @JoinColumn(name = "idroutine")
     private Routine routine;
 
     @ToString.Include
     private String name;
 
     @ToString.Include
+    @Column(name = "numberofseries")
     private int numberOfSeries;
 
     @ToString.Include
+    @Column(name = "numberofrepetitions")
     private int numberOfRepetitions;
 
     @ToString.Include
+    @Column(name = "excercisetime")
     private LocalTime exerciseTime;
 
     @ToString.Include
+    @Column(name = "breaktime")
     private LocalTime breakTime;
 }

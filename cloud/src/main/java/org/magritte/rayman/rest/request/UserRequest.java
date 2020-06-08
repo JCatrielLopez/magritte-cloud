@@ -21,5 +21,5 @@ public abstract class UserRequest {
 
     private String email;
 
-    private char type;
+//    private char type;
 }

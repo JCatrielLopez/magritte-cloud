@@ -31,17 +31,20 @@ public class Routine {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
+    @Column(nullable = false, name = "idroutine")
     @EqualsAndHashCode.Include
     private Integer idRoutine;
 
     @ToString.Include
+    @Column(name = "creator")
     private String creatorName;
 
     @ToString.Include
+    @Column(name = "name")
     private String routineName;
 
     @ToString.Include
+    @Column(name = "totaltime")
     private LocalTime totalTime; // https://jdbc.postgresql.org/documentation/head/8-date-time.html
 
     @ToString.Include

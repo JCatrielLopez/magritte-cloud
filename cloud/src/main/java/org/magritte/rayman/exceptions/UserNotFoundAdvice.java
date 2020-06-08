@@ -16,4 +16,9 @@ public class UserNotFoundAdvice {
     public ResponseEntity<Object> userNotFoundHandler(UserNotFoundException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(InvalidInput.class)
+    public ResponseEntity<String> invalidInputHandler(InvalidInput ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }

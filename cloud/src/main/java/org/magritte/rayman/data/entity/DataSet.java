@@ -6,14 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.Set;
 
 @Getter
@@ -22,17 +15,19 @@ import java.util.Set;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(onlyExplicitlyIncluded = true)
 @Entity
+@Table(name = "dataset")
 public class DataSet {
 
     public static final String NAME_TABLE = "dataSet";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
+    @Column(nullable = false, name = "iddataset")
     @EqualsAndHashCode.Include
     private Integer idDataSet;
 
     @ToString.Include
+    @Column(name = "datatype")
     private String dataType;
 
     @ToString.Include

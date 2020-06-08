@@ -5,6 +5,8 @@ import org.magritte.rayman.data.entity.User;
 import org.magritte.rayman.exceptions.UserNotFoundException;
 import org.magritte.rayman.rest.request.MedicRequest;
 import org.magritte.rayman.rest.request.PatientRequest;
+import org.magritte.rayman.rest.response.MedicResponse;
+import org.magritte.rayman.rest.response.PatientResponse;
 import org.magritte.rayman.rest.response.UserResponse;
 import org.magritte.rayman.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -51,7 +54,7 @@ public class UserController {
     @ResponseStatus(code = HttpStatus.OK)
     public UserResponse login(@RequestParam String dni, @RequestParam String password) {
         UserResponse userResponse = userService.login(dni, password);
-        if (Objects.nonNull(userResponse)) throw new UserNotFoundException();
+        if (!Objects.nonNull(userResponse)) throw new UserNotFoundException();
         return userResponse;
     }
 
@@ -60,9 +63,9 @@ public class UserController {
      *
      * @return List of all users
      */
-    @GetMapping
-    List<User> all() {
-        return userService.findAll();
+    @GetMapping("/user") //HAY QUE ESPECIFICARLO IGUAL AL /USER, SINO TIRA NOT FOUND.
+    List<UserResponse> all() {
+        return userService.allUsers();
     }
 
     @PostMapping("/medic")
@@ -75,7 +78,28 @@ public class UserController {
         userService.save(request.toNewEntity());
     }
 
-    @PostMapping("/user/patient/{id}")
+    @GetMapping("/patient/{id}")
+    public PatientResponse getPatient(@PathVariable Integer id){
+        User user = userService.getUserById(id);
+        return new PatientResponse(user);
+    }
+
+    @GetMapping("/patient")
+    public List<PatientResponse> getPatients(){
+        return userService.getPatients();
+    }
+
+    @GetMapping("/medic")
+    public List<MedicResponse> getMedics(){
+        return userService.getMedics();
+    }
+
+    @GetMapping("/medic/patients/{id}")
+    public List<PatientResponse> getPatientsFromMedic(@PathVariable Integer id){
+        return userService.getPatientsFromMedic(id);
+    }
+
+    @PostMapping("/user/patient/{idPatient}")
     @ResponseStatus(code = HttpStatus.OK)
     public void setMedicToPatient(@PathVariable Integer idPatient, @RequestParam Integer idMedic) {
         userService.setMedicToPatient(idPatient, idMedic);
