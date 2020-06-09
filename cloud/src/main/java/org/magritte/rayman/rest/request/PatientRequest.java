@@ -23,8 +23,8 @@ import java.util.Date;
 @NoArgsConstructor
 public class PatientRequest extends UserRequest {
 
-    @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "El formato de la fecha deberia ser: yyyy-MM-dd")
-    @Size(min = 10, max = 10)
+    @Pattern(regexp = "^\\d{4}-\\d{1,2}-\\d{1,2}$", message = "El formato de la fecha deberia ser: yyyy-MM-dd")
+    @Size(min = 8, max = 10)
     @NotNull
     private String birthdate;
 
