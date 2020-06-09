@@ -37,19 +37,18 @@ public class Routine {
 
     @ToString.Include
     @Column(name = "creator")
-    private String creatorName;
+    private String creator;
 
     @ToString.Include
     @Column(name = "name")
-    private String routineName;
+    private String name;
 
     @ToString.Include
     @Column(name = "totaltime")
-    private LocalTime totalTime; // https://jdbc.postgresql.org/documentation/head/8-date-time.html
+    private int totalTime; // https://jdbc.postgresql.org/documentation/head/8-date-time.html
 
     @ToString.Include
     private int difficulty;
-
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = NAME_TABLE)
     private Set<Accessory> accessories;
@@ -59,4 +58,11 @@ public class Routine {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = NAME_TABLE)
     private Set<PatientRoutineDataSet> patientRoutineDataSet;
+
+    public Routine(String creator, String name, int totalTime, int difficulty) {
+        this.creator = creator;
+        this.name = name;
+        this.totalTime = totalTime;
+        this.difficulty = difficulty;
+    }
 }

@@ -10,7 +10,8 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
 
-    @NotNull Optional<User> findById(@NotNull Integer id);
+    @NotNull
+    Optional<User> findById(@NotNull Integer id);
 
     Optional<User> findByDni(String dni);
 }

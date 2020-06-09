@@ -40,10 +40,21 @@ public class Session {
     private int numberOfRepetitions;
 
     @ToString.Include
-    @Column(name = "excercisetime")
-    private LocalTime exerciseTime;
+    @Column(name = "exercisetime")
+    private int exerciseTime;
 
     @ToString.Include
     @Column(name = "breaktime")
-    private LocalTime breakTime;
+    private int breakTime;
+
+    public Session(Routine routine, String name, int numberOfSeries,
+                   int numberOfRepetitions, int exerciseTime,
+                   int breakTime) {
+        this.routine = routine;
+        this.name = name;
+        this.numberOfSeries = numberOfSeries;
+        this.numberOfRepetitions = numberOfRepetitions;
+        this.exerciseTime = exerciseTime;
+        this.breakTime = breakTime;
+    }
 }

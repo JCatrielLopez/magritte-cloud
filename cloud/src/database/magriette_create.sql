@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2020-06-07 22:09:38.31
+-- Last modification date: 2020-06-09 20:46:07.718
 
 -- tables
 -- Table: Accessory
@@ -70,7 +70,7 @@ CREATE TABLE Routine (
     idRoutine serial  NOT NULL,
     creator varchar(15)  NOT NULL,
     name varchar(15)  NOT NULL,
-    totalTime time  NOT NULL,
+    totalTime int  NOT NULL,
     difficulty int  NOT NULL,
     CONSTRAINT unique_creator_name UNIQUE (creator, name) NOT DEFERRABLE  INITIALLY IMMEDIATE,
     CONSTRAINT Routine_pk PRIMARY KEY (idRoutine)
@@ -92,8 +92,8 @@ CREATE TABLE Session (
     name varchar(15)  NOT NULL,
     numberOfSeries int  NOT NULL,
     numberOfRepetitions int  NOT NULL,
-    exerciseTime time  NOT NULL,
-    breakTime time  NOT NULL,
+    exerciseTime int  NOT NULL,
+    breakTime int  NOT NULL,
     CONSTRAINT unique_idRoutine_name UNIQUE (idRoutine, name) NOT DEFERRABLE  INITIALLY IMMEDIATE,
     CONSTRAINT Session_pk PRIMARY KEY (id)
 );
