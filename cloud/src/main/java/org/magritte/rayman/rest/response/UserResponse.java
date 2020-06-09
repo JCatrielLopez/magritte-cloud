@@ -12,17 +12,17 @@ public class UserResponse {
 
     private Integer id;
     private String dni;
-    private String name;
+    private String firstname;
     private String lastname;
     private String email;
-    private char userType;
+    private String user_type;
 
     public UserResponse(User user) {
         this.id = user.getId();
         this.dni = user.getDni();
-        this.name = user.getFirstname();
+        this.firstname = user.getFirstname();
         this.lastname = user.getLastname();
         this.email = user.getEmail();
-        this.userType = getUserType();
+        this.user_type = String.valueOf(user.getUserType());
     }
 }

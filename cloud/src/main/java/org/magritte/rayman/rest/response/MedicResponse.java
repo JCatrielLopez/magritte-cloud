@@ -11,7 +11,6 @@ import org.magritte.rayman.data.entity.Medic;
 public class MedicResponse extends UserResponse {
 
     private String specialization;
-
     private int license;
 
     public MedicResponse(Medic medic) {

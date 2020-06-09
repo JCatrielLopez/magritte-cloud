@@ -1,10 +1,14 @@
 package org.magritte.rayman.rest.controller;
 
 import org.jetbrains.annotations.NotNull;
+import org.magritte.rayman.data.entity.Medic;
+import org.magritte.rayman.data.entity.Patient;
 import org.magritte.rayman.data.entity.User;
 import org.magritte.rayman.exceptions.UserNotFoundException;
 import org.magritte.rayman.rest.request.MedicRequest;
 import org.magritte.rayman.rest.request.PatientRequest;
+import org.magritte.rayman.rest.response.MedicResponse;
+import org.magritte.rayman.rest.response.PatientResponse;
 import org.magritte.rayman.rest.response.UserResponse;
 import org.magritte.rayman.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +24,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
+import static org.magritte.rayman.data.entity.Patient.PATIENT;
 
 @RestController
 @RequestMapping(name = "/user")
@@ -37,7 +44,10 @@ public class UserController {
     @ResponseStatus(code = HttpStatus.OK)
     public UserResponse getUser(@PathVariable Integer id) {
         User user = userService.getUserById(id);
-        return new UserResponse(user);
+        if (user.getUserType() == PATIENT)
+            return new PatientResponse((Patient) user);
+        else
+            return new MedicResponse((Medic) user);
     }
 
     /**
@@ -66,12 +76,12 @@ public class UserController {
     }
 
     @PostMapping("/medic")
-    public void createMedic(@RequestBody @NotNull MedicRequest request) {
+    public void createMedic(@RequestBody @NotNull @Valid MedicRequest request) {
         userService.save(request.toNewEntity());
     }
 
     @PostMapping("/patient")
-    public void createPatient(@RequestBody @NotNull PatientRequest request) {
+    public void createPatient(@RequestBody @NotNull @Valid PatientRequest request) {
         userService.save(request.toNewEntity());
     }
 
