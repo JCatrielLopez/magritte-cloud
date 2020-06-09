@@ -61,7 +61,7 @@ public class UserController {
     @ResponseStatus(code = HttpStatus.OK)
     public UserResponse login(@RequestParam String dni, @RequestParam String password) {
         UserResponse userResponse = userService.login(dni, password);
-        if (Objects.nonNull(userResponse)) throw new UserNotFoundException();
+        if (Objects.isNull(userResponse)) throw new UserNotFoundException();
         return userResponse;
     }
 
@@ -70,9 +70,9 @@ public class UserController {
      *
      * @return List of all users
      */
-    @GetMapping
-    List<User> all() {
-        return userService.findAll();
+    @GetMapping("/user") //HAY QUE ESPECIFICARLO IGUAL AL /USER, SINO TIRA NOT FOUND.
+    List<UserResponse> all() {
+        return userService.allUsers();
     }
 
     @PostMapping("/medic")
@@ -85,7 +85,28 @@ public class UserController {
         userService.save(request.toNewEntity());
     }
 
-    @PostMapping("/user/patient/{id}")
+    @GetMapping("/patient/{id}")
+    public PatientResponse getPatient(@PathVariable Integer id){
+        User user = userService.getUserById(id);
+        return new PatientResponse((Patient) user);
+    }
+
+    @GetMapping("/patient")
+    public List<PatientResponse> getPatients(){
+        return userService.getPatients();
+    }
+
+    @GetMapping("/medic")
+    public List<MedicResponse> getMedics(){
+        return userService.getMedics();
+    }
+
+    @GetMapping("/medic/patients/{id}")
+    public List<PatientResponse> getPatientsFromMedic(@PathVariable Integer id){
+        return userService.getPatientsFromMedic(id);
+    }
+
+    @PostMapping("/user/patient/{idPatient}")
     @ResponseStatus(code = HttpStatus.OK)
     public void setMedicToPatient(@PathVariable Integer idPatient, @RequestParam Integer idMedic) {
         userService.setMedicToPatient(idPatient, idMedic);

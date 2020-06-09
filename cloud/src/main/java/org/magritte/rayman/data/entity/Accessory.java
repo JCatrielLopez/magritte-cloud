@@ -32,7 +32,7 @@ public class Accessory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
+    @Column(nullable = false, name = "idaccessory")
     @EqualsAndHashCode.Include
     private Integer idAccessory;
 

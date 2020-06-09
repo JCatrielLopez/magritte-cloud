@@ -7,12 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,6 +16,7 @@ import javax.persistence.ManyToOne;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(onlyExplicitlyIncluded = true)
 @Entity
+@Table(name = "patientroutinedataset")
 public class PatientRoutineDataSet {
 
     @Id
@@ -31,13 +27,16 @@ public class PatientRoutineDataSet {
 
     @ToString.Include
     @ManyToOne
+    @JoinColumn(name = "idpatient")
     private Patient patient;
 
     @ToString.Include
     @ManyToOne
+    @JoinColumn(name = "idroutine")
     private Routine routine;
 
     @ToString.Include
     @ManyToOne
+    @JoinColumn(name = "iddataset")
     private DataSet dataSet;
 }

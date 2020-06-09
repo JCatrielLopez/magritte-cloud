@@ -1,5 +1,6 @@
 package org.magritte.rayman.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -43,8 +44,8 @@ public class Patient extends User {
     @ToString.Include
     private Medic medic;
 
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = NAME_TABLE)
-//    @JoinColumn(referencedColumnName = ID)
     private Set<PatientRoutineDataSet> patientRoutineDataSet;
 
     public Patient(String dni, String name, String lastname, String password, String email,

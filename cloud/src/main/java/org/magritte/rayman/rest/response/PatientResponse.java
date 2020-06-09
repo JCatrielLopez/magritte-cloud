@@ -5,8 +5,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.magritte.rayman.data.entity.Medic;
 import org.magritte.rayman.data.entity.Patient;
+import org.magritte.rayman.data.entity.User;
+import org.magritte.rayman.exceptions.UserNotFoundException;
 
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.Objects;
 
@@ -15,11 +16,13 @@ import java.util.Objects;
 @NoArgsConstructor
 public class PatientResponse extends UserResponse {
 
+    public static final int NO_VALUE = -1;
+
     private Date birthdate;
     private char gender;
     private int height;
     private float weight;
-    private MedicResponse medic;
+    private int medic_id;
 
     public PatientResponse(Patient patient) {
         super(patient);
@@ -28,8 +31,10 @@ public class PatientResponse extends UserResponse {
         this.height = patient.getHeight();
         this.weight = patient.getWeight();
         Medic medic = patient.getMedic();
-        if (Objects.nonNull(medic)) {
-            this.medic = new MedicResponse(medic);
+        if (Objects.isNull(medic)) {
+            this.medic_id = NO_VALUE;
+        } else {
+            this.medic_id = medic.getId();
         }
     }
 }

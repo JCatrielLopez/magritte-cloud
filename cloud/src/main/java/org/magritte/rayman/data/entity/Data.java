@@ -27,11 +27,12 @@ public class Data {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
+    @Column(nullable = false, name = "iddata")
     @EqualsAndHashCode.Include
     private Integer idData;
 
     @ToString.Include
+    @Column(name = "datatype")
     private String dataType;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = NAME_TABLE)
