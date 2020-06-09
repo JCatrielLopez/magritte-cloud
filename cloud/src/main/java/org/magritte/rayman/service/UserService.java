@@ -92,5 +92,11 @@ public class UserService {
              addAll(getMedics());
         }};
     }
+
+    public User getUserByDni(String dni) {
+        return userRepository
+                .findByDni(dni)
+                .orElseThrow(UserNotFoundException::new);
+    }
 }
 

@@ -41,6 +41,11 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    /**
+     * Obtiene un usuario a partir de su id
+     * @param id id del usuario a filtrar
+     * @return usuario: medico o paciente
+     */
     @GetMapping("/user/{id}")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
@@ -69,59 +74,118 @@ public class UserController {
      *
      * @return List of all users
      */
-    @GetMapping("/users") // Hay que especificar /users, sino da error -> "User not found!".
+    @GetMapping("/users")
+    // Hay que especificar /users, sino da error -> "User not found!".
     List<UserResponse> all() {
         return userService.allUsers();
     }
 
+    /**
+     * Agrega un medico
+     * @param request el cuerpo json del medico
+     */
     @PostMapping("/medic")
     public void addMedic(@RequestBody @NotNull @Valid MedicRequest request) {
         userService.save(request.toNewEntity());
     }
 
+    /**
+     * Agrega un paciente
+     * @param request el cuerpo json del paciente
+     */
     @PostMapping("/patient")
     public void addPatient(@RequestBody @NotNull @Valid PatientRequest request) {
         userService.save(request.toNewEntity());
     }
 
+    /**
+     * Obtiene un paciente a partir de su id
+     * @param id id del paciente a filtrar
+     * @return paciente
+     */
     @GetMapping("/patient/{id}")
-    public PatientResponse getPatient(@PathVariable Integer id){
+    public PatientResponse getPatient(@PathVariable Integer id) {
         User user = userService.getUserById(id);
         return new PatientResponse((Patient) user);
     }
 
+    /**
+     * Obtiene el medico a partir del id
+     *
+     * @param id id del medico a filtrar
+     * @return medico
+     */
     @GetMapping("/medic/{id}")
     public MedicResponse getMedic(@PathVariable Integer id) {
         User user = userService.getUserById(id);
         return new MedicResponse((Medic) user);
     }
 
+    /**
+     * Obtiene todos los pacientes
+     *
+     * @return Lista de pacientes
+     */
     @GetMapping("/patients")
-    public List<PatientResponse> getPatients(){
+    public List<PatientResponse> getPatients() {
         return userService.getPatients();
     }
 
+    /**
+     * Obtiene todos los medicos
+     *
+     * @return Lista de medicos
+     */
     @GetMapping("/medics")
-    public List<MedicResponse> getMedics(){
+    public List<MedicResponse> getMedics() {
         return userService.getMedics();
     }
 
+    /**
+     * Obtener los pacientes asociados al medico correspondiente
+     *
+     * @param id id del medico a filtrar
+     * @return Lista de pacientes
+     */
     @GetMapping("/medic/patients/{id}")
-    public List<PatientResponse> getPatientsFromMedic(@PathVariable Integer id){
+    public List<PatientResponse> getPatientsFromMedic(@PathVariable Integer id) {
         return userService.getPatientsFromMedic(id);
     }
 
+    /**
+     * Setear el medico al paciente a partir de un id
+     *
+     * @param idPatient id del paciente a filtrar
+     * @param idMedic   id del medico a setear
+     */
     @PostMapping("/patient/{idPatient}")
     @ResponseStatus(code = HttpStatus.OK)
     public void setMedicToPatient(@PathVariable Integer idPatient, @RequestParam Integer idMedic) {
         userService.setMedicToPatient(idPatient, idMedic);
     }
 
+    /**
+     * Borrar un usuario a partir de su id
+     *
+     * @param id id del usuario a filtrar
+     */
     @DeleteMapping("/user/{id}")
     public void deleteUser(@PathVariable Integer id) {
         User userToDelete = Optional.of(id)
                 .map(userService::getUserById)
                 .orElseThrow(UserNotFoundException::new);
         userService.delete(userToDelete);
+    }
+
+    /**
+     * Obtengo el usuario dado un dni
+     *
+     * @param dni dni del usuario a filtrar
+     * @return UserResponse
+     */
+    @GetMapping("/user")
+    public UserResponse getUserByDni(@RequestParam String dni) {
+        User user = userService.getUserByDni(dni);
+        return user.getUserType() == PATIENT ? new PatientResponse(user) : new MedicResponse(user);
     }
 }
