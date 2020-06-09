@@ -14,8 +14,9 @@ public class MedicResponse extends UserResponse {
     private String specialization;
     private int license;
 
-    public MedicResponse(Medic medic) {
-        super(medic);
+    public MedicResponse(User user) {
+        super(user);
+        Medic medic = (Medic) user;
         this.specialization = medic.getSpecialization();
         this.license = medic.getLicense();
     }

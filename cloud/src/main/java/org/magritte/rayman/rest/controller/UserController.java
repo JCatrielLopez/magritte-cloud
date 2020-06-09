@@ -31,6 +31,9 @@ import java.util.Optional;
 
 import static org.magritte.rayman.data.entity.Patient.PATIENT;
 
+/**
+ * EndPoints
+ */
 @RestController
 @RequestMapping(name = "/user")
 public class UserController {
@@ -38,16 +41,12 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    //ENDPOINT
     @GetMapping("/user/{id}")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
     public UserResponse getUser(@PathVariable Integer id) {
         User user = userService.getUserById(id);
-        if (user.getUserType() == PATIENT)
-            return new PatientResponse((Patient) user);
-        else
-            return new MedicResponse((Medic) user);
+        return user.getUserType() == PATIENT ? new PatientResponse(user) : new MedicResponse(user);
     }
 
     /**
@@ -70,18 +69,18 @@ public class UserController {
      *
      * @return List of all users
      */
-    @GetMapping("/user") //HAY QUE ESPECIFICARLO IGUAL AL /USER, SINO TIRA NOT FOUND.
+    @GetMapping("/users") // Hay que especificar /users, sino da error -> "User not found!".
     List<UserResponse> all() {
         return userService.allUsers();
     }
 
     @PostMapping("/medic")
-    public void createMedic(@RequestBody @NotNull @Valid MedicRequest request) {
+    public void addMedic(@RequestBody @NotNull @Valid MedicRequest request) {
         userService.save(request.toNewEntity());
     }
 
     @PostMapping("/patient")
-    public void createPatient(@RequestBody @NotNull @Valid PatientRequest request) {
+    public void addPatient(@RequestBody @NotNull @Valid PatientRequest request) {
         userService.save(request.toNewEntity());
     }
 
@@ -91,12 +90,18 @@ public class UserController {
         return new PatientResponse((Patient) user);
     }
 
-    @GetMapping("/patient")
+    @GetMapping("/medic/{id}")
+    public MedicResponse getMedic(@PathVariable Integer id) {
+        User user = userService.getUserById(id);
+        return new MedicResponse((Medic) user);
+    }
+
+    @GetMapping("/patients")
     public List<PatientResponse> getPatients(){
         return userService.getPatients();
     }
 
-    @GetMapping("/medic")
+    @GetMapping("/medics")
     public List<MedicResponse> getMedics(){
         return userService.getMedics();
     }
@@ -106,7 +111,7 @@ public class UserController {
         return userService.getPatientsFromMedic(id);
     }
 
-    @PostMapping("/user/patient/{idPatient}")
+    @PostMapping("/patient/{idPatient}")
     @ResponseStatus(code = HttpStatus.OK)
     public void setMedicToPatient(@PathVariable Integer idPatient, @RequestParam Integer idMedic) {
         userService.setMedicToPatient(idPatient, idMedic);

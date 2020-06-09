@@ -24,8 +24,9 @@ public class PatientResponse extends UserResponse {
     private float weight;
     private int medic_id;
 
-    public PatientResponse(Patient patient) {
-        super(patient);
+    public PatientResponse(User user) {
+        super(user);
+        Patient patient = (Patient) user;
         this.birthdate = patient.getBirthdate();
         this.gender = patient.getGender();
         this.height = patient.getHeight();
