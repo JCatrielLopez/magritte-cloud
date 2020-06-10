@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -30,6 +31,8 @@ public class RoutineController {
     @GetMapping("/routine/{id}")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
+    @Transactional
+    // https://stackoverflow.com/questions/15359306/how-to-fetch-fetchtype-lazy-associations-with-jpa-and-hibernate-in-a-spring-cont
     public RoutineResponse getRoutine(@PathVariable Integer id) {
         Routine routine = routineService.getRoutineById(id);
         return new RoutineResponse(routine);
@@ -38,6 +41,7 @@ public class RoutineController {
     @GetMapping("/routines")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
+    @Transactional
     public List<RoutineResponse> getRoutines() {
         return routineService.getRoutines();
     }
@@ -53,6 +57,7 @@ public class RoutineController {
     @GetMapping("/routines/name/{name}")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
+    @Transactional
     public List<RoutineResponse> getRoutinesByName(@PathVariable String name) {
         return routineService.getRoutinesByName(name);
     }
@@ -60,6 +65,7 @@ public class RoutineController {
     @GetMapping("/routines/creator/{creator}")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
+    @Transactional
     public List<RoutineResponse> getRoutinesByCreator(@PathVariable String creator) {
         return routineService.getRoutinesByCreator(creator);
     }

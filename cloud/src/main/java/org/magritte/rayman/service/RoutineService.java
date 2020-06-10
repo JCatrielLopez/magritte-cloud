@@ -40,7 +40,6 @@ public class RoutineService {
      *
      * @return Lista de rutinas
      */
-    @Transactional
     public List<RoutineResponse> getRoutines() {
         return routineRepository
                 .findAll()
