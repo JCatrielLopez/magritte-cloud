@@ -19,7 +19,6 @@ import java.time.LocalTime;
 public class SessionResponse {
 
     private Integer id;
-    private Routine routine;
     private String name;
     private int numberOfSeries;
     private int numberOfRepetitions;
@@ -28,7 +27,6 @@ public class SessionResponse {
 
     public SessionResponse(Session session) {
         this.id = session.getId();
-        this.routine = session.getRoutine();
         this.name = session.getName();
         this.numberOfSeries = session.getNumberOfSeries();
         this.numberOfRepetitions = session.getNumberOfRepetitions();

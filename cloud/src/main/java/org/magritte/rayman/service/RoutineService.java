@@ -49,12 +49,12 @@ public class RoutineService {
 
     /**
      * Obtengo las sesiones a partir de un id de rutina
-     * @param idRoutine filtrar la rutina
+     * @param routine filtrar la rutina
      * @return lista de sesiones
      */
     public List<SessionResponse> getSessions(Routine routine) {
         return sessionRepository
-                .findAllByRoutine(routine)
+                .findByRoutine(routine)
                 .stream()
                 .map(SessionResponse::new)
                 .collect(Collectors.toList());

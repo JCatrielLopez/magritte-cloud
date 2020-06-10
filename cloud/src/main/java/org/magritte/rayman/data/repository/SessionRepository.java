@@ -13,6 +13,6 @@ public interface SessionRepository extends JpaRepository<Session, Integer> {
     @NotNull
     Optional<Session> findById(@NotNull Integer id);
 
-    List<Session> findAllByRoutine(@NotNull Routine routine);
+    List<Session> findByRoutine(@NotNull Routine routine);
 
 }

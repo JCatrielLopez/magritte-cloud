@@ -1,5 +1,6 @@
 package org.magritte.rayman.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,7 +26,8 @@ public class Session {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Include
-    @JoinColumn(name = "idroutine")
+    @JsonIgnore
+    @JoinColumn(name = Routine.ID)
     private Routine routine;
 
     @ToString.Include

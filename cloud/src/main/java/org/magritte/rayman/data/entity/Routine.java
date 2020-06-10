@@ -26,12 +26,12 @@ import java.util.Set;
 @Entity
 public class Routine {
 
-    public static final String ID = "idRoutine";
+    public static final String ID = "idroutine";
     public static final String NAME_TABLE = "routine";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false, name = "idroutine")
+    @Column(nullable = false, name = Routine.ID)
     @EqualsAndHashCode.Include
     private Integer idRoutine;
 
@@ -53,7 +53,7 @@ public class Routine {
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = NAME_TABLE)
     private Set<Accessory> accessories;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = NAME_TABLE)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = NAME_TABLE)
     private Set<Session> sessions;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = NAME_TABLE)
