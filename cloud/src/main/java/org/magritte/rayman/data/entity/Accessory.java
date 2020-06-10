@@ -28,7 +28,7 @@ public class Accessory {
 
     public static final String ID = "idAccessory";
     public static final String NAME_TABLE = "accessories";
-    public static final String NAME_TABLE_MANY_TO_MANY_ROUTINE = "routineAccessory";
+    public static final String NAME_TABLE_MANY_TO_MANY_ROUTINE = "routine_accessory";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

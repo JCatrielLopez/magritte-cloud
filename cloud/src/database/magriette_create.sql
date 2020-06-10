@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2020-06-09 20:46:07.718
+-- Last modification date: 2020-06-10 13:55:21.964
 
 -- tables
 -- Table: Accessory
@@ -8,15 +8,6 @@ CREATE TABLE Accessory (
     name varchar(15)  NOT NULL,
     CONSTRAINT unique_name_Accessory UNIQUE (name) NOT DEFERRABLE  INITIALLY IMMEDIATE,
     CONSTRAINT Accessory_pk PRIMARY KEY (idAccessory)
-);
-
--- Table: AccessoryData
-CREATE TABLE AccessoryData (
-    id serial  NOT NULL,
-    idAccessory int  NOT NULL,
-    idData int  NOT NULL,
-    CONSTRAINT unique_idAccessory_idData UNIQUE (idAccessory, idData) NOT DEFERRABLE  INITIALLY IMMEDIATE,
-    CONSTRAINT AccessoryData_pk PRIMARY KEY (id)
 );
 
 -- Table: Data
@@ -76,15 +67,6 @@ CREATE TABLE Routine (
     CONSTRAINT Routine_pk PRIMARY KEY (idRoutine)
 );
 
--- Table: RoutineAccessory
-CREATE TABLE RoutineAccessory (
-    id serial  NOT NULL,
-    idRoutine int  NOT NULL,
-    idAccessory int  NOT NULL,
-    CONSTRAINT unique_idRoutine_idAccessory UNIQUE (idRoutine, idAccessory) NOT DEFERRABLE  INITIALLY IMMEDIATE,
-    CONSTRAINT RoutineAccessory_pk PRIMARY KEY (id)
-);
-
 -- Table: Session
 CREATE TABLE Session (
     id serial  NOT NULL,
@@ -110,6 +92,24 @@ CREATE TABLE Usuario (
     CONSTRAINT unique_DNI UNIQUE (dni) NOT DEFERRABLE  INITIALLY IMMEDIATE,
     CONSTRAINT unique_email UNIQUE (email) NOT DEFERRABLE  INITIALLY IMMEDIATE,
     CONSTRAINT Usuario_pk PRIMARY KEY (id)
+);
+
+-- Table: accessory_data
+CREATE TABLE accessory_data (
+    id serial  NOT NULL,
+    accessories_idaccessory int  NOT NULL,
+    data_iddata int  NOT NULL,
+    CONSTRAINT unique_idAccessory_idData UNIQUE (accessories_idaccessory, data_iddata) NOT DEFERRABLE  INITIALLY IMMEDIATE,
+    CONSTRAINT accessory_data_pk PRIMARY KEY (id)
+);
+
+-- Table: routine_accessory
+CREATE TABLE routine_accessory (
+    id serial  NOT NULL,
+    routine_idroutine int  NOT NULL,
+    accessories_idaccessory int  NOT NULL,
+    CONSTRAINT unique_idRoutine_idAccessory UNIQUE (routine_idroutine, accessories_idaccessory) NOT DEFERRABLE  INITIALLY IMMEDIATE,
+    CONSTRAINT routine_accessory_pk PRIMARY KEY (id)
 );
 
 -- foreign keys
@@ -153,9 +153,9 @@ ALTER TABLE PatientRoutineDataSet ADD CONSTRAINT makes_patient
     INITIALLY IMMEDIATE
 ;
 
--- Reference: mide_accesorio (table: AccessoryData)
-ALTER TABLE AccessoryData ADD CONSTRAINT mide_accesorio
-    FOREIGN KEY (idAccessory)
+-- Reference: mide_accesorio (table: accessory_data)
+ALTER TABLE accessory_data ADD CONSTRAINT mide_accesorio
+    FOREIGN KEY (accessories_idaccessory)
     REFERENCES Accessory (idAccessory)
     ON DELETE  CASCADE 
     ON UPDATE  CASCADE 
@@ -163,9 +163,9 @@ ALTER TABLE AccessoryData ADD CONSTRAINT mide_accesorio
     INITIALLY IMMEDIATE
 ;
 
--- Reference: mide_dato (table: AccessoryData)
-ALTER TABLE AccessoryData ADD CONSTRAINT mide_dato
-    FOREIGN KEY (idData)
+-- Reference: mide_dato (table: accessory_data)
+ALTER TABLE accessory_data ADD CONSTRAINT mide_dato
+    FOREIGN KEY (data_iddata)
     REFERENCES Data (idData)
     ON DELETE  CASCADE 
     ON UPDATE  CASCADE 
@@ -203,9 +203,9 @@ ALTER TABLE Session ADD CONSTRAINT sesion_rutina
     INITIALLY IMMEDIATE
 ;
 
--- Reference: utiliza_accesorio (table: RoutineAccessory)
-ALTER TABLE RoutineAccessory ADD CONSTRAINT utiliza_accesorio
-    FOREIGN KEY (idAccessory)
+-- Reference: utiliza_accesorio (table: routine_accessory)
+ALTER TABLE routine_accessory ADD CONSTRAINT utiliza_accesorio
+    FOREIGN KEY (accessories_idaccessory)
     REFERENCES Accessory (idAccessory)
     ON DELETE  CASCADE 
     ON UPDATE  CASCADE 
@@ -213,9 +213,9 @@ ALTER TABLE RoutineAccessory ADD CONSTRAINT utiliza_accesorio
     INITIALLY IMMEDIATE
 ;
 
--- Reference: utiliza_rutina (table: RoutineAccessory)
-ALTER TABLE RoutineAccessory ADD CONSTRAINT utiliza_rutina
-    FOREIGN KEY (idRoutine)
+-- Reference: utiliza_rutina (table: routine_accessory)
+ALTER TABLE routine_accessory ADD CONSTRAINT utiliza_rutina
+    FOREIGN KEY (routine_idroutine)
     REFERENCES Routine (idRoutine)
     ON DELETE  CASCADE 
     ON UPDATE  CASCADE 
