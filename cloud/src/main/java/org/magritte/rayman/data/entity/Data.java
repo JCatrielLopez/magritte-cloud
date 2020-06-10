@@ -37,4 +37,8 @@ public class Data {
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = NAME_TABLE)
     private Set<Accessory> accessories;
+
+    public Data(String dataType) {
+        this.dataType = dataType;
+    }
 }

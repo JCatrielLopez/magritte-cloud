@@ -4,13 +4,12 @@ import org.magritte.rayman.data.entity.Routine;
 import org.magritte.rayman.data.entity.Session;
 import org.magritte.rayman.data.repository.RoutineRepository;
 import org.magritte.rayman.data.repository.SessionRepository;
-import org.magritte.rayman.exceptions.UserNotFoundException;
+import org.magritte.rayman.exceptions.RoutineNotFoundException;
 import org.magritte.rayman.rest.response.RoutineResponse;
 import org.magritte.rayman.rest.response.SessionResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,7 +31,7 @@ public class RoutineService {
     public Routine getRoutineById(Integer id) {
         return routineRepository
                 .findById(id)
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(RoutineNotFoundException::new);
     }
 
     /**

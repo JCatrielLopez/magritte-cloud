@@ -49,4 +49,12 @@ public class Accessory {
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Data> data;
 
+    public Accessory(String name, Set<Data> data) {
+        this.name = name;
+        this.data = data;
+    }
+
+    public void addAll(Set<Data> data) {
+        this.data.addAll(data);
+    }
 }
