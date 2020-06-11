@@ -40,9 +40,7 @@ public class RoutineService {
      * @return Lista de rutinas
      */
     public List<RoutineResponse> getRoutines() {
-        return routineRepository
-                .findAll()
-                .stream()
+        return routineRepository.findAll().stream()
                 .map(RoutineResponse::new)
                 .collect(Collectors.toList());
     }
@@ -54,27 +52,15 @@ public class RoutineService {
      * @return lista de sesiones
      */
     public List<SessionResponse> getSessions(Routine routine) {
-        return sessionRepository
-                .findByRoutine(routine)
-                .stream()
-                .map(SessionResponse::new)
-                .collect(Collectors.toList());
+        return sessionRepository.findByRoutine(routine);
     }
 
     public List<RoutineResponse> getRoutinesByName(String name) {
-        return routineRepository
-                .findAllByName(name)
-                .stream()
-                .map(RoutineResponse::new)
-                .collect(Collectors.toList());
+        return routineRepository.findAllByName(name);
     }
 
     public List<RoutineResponse> getRoutinesByCreator(String name) {
-        return routineRepository
-                .findAllByCreator(name)
-                .stream()
-                .map(RoutineResponse::new)
-                .collect(Collectors.toList());
+        return routineRepository.findAllByCreator(name);
     }
 
     public void save(Routine routine) {

@@ -3,9 +3,7 @@ package org.magritte.rayman.rest.response;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import org.magritte.rayman.data.entity.Accessory;
-import org.magritte.rayman.data.entity.Data;
 
 import java.util.Set;
 import java.util.stream.Collectors;

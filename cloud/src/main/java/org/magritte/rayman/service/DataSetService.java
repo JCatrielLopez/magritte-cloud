@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class DataSetService {
 
     @Autowired
-    public DataSetRepository dataSetRepository;
+    private DataSetRepository dataSetRepository;
 
     public DataSet getDataSetById(@NotNull Integer id) {
         return dataSetRepository

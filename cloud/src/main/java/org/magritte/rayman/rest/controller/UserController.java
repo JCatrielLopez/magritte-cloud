@@ -43,6 +43,7 @@ public class UserController {
 
     /**
      * Obtiene un usuario a partir de su id
+     *
      * @param id id del usuario a filtrar
      * @return usuario: medico o paciente
      */
@@ -82,6 +83,7 @@ public class UserController {
 
     /**
      * Agrega un medico
+     *
      * @param request el cuerpo json del medico
      */
     @PostMapping("/medic")
@@ -91,6 +93,7 @@ public class UserController {
 
     /**
      * Agrega un paciente
+     *
      * @param request el cuerpo json del paciente
      */
     @PostMapping("/patient")
@@ -100,6 +103,7 @@ public class UserController {
 
     /**
      * Obtiene un paciente a partir de su id
+     *
      * @param id id del paciente a filtrar
      * @return paciente
      */

@@ -6,7 +6,6 @@ import lombok.Setter;
 import org.magritte.rayman.data.entity.Medic;
 import org.magritte.rayman.data.entity.Patient;
 import org.magritte.rayman.data.entity.User;
-import org.magritte.rayman.exceptions.UserNotFoundException;
 
 import java.util.Date;
 import java.util.Objects;

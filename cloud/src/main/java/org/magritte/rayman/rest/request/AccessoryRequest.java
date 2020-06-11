@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.magritte.rayman.data.entity.Accessory;
 import org.magritte.rayman.data.entity.Data;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;

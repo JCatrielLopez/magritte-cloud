@@ -36,10 +36,6 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public List<User> findAll() {
-        return userRepository.findAll();
-    }
-
     public void delete(User user) {
         userRepository.delete(user);
     }
@@ -59,37 +55,28 @@ public class UserService {
 
     @Transactional
     public List<PatientResponse> getPatientsFromMedic(Integer id) {
-        return ((Medic) userRepository
-                .findById(id)
-                .orElseThrow(UserNotFoundException::new))
-                .getPatients()
-                .stream()
+        Medic medic = (Medic) userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        return medic.getPatients().stream()
                 .map(PatientResponse::new)
                 .collect(Collectors.toList());
     }
 
     public List<PatientResponse> getPatients() {
-        return userRepository
-                .findAll()
-                .stream()
-                .filter(u -> u.getUserType() == PATIENT)
-                .map(PatientResponse::new)
+        return userRepository.findByUserType(PATIENT).stream()
+                .map(PatientResponse.class::cast)
                 .collect(Collectors.toList());
     }
 
     public List<MedicResponse> getMedics() {
-        return userRepository
-                .findAll()
-                .stream()
-                .filter(u -> u.getUserType() == MEDIC)
-                .map(MedicResponse::new)
+        return userRepository.findByUserType(MEDIC).stream()
+                .map(MedicResponse.class::cast)
                 .collect(Collectors.toList());
     }
 
     public List<UserResponse> allUsers() {
         return new ArrayList<>() {{
-             addAll(getPatients());
-             addAll(getMedics());
+            addAll(getPatients());
+            addAll(getMedics());
         }};
     }
 

@@ -4,18 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import org.magritte.rayman.data.entity.Routine;
 import org.magritte.rayman.data.entity.Session;
-import org.magritte.rayman.service.RoutineService;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.persistence.Column;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.LocalTime;
 
 @Getter
 @Setter

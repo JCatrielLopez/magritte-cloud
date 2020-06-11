@@ -18,7 +18,7 @@ public class UserNotFoundAdvice {
     }
 
     @ExceptionHandler(InvalidInputException.class)
-    public ResponseEntity<String> invalidInputHandler(InvalidInputException ex){
+    public ResponseEntity<String> invalidInputHandler(InvalidInputException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }
