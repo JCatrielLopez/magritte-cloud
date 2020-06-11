@@ -38,4 +38,10 @@ public class DataSet {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = NAME_TABLE)
     private Set<PatientRoutineDataSet> patientRoutineDataSet;
+
+    public DataSet(String dataType, int measurement, String unit) {
+        this.dataType = dataType;
+        this.measurement = measurement;
+        this.unit = unit;
+    }
 }
