@@ -12,20 +12,17 @@ public class UserResponse {
 
     private Integer id;
     private String dni;
-    private String name;
+    private String firstname;
     private String lastname;
     private String email;
-    private char clase;
-//    private Set<ExerciseResponse> exercises//TODO este no tiene que mostrar los datos del usuario LOOP ALERT!
-
+    private String user_type;
 
     public UserResponse(User user) {
         this.id = user.getId();
         this.dni = user.getDni();
-        this.name = user.getName();
+        this.firstname = user.getFirstname();
         this.lastname = user.getLastname();
         this.email = user.getEmail();
-        this.clase = user.getClase();
-        //this.exericises = //mapear exercises a Set<ExerciseResponse>
+        this.user_type = String.valueOf(user.getUserType());
     }
 }
