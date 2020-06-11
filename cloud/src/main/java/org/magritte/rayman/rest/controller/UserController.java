@@ -206,9 +206,9 @@ public class UserController {
             int age = year - new PatientResponse(user).getBirthdate().getYear();
 
             if (time < 600)
-                return Math.random() * (211 - 0.64 * age) + 60;
+                return Math.random() * (0.6 * (211 - 0.64 * age))+ 60;
             else
-                return Math.random() * (211 - 0.64 * age) + 90;
+                return Math.random() * (0.9 * (211 - 0.64 * age)) + 90;
         }
         else
             throw new UserNotFoundException();
