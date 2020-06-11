@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2020-06-10 13:55:21.964
+-- Last modification date: 2020-06-11 20:30:48.83
 
 -- tables
 -- Table: Accessory
@@ -14,6 +14,7 @@ CREATE TABLE Accessory (
 CREATE TABLE Data (
     idData serial  NOT NULL,
     dataType varchar(20)  NOT NULL,
+    CONSTRAINT unique_dataType_data UNIQUE (dataType) NOT DEFERRABLE  INITIALLY IMMEDIATE,
     CONSTRAINT Data_pk PRIMARY KEY (idData)
 );
 

@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -39,6 +40,11 @@ public class Data {
     private Set<Accessory> accessories;
 
     public Data(String dataType) {
+        this.accessories = new HashSet<>();
         this.dataType = dataType;
+    }
+
+    public void add(Accessory accessory) {
+        this.accessories.add(accessory);
     }
 }

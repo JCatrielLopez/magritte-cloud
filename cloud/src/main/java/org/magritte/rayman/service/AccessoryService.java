@@ -2,14 +2,18 @@ package org.magritte.rayman.service;
 
 import org.jetbrains.annotations.NotNull;
 import org.magritte.rayman.data.entity.Accessory;
+import org.magritte.rayman.data.entity.Data;
 import org.magritte.rayman.data.repository.AccessoryRepository;
+import org.magritte.rayman.data.repository.DataRepository;
 import org.magritte.rayman.exceptions.AccessoryNotFoundException;
+import org.magritte.rayman.rest.request.DataRequest;
 import org.magritte.rayman.rest.response.AccessoryResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -17,6 +21,9 @@ public class AccessoryService {
 
     @Autowired
     private AccessoryRepository accessoryRepository;
+
+    @Autowired
+    private DataRepository dataRepository;
 
     public Accessory getAccessoryById(@NotNull Integer id) {
         return accessoryRepository
@@ -28,6 +35,23 @@ public class AccessoryService {
         return accessoryRepository.findAll().stream()
                 .map(AccessoryResponse::new)
                 .collect(Collectors.toList());
+    }
+
+    public void save(Accessory accessory, Set<DataRequest> data) {
+        for (DataRequest dr : data) {
+            Data d = dr.toNewEntity();
+            Optional<Data> optionalData = dataRepository.findByDataType(d.getDataType());
+            if (optionalData.isEmpty()) {
+                d.add(accessory);
+                accessory.add(d);
+                dataRepository.save(d);
+            } else {
+                Data obtainData = optionalData.get();
+                obtainData.add(accessory);
+                accessory.add(obtainData);
+            }
+        }
+        accessoryRepository.save(accessory);
     }
 
     public void save(Accessory accessory) {

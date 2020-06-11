@@ -13,4 +13,6 @@ public interface DataRepository extends JpaRepository<Data, Integer> {
     @NotNull
     Optional<Data> findById(@NotNull Integer id);
 
+    Optional<Data> findByDataType(String dataType);
+
 }

@@ -54,7 +54,7 @@ public class Accessory {
         this.data = data;
     }
 
-    public void addAll(Set<Data> data) {
-        this.data.addAll(data);
+    public void add(Data data) {
+        this.data.add(data);
     }
 }

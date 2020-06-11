@@ -21,7 +21,7 @@ public class DataRequest {
     @NotNull
     private String dataType;
 
-    public Data toNewEnitty() {
+    public Data toNewEntity() {
         return new Data(getDataType());
     }
 }

@@ -64,14 +64,8 @@ public class AccessoryController {
          */
         Optional<Accessory> optionalAccessory = Optional.of(request.getName())
                 .flatMap(accessoryService::getAccessoryByName);
-        Accessory accessory;
-        if (optionalAccessory.isPresent()) {
-            accessory = optionalAccessory.get();
-            accessory.addAll(request.getCollect());
-        } else {
-            accessory = request.toNewEntity();
-        }
-        accessoryService.save(accessory);
+        Accessory accessory = optionalAccessory.orElseGet(request::toNewEntity);
+        accessoryService.save(accessory, request.getData());
     }
 
     @DeleteMapping("/accessory/{id}")
