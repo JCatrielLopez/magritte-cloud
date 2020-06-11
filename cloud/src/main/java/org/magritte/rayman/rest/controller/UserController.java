@@ -203,7 +203,9 @@ public class UserController {
 
         if (user.getUserType() == PATIENT){
             int year = Calendar.getInstance().get(Calendar.YEAR);
-            int age = year - new PatientResponse(user).getBirthdate().getYear();
+            int age = year - Integer.parseInt(new PatientResponse(user).getBirthdate().toString().split("-")[0]);
+            System.out.println(year);
+            System.out.println(age);
 
             if (time < 600)
                 return Math.random() * (0.6 * (211 - 0.64 * age))+ 60;

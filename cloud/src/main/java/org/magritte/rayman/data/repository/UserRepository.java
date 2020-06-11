@@ -17,7 +17,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     Optional<User> findByDni(String dni);
 
-    List<UserResponse> findByUserType(char user_type);
+    List<User> findByUserType(char user_type);
 
 }
 
