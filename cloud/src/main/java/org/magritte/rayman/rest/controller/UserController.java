@@ -5,10 +5,12 @@ import org.magritte.rayman.data.entity.Medic;
 import org.magritte.rayman.data.entity.Patient;
 import org.magritte.rayman.data.entity.User;
 import org.magritte.rayman.exceptions.UserNotFoundException;
+import org.magritte.rayman.exceptions.UserNotValidException;
 import org.magritte.rayman.rest.request.MedicRequest;
 import org.magritte.rayman.rest.request.PatientRequest;
 import org.magritte.rayman.rest.response.MedicResponse;
 import org.magritte.rayman.rest.response.PatientResponse;
+import org.magritte.rayman.rest.response.SimulationResponse;
 import org.magritte.rayman.rest.response.UserResponse;
 import org.magritte.rayman.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -191,5 +194,17 @@ public class UserController {
     public UserResponse getUserByDni(@RequestParam String dni) {
         User user = userService.getUserByDni(dni);
         return user.getUserType() == PATIENT ? new PatientResponse(user) : new MedicResponse(user);
+    }
+
+    /**
+     * Verifico el estado del dispositivo
+     *
+     * @param
+     * @return SimulationResponse
+     */
+    @GetMapping("/checkStatus")
+    public SimulationResponse getHeartRate(){
+        return new SimulationResponse();
+
     }
 }

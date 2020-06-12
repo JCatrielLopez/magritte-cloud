@@ -63,13 +63,13 @@ public class UserService {
 
     public List<PatientResponse> getPatients() {
         return userRepository.findByUserType(PATIENT).stream()
-                .map(PatientResponse.class::cast)
+                .map(PatientResponse::new)
                 .collect(Collectors.toList());
     }
 
     public List<MedicResponse> getMedics() {
         return userRepository.findByUserType(MEDIC).stream()
-                .map(MedicResponse.class::cast)
+                .map(MedicResponse::new)
                 .collect(Collectors.toList());
     }
 
