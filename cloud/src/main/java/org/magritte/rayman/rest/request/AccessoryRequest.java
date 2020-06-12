@@ -27,47 +27,13 @@ public class AccessoryRequest {
     private Set<DataRequest> data;
 
     public Accessory toNewEntity() {
-        System.out.println(getCollect().toString());
         return new Accessory(getName(), new HashSet<>());
     }
 
     @org.jetbrains.annotations.NotNull
     public Set<Data> getCollect() {
-
-        /*
-            Accessory a = this.toNewEntity();
-            for (DataRequest dr : data) {
-                Data d = dr.toNewEntity();
-                Optional<Data> optionalData = dataRepository.findByName(d.getName());
-                if (!optionalData.isPresent()) {
-                    d.add(a);
-                    a.add(d);
-                    dataRepository.save(d);
-                } else {
-                    Data obtainData = optionalData.get();
-                    obtainData.add(a);
-                    a.add(obtainData);
-                }
-            }
-            accessoryRepository.save(a);
-
-          for each (Datareq d : conjunto){
-          	data = new Data (d);
-          	if not exists datarepo(d) //find by name
-          		data.setAccesorio(accesorio)
-          		accesorio.setData(data)
-          		datarepository.save(data)
-          	else
-          		modifico conjunto del data existente
-          		accesorio.setData(dataexistente)
-          	accesoryRepository.save(accesorio);
-          */
-
-        Set<Data> set = new HashSet<>();
-        for (DataRequest dataRequest : getData()) {
-            Data toNewEntity = dataRequest.toNewEntity();
-            set.add(toNewEntity);
-        }
-        return set;
+        return getData().stream()
+                .map(DataRequest::toNewEntity)
+                .collect(Collectors.toSet());
     }
 }

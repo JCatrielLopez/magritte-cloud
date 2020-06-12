@@ -4,6 +4,7 @@ import org.magritte.rayman.data.entity.Accessory;
 import org.magritte.rayman.data.entity.Data;
 import org.magritte.rayman.exceptions.AccessoryNotFoundException;
 import org.magritte.rayman.rest.request.AccessoryRequest;
+import org.magritte.rayman.rest.request.DataRequest;
 import org.magritte.rayman.rest.response.AccessoryResponse;
 import org.magritte.rayman.service.AccessoryService;
 import org.magritte.rayman.service.DataService;
@@ -59,13 +60,21 @@ public class AccessoryController {
     @ResponseStatus(code = HttpStatus.OK)
     @Transactional
     public void addAccessory(@RequestBody @Valid AccessoryRequest request) {
-        /*
-            En estos casos no lanzo error porque en caso de que no exista, lo inserto sino lo actualizo.
-         */
+        // En estos casos no lanzo error porque en caso de que no exista, lo inserto sino lo actualizo.
         Optional<Accessory> optionalAccessory = Optional.of(request.getName())
                 .flatMap(accessoryService::getAccessoryByName);
         Accessory accessory = optionalAccessory.orElseGet(request::toNewEntity);
         accessoryService.save(accessory, request.getData());
+    }
+
+    @PostMapping("/accessory/{id}/data")
+    @ResponseStatus(code = HttpStatus.OK)
+    public void addData(@PathVariable Integer id, @RequestBody @Valid DataRequest request) {
+        Accessory accessory = accessoryService.getAccessoryById(id);
+        Data newData = request.toNewEntity();
+        newData.add(accessory);
+        accessory.add(newData);
+        accessoryService.save(accessory);
     }
 
     @DeleteMapping("/accessory/{id}")
@@ -88,8 +97,6 @@ public class AccessoryController {
                 .filter(data -> !Objects.equals(data.getIdData(), idData))
                 .collect(Collectors.toSet());
         accessory.setData(newData);
-        Data data = dataService.getDataById(idData);
-        dataService.delete(data);
         accessoryService.save(accessory);
     }
 
