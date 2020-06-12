@@ -10,6 +10,7 @@ import org.magritte.rayman.rest.request.MedicRequest;
 import org.magritte.rayman.rest.request.PatientRequest;
 import org.magritte.rayman.rest.response.MedicResponse;
 import org.magritte.rayman.rest.response.PatientResponse;
+import org.magritte.rayman.rest.response.SimulationResponse;
 import org.magritte.rayman.rest.response.UserResponse;
 import org.magritte.rayman.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -195,24 +196,15 @@ public class UserController {
         return user.getUserType() == PATIENT ? new PatientResponse(user) : new MedicResponse(user);
     }
 
-    @GetMapping("/sim")
-    public double getHeartRate(@RequestParam Integer id, @RequestParam float time){
-        User user = Optional.of(id)
-                .map(userService::getUserById)
-                .orElseThrow(UserNotFoundException::new);
+    /**
+     * Verifico el estado del dispositivo
+     *
+     * @param
+     * @return SimulationResponse
+     */
+    @GetMapping("/checkStatus")
+    public SimulationResponse getHeartRate(){
+        return new SimulationResponse();
 
-        if (user.getUserType() == PATIENT){
-            int year = Calendar.getInstance().get(Calendar.YEAR);
-            int age = year - Integer.parseInt(new PatientResponse(user).getBirthdate().toString().split("-")[0]);
-            System.out.println(year);
-            System.out.println(age);
-
-            if (time < 600)
-                return Math.random() * (0.6 * (211 - 0.64 * age))+ 60;
-            else
-                return Math.random() * (0.9 * (211 - 0.64 * age)) + 90;
-        }
-        else
-            throw new UserNotFoundException();
     }
 }
