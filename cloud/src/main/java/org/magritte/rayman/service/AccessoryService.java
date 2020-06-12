@@ -37,20 +37,14 @@ public class AccessoryService {
                 .collect(Collectors.toList());
     }
 
-    public void save(Accessory accessory, Set<DataRequest> data) {
-        for (DataRequest dr : data) {
-            Data d = dr.toNewEntity();
-            Optional<Data> optionalData = dataRepository.findByDataType(d.getDataType());
-            if (optionalData.isEmpty()) {
-                d.add(accessory);
-                accessory.add(d);
-                dataRepository.save(d);
-            } else {
-                Data obtainData = optionalData.get();
-                obtainData.add(accessory);
-                accessory.add(obtainData);
-            }
-        }
+    public void save(Accessory accessory, Set<DataRequest> requests) {
+        requests.forEach(dataRequest -> {
+            Optional<Data> optionalData = dataRepository.findByDataType(dataRequest.getDataType());
+            Data data = optionalData.orElseGet(dataRequest::toNewEntity);
+            data.add(accessory);
+            accessory.add(data);
+            if (optionalData.isEmpty()) dataRepository.save(data);
+        });
         accessoryRepository.save(accessory);
     }
 
