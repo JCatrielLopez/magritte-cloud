@@ -1,5 +1,6 @@
 package org.magritte.rayman.data.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,43 +14,59 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.util.Set;
+import java.time.LocalTime;
+import java.util.Date;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "dataset")
 public class DataSet {
 
-    public static final String NAME_TABLE = "dataSet";
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false, name = "iddataset")
+    @Column(nullable = false)
     @EqualsAndHashCode.Include
-    private Integer idDataSet;
+    private Integer id;
+
+    @ToString.Include
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "idpatient")
+    private Patient patient;
+
+    @ToString.Include
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "idroutine")
+    private Routine routine;
+
+    @ToString.Include
+    @Column(name = "dateofrealization")
+    private LocalTime dateOfRealization;
 
     @ToString.Include
     @Column(name = "datatype")
     private String dataType;
 
     @ToString.Include
-    private int measurement;
-
-    @ToString.Include
     private String unit;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = NAME_TABLE)
-    private Set<PatientRoutineDataSet> patientRoutineDataSet;
+    @ToString.Include
+    private int measurement;
 
-    public DataSet(String dataType, int measurement, String unit) {
+    public DataSet(Patient patient, Routine routine, LocalTime dateOfRealization, String dataType, String unit, int measurement) {
+        this.patient = patient;
+        this.routine = routine;
+        this.dateOfRealization = dateOfRealization;
         this.dataType = dataType;
-        this.measurement = measurement;
         this.unit = unit;
+        this.measurement = measurement;
     }
+
 }

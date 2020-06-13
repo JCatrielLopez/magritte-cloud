@@ -20,6 +20,12 @@ public class DataSetController {
     @Autowired
     private DataSetService dataSetService;
 
+    //TODO implementar get de un paciente y una rutina.
+    // Adaptar a la nueva BD implementando solo los metodos que sean necesarios.
+    // GET historial de un paciente.
+    // GET historial de un paciente que realizo cierta rutina.
+    // POST nuevo conjunto de datos.
+
     @GetMapping("/datasets")
     @ResponseStatus(code = HttpStatus.OK)
     public List<DataSetResponse> getDataSets() {

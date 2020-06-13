@@ -13,7 +13,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.util.Set;
 
@@ -35,8 +37,9 @@ public class Routine {
     private Integer idRoutine;
 
     @ToString.Include
-    @Column(name = "creator")
-    private String creator;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "iduser")
+    private User user;
 
     @ToString.Include
     @Column(name = "name")
@@ -56,10 +59,10 @@ public class Routine {
     private Set<Session> sessions;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = NAME_TABLE)
-    private Set<PatientRoutineDataSet> patientRoutineDataSet;
+    private Set<DataSet> dataSets;
 
-    public Routine(String creator, String name, int totalTime, int difficulty) {
-        this.creator = creator;
+    public Routine(User user, String name, int totalTime, int difficulty) {
+        this.user = user;
         this.name = name;
         this.totalTime = totalTime;
         this.difficulty = difficulty;

@@ -8,13 +8,16 @@ import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -53,6 +56,9 @@ public abstract class User {
 
     @ToString.Include
     private char userType;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private Set<Routine> routines;
 
     public User(String dni, String name, String lastname, String password, String email, char userType) {
         this.dni = dni;
