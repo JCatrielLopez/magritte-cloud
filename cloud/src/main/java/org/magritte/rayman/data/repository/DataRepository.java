@@ -15,4 +15,5 @@ public interface DataRepository extends JpaRepository<Data, Integer> {
 
     Optional<Data> findByDataType(String dataType);
 
+    Optional<Data> getDataByDataType(String dataType);
 }

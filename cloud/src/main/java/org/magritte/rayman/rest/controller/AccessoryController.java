@@ -69,9 +69,11 @@ public class AccessoryController {
 
     @PostMapping("/accessory/{id}/data")
     @ResponseStatus(code = HttpStatus.OK)
+    @Transactional
     public void addData(@PathVariable Integer id, @RequestBody @Valid DataRequest request) {
         Accessory accessory = accessoryService.getAccessoryById(id);
-        Data newData = request.toNewEntity();
+        Optional<Data> optionalData = dataService.getDataByDataType(request.getDataType());
+        Data newData = optionalData.orElseGet(request::toNewEntity);
         newData.add(accessory);
         accessory.add(newData);
         accessoryService.save(accessory);

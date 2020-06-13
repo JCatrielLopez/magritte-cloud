@@ -6,6 +6,8 @@ import org.magritte.rayman.exceptions.DataNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class DataService {
 
@@ -20,5 +22,9 @@ public class DataService {
 
     public void delete(Data data) {
         dataRepository.delete(data);
+    }
+
+    public Optional<Data> getDataByDataType(String dataType) {
+        return dataRepository.getDataByDataType(dataType);
     }
 }
