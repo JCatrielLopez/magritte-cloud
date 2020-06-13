@@ -18,6 +18,6 @@ public interface RoutineRepository extends JpaRepository<Routine, Integer> {
 
     List<RoutineResponse> findAllByName(@NotNull String name);
 
-    List<RoutineResponse> findAllByCreator(@NotNull User user);
+    List<RoutineResponse> findAllByUser(@NotNull User user);
 
 }

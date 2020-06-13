@@ -45,7 +45,7 @@ public class Patient extends User {
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = NAME_TABLE)
-    private Set<PatientRoutineDataSet> patientRoutineDataSet;
+    private Set<DataSet> dataSets;
 
     public Patient(String dni, String name, String lastname, String password, String email,
                    Date birthdate, char gender, int height, float weight) {

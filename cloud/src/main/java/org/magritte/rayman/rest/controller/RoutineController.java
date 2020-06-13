@@ -1,11 +1,13 @@
 package org.magritte.rayman.rest.controller;
 
 import org.magritte.rayman.data.entity.Routine;
+import org.magritte.rayman.data.entity.User;
 import org.magritte.rayman.rest.request.RoutineRequest;
 import org.magritte.rayman.rest.request.SessionRequest;
 import org.magritte.rayman.rest.response.RoutineResponse;
 import org.magritte.rayman.rest.response.SessionResponse;
 import org.magritte.rayman.service.RoutineService;
+import org.magritte.rayman.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +29,9 @@ public class RoutineController {
 
     @Autowired
     private RoutineService routineService;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/routine/{id}")
     @ResponseBody
@@ -62,19 +67,20 @@ public class RoutineController {
         return routineService.getRoutinesByName(name);
     }
 
-    //TODO cambiar el creador por usuario. (Seria mejor implementarlo desde usercontroller y no desde rutina)
     @GetMapping("/routines/creator/{creator}")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
     @Transactional
-    public List<RoutineResponse> getRoutinesByCreator(@PathVariable String creator) {
-        return routineService.getRoutinesByCreator(creator);
+    public List<RoutineResponse> getRoutinesByCreator(@PathVariable Integer idUser) {
+        User user = userService.getUserById(idUser);
+        return routineService.getRoutinesByUser(user);
     }
 
     @PostMapping("/routine")
     @ResponseStatus(code = HttpStatus.OK)
     public void addRoutine(@RequestBody @Valid RoutineRequest request) {
-        routineService.save(request.toNewEntity());
+        User user = userService.getUserById(request.getIdUser());
+        routineService.save(request.toNewEntity(user));
     }
 
     @PostMapping("/routine/{idRoutine}/session")

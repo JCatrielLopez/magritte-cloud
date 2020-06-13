@@ -20,6 +20,11 @@ public interface DataSetRepository extends JpaRepository<DataSet, Integer> {
 
     List<DataSet> findAllByPatient(@NotNull Patient paciente);
 
-    //CHEQUEAR CONVENCION DE COMO IMPLEMENTAR CUANDO SE BUSCA POR MAS DE UN CAMPO.
-//    Set<DataSet> findByPatient(@NotNull Patient paciente, @NotNull Routine routine);
+    Set<DataSet> findByPatientAndRoutine(@NotNull Patient paciente, @NotNull Routine routine);
+
+    List<DataSetResponse> findByDataType(String dataType);
+
+    List<DataSetResponse> findByMeasurement(int measurement);
+
+    List<DataSetResponse> findByUnit(String unit);
 }

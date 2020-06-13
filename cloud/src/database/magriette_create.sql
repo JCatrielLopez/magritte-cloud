@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2020-06-11 20:30:48.83
+-- Last modification date: 2020-06-13 15:03:47.432
 
 -- tables
 -- Table: Accessory
@@ -16,6 +16,18 @@ CREATE TABLE Data (
     dataType varchar(20)  NOT NULL,
     CONSTRAINT unique_dataType_data UNIQUE (dataType) NOT DEFERRABLE  INITIALLY IMMEDIATE,
     CONSTRAINT Data_pk PRIMARY KEY (idData)
+);
+
+-- Table: DataSet
+CREATE TABLE DataSet (
+    id serial  NOT NULL,
+    idPatient int  NOT NULL,
+    idRoutine int  NOT NULL,
+    dateOfRealization time  NOT NULL,
+    dataType varchar(20)  NOT NULL,
+    measurement int  NOT NULL,
+    unit varchar(3)  NOT NULL,
+    CONSTRAINT DataSet_pk PRIMARY KEY (id)
 );
 
 -- Table: Medic
@@ -38,26 +50,14 @@ CREATE TABLE Patient (
     CONSTRAINT Patient_pk PRIMARY KEY (id)
 );
 
--- Table: PatientRoutineDataSet
-CREATE TABLE DataSet (
-    idDataSet serial  NOT NULL,
-    idPatient int  NOT NULL,
-    idRoutine int  NOT NULL,
-    fecha_realizacion TIME NOT NULL,
-    datatype varchar(20)  NOT NULL,
-    measurement int  NOT NULL,
-    unit varchar(3)  NOT NULL,
-    CONSTRAINT PatientRoutineDataSet_pk PRIMARY KEY (idDataSet)
-);
-
 -- Table: Routine
 CREATE TABLE Routine (
     idRoutine serial  NOT NULL,
-    creator int  NOT NULL,
+    idUser int  NOT NULL,
     name varchar(15)  NOT NULL,
     totalTime int  NOT NULL,
     difficulty int  NOT NULL,
-    CONSTRAINT unique_creator_name UNIQUE (id_usuario_creador, name) NOT DEFERRABLE  INITIALLY IMMEDIATE,
+    CONSTRAINT unique_creator_name UNIQUE (idUser, name) NOT DEFERRABLE  INITIALLY IMMEDIATE,
     CONSTRAINT Routine_pk PRIMARY KEY (idRoutine)
 );
 
@@ -107,6 +107,22 @@ CREATE TABLE routine_accessory (
 );
 
 -- foreign keys
+-- Reference: DataSet_Patient (table: DataSet)
+ALTER TABLE DataSet ADD CONSTRAINT DataSet_Patient
+    FOREIGN KEY (idPatient)
+    REFERENCES Patient (id)  
+    NOT DEFERRABLE 
+    INITIALLY IMMEDIATE
+;
+
+-- Reference: DataSet_Routine (table: DataSet)
+ALTER TABLE DataSet ADD CONSTRAINT DataSet_Routine
+    FOREIGN KEY (idRoutine)
+    REFERENCES Routine (idRoutine)  
+    NOT DEFERRABLE 
+    INITIALLY IMMEDIATE
+;
+
 -- Reference: Medico_User (table: Medic)
 ALTER TABLE Medic ADD CONSTRAINT Medico_User
     FOREIGN KEY (id)
@@ -127,12 +143,10 @@ ALTER TABLE Patient ADD CONSTRAINT Paciente_User
     INITIALLY IMMEDIATE
 ;
 
--- Reference: makes_patient (table: PatientRoutineDataSet)
-ALTER TABLE DataSet ADD CONSTRAINT makes_patient
-    FOREIGN KEY (idPatient)
-    REFERENCES Patient (id)
-    ON DELETE  CASCADE
-    ON UPDATE  CASCADE 
+-- Reference: Routine_Usuario (table: Routine)
+ALTER TABLE Routine ADD CONSTRAINT Routine_Usuario
+    FOREIGN KEY (idUser)
+    REFERENCES Usuario (id)  
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
 ;
@@ -164,26 +178,6 @@ ALTER TABLE Patient ADD CONSTRAINT patient_medic
     ON DELETE  SET NULL 
     ON UPDATE  CASCADE 
     NOT DEFERRABLE 
-    INITIALLY IMMEDIATE
-;
-
--- Reference: realiza_rutina (table: PatientRoutineDataSet)
-ALTER TABLE DataSet ADD CONSTRAINT realiza_rutina
-    FOREIGN KEY (idRoutine)
-    REFERENCES Routine (idRoutine)
-    ON DELETE  RESTRICT
-    ON UPDATE  CASCADE 
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE
-;
-
--- Reference: rutina-usuario (table: routine)
-ALTER TABLE Routine ADD CONSTRAINT fk_usuario_rutina
-    FOREIGN KEY (id_usuario_creador)
-    REFERENCES Usuario (id)
-    ON DELETE  SET NULL
-    ON UPDATE  CASCADE
-    NOT DEFERRABLE
     INITIALLY IMMEDIATE
 ;
 

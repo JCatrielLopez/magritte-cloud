@@ -113,7 +113,7 @@ public class UserController {
     @GetMapping("/patient/{id}")
     public PatientResponse getPatient(@PathVariable Integer id) {
         User user = userService.getUserById(id);
-        return new PatientResponse((Patient) user);
+        return new PatientResponse(user);
     }
 
     /**
@@ -125,7 +125,7 @@ public class UserController {
     @GetMapping("/medic/{id}")
     public MedicResponse getMedic(@PathVariable Integer id) {
         User user = userService.getUserById(id);
-        return new MedicResponse((Medic) user);
+        return new MedicResponse(user);
     }
 
     /**
