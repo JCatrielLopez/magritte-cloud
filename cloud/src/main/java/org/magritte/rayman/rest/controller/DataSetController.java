@@ -47,7 +47,7 @@ public class DataSetController {
         return new DataSetResponse(dataSetById);
     }
 
-    @GetMapping("/dataset/patient/id")
+    @GetMapping("/dataset/patient/{id}")
     @ResponseStatus(code = HttpStatus.OK)
     public List<DataSetResponse> getDataSetByPatient(@PathVariable Integer id){
         Patient patient = (Patient) userService.getUserById(id);
