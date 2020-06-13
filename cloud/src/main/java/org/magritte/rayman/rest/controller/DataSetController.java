@@ -1,15 +1,16 @@
 package org.magritte.rayman.rest.controller;
 
 import org.magritte.rayman.data.entity.DataSet;
+import org.magritte.rayman.data.entity.Patient;
+import org.magritte.rayman.data.entity.Routine;
+import org.magritte.rayman.rest.request.DataSetRequest;
 import org.magritte.rayman.rest.response.DataSetResponse;
 import org.magritte.rayman.service.DataSetService;
+import org.magritte.rayman.service.RoutineService;
+import org.magritte.rayman.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,6 +20,12 @@ public class DataSetController {
 
     @Autowired
     private DataSetService dataSetService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private RoutineService routineService;
 
     //TODO implementar get de un paciente y una rutina.
     // Adaptar a la nueva BD implementando solo los metodos que sean necesarios.
@@ -39,22 +46,21 @@ public class DataSetController {
         return new DataSetResponse(dataSetById);
     }
 
-    @GetMapping("/datasets/datatype/{dataType}")
+    @GetMapping("/dataset/patient/id")
     @ResponseStatus(code = HttpStatus.OK)
-    public List<DataSetResponse> getDataSetsByDataType(@PathVariable String dataType) {
-        return dataSetService.getDataSetsByDataType(dataType);
+    public List<DataSetResponse> getDataSetByPatient(@PathVariable Integer id){
+        Patient patient = (Patient) userService.getUserById(id);
+        return dataSetService.getDataSetByPatient(patient);
     }
 
-    @GetMapping("/datasets/measurement/{measurement}")
+    @PostMapping("/dataset")
     @ResponseStatus(code = HttpStatus.OK)
-    public List<DataSetResponse> getDataSetsByMeasurement(@PathVariable int measurement) {
-        return dataSetService.getDataSetsByMeasurement(measurement);
+    public void addDataSet(@RequestBody DataSetRequest dsr){
+        Patient p = (Patient) userService.getUserById(dsr.getIdPaciente());
+        Routine r = routineService.getRoutineById(dsr.getIdRoutine());
+        dataSetService.save(dsr.toNewEntity(p,r));
     }
 
-    @GetMapping("/datasets/unit/{unit}")
-    @ResponseStatus(code = HttpStatus.OK)
-    public List<DataSetResponse> getDataSetsByUnit(@PathVariable String unit) {
-        return dataSetService.getDataSetsByUnit(unit);
-    }
+
 
 }

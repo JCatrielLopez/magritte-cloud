@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -28,6 +29,7 @@ public class Routine {
 
     @ToString.Include
     @ManyToOne
+    @JoinColumn(name = "creator")
     private User creator;
 
     @ToString.Include
@@ -47,13 +49,17 @@ public class Routine {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = NAME_TABLE)
     private Set<Session> sessions;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = NAME_TABLE)
-    private Set<DataSet> patientRoutineDataSet;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = NAME_TABLE)
+    private Set<DataSet> patientRoutineDataSet = new HashSet<>();
 
     public Routine(User creator, String name, int totalTime, int difficulty) {
         this.creator = creator;
         this.name = name;
         this.totalTime = totalTime;
         this.difficulty = difficulty;
+    }
+
+    public void addRealization(DataSet dataSet){
+        patientRoutineDataSet.add(dataSet);
     }
 }

@@ -13,6 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -44,8 +45,8 @@ public class Patient extends User {
     private Medic medic;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = NAME_TABLE)
-    private Set<PatientRoutineDataSet> patientRoutineDataSet;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = NAME_TABLE)
+    private Set<DataSet> rutinasRealizadas = new HashSet<>();
 
     public Patient(String dni, String name, String lastname, String password, String email,
                    Date birthdate, char gender, int height, float weight) {
@@ -59,5 +60,9 @@ public class Patient extends User {
     public Patient(String dni, String name, String lastname, String email,
                    Date birthdate, char gender, int height, float weight) {
         this(dni, name, lastname, null, email, birthdate, gender, height, weight);
+    }
+
+    public void addExercise(DataSet dataSet){
+        rutinasRealizadas.add(dataSet);
     }
 }

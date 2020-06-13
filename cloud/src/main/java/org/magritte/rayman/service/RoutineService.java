@@ -2,6 +2,7 @@ package org.magritte.rayman.service;
 
 import org.magritte.rayman.data.entity.Routine;
 import org.magritte.rayman.data.entity.Session;
+import org.magritte.rayman.data.entity.User;
 import org.magritte.rayman.data.repository.RoutineRepository;
 import org.magritte.rayman.data.repository.SessionRepository;
 import org.magritte.rayman.exceptions.RoutineNotFoundException;
@@ -59,7 +60,7 @@ public class RoutineService {
         return routineRepository.findAllByName(name);
     }
 
-    public List<RoutineResponse> getRoutinesByCreator(String name) {
+    public List<RoutineResponse> getRoutinesByCreator(User name) {
         return routineRepository.findAllByCreator(name);
     }
 

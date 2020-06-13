@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -48,7 +49,7 @@ public abstract class User {
     private char userType;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "creator")
-    private Set<Routine> rutinasCreadas;
+    private Set<Routine> rutinasCreadas = new HashSet<>();
 
     public User(String dni, String name, String lastname, String password, String email, char userType) {
         this.dni = dni;

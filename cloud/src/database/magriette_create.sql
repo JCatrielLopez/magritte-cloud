@@ -57,7 +57,7 @@ CREATE TABLE Routine (
     name varchar(15)  NOT NULL,
     totalTime int  NOT NULL,
     difficulty int  NOT NULL,
-    CONSTRAINT unique_creator_name UNIQUE (id_usuario_creador, name) NOT DEFERRABLE  INITIALLY IMMEDIATE,
+    CONSTRAINT unique_creator_name UNIQUE (creator, name) NOT DEFERRABLE  INITIALLY IMMEDIATE,
     CONSTRAINT Routine_pk PRIMARY KEY (idRoutine)
 );
 
@@ -179,7 +179,7 @@ ALTER TABLE DataSet ADD CONSTRAINT realiza_rutina
 
 -- Reference: rutina-usuario (table: routine)
 ALTER TABLE Routine ADD CONSTRAINT fk_usuario_rutina
-    FOREIGN KEY (id_usuario_creador)
+    FOREIGN KEY (creator)
     REFERENCES Usuario (id)
     ON DELETE  SET NULL
     ON UPDATE  CASCADE

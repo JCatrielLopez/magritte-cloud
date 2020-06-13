@@ -56,4 +56,13 @@ public class DataSet {
     @ToString.Include
     private int measurement;
 
+    public DataSet(Patient patient, Routine routine, Date fecha_realizacion, String dataType, String unit, int measurement){
+        this.patient = patient;
+        this.routine = routine;
+        this.fecha_realizacion = fecha_realizacion;
+        this.dataType = dataType;
+        this.unit = unit;
+        this.measurement = measurement;
+    }
+
    }

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.magritte.rayman.data.entity.Routine;
+import org.magritte.rayman.data.entity.User;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -17,9 +18,8 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 public class RoutineRequest {
 
-    @Size(min = 3, max = 15)
     @NotNull
-    private String creator;
+    private int creator;
 
     @Size(min = 3, max = 15)
     @NotNull
@@ -34,7 +34,7 @@ public class RoutineRequest {
     @NotNull
     private int difficulty;
 
-    public Routine toNewEntity() {
-        return new Routine(getCreator(), getName(), getTotalTime(), getDifficulty());
+    public Routine toNewEntity(User usuario) {
+        return new Routine(usuario, getName(), getTotalTime(), getDifficulty());
     }
 }

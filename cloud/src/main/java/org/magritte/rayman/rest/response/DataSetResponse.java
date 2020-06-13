@@ -3,6 +3,7 @@ package org.magritte.rayman.rest.response;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.magritte.rayman.data.entity.DataSet;
 
 @Getter
 @Setter

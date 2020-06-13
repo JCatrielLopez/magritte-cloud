@@ -19,7 +19,4 @@ public interface DataSetRepository extends JpaRepository<DataSet, Integer> {
     Optional<DataSet> findById(@NotNull Integer id);
 
     List<DataSet> findAllByPatient(@NotNull Patient paciente);
-
-    //CHEQUEAR CONVENCION DE COMO IMPLEMENTAR CUANDO SE BUSCA POR MAS DE UN CAMPO.
-//    Set<DataSet> findByPatient(@NotNull Patient paciente, @NotNull Routine routine);
 }

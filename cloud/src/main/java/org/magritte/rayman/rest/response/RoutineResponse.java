@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class RoutineResponse {
 
     private Integer idRoutine;
-    private String creator;
+    private int creator;
     private String name;
     private int totalTime;
     private int difficulty;
@@ -23,7 +23,7 @@ public class RoutineResponse {
 
     public RoutineResponse(Routine routine) {
         this.idRoutine = routine.getIdRoutine();
-        this.creator = routine.getCreator();
+        this.creator = routine.getCreator().getId();
         this.name = routine.getName();
         this.totalTime = routine.getTotalTime();
         this.difficulty = routine.getDifficulty();
