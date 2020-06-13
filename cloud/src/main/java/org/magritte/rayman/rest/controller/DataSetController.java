@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
@@ -55,8 +56,9 @@ public class DataSetController {
 
     @PostMapping("/dataset")
     @ResponseStatus(code = HttpStatus.OK)
+    @Transactional
     public void addDataSet(@RequestBody DataSetRequest dsr){
-        Patient p = (Patient) userService.getUserById(dsr.getIdPaciente());
+        Patient p = (Patient) userService.getUserById(dsr.getIdPatient());
         Routine r = routineService.getRoutineById(dsr.getIdRoutine());
         dataSetService.save(dsr.toNewEntity(p,r));
     }
