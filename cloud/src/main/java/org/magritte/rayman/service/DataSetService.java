@@ -17,6 +17,8 @@ public class DataSetService {
     @Autowired
     private DataSetRepository dataSetRepository;
 
+    //TODO Adaptar metodos a la nueva BD. Implementar solo los metodos necesarios.
+
     public DataSet getDataSetById(@NotNull Integer id) {
         return dataSetRepository
                 .findById(id)

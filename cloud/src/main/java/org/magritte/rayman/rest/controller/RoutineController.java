@@ -62,6 +62,7 @@ public class RoutineController {
         return routineService.getRoutinesByName(name);
     }
 
+    //TODO cambiar el creador por usuario. (Seria mejor implementarlo desde usercontroller y no desde rutina)
     @GetMapping("/routines/creator/{creator}")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)

@@ -18,15 +18,6 @@ CREATE TABLE Data (
     CONSTRAINT Data_pk PRIMARY KEY (idData)
 );
 
--- Table: DataSet
-CREATE TABLE DataSet (
-    idDataSet serial  NOT NULL,
-    dataType varchar(20)  NOT NULL,
-    measurement int  NOT NULL,
-    unit varchar(3)  NOT NULL,
-    CONSTRAINT DataSet_pk PRIMARY KEY (idDataSet)
-);
-
 -- Table: Medic
 CREATE TABLE Medic (
     id int  NOT NULL,
@@ -48,23 +39,25 @@ CREATE TABLE Patient (
 );
 
 -- Table: PatientRoutineDataSet
-CREATE TABLE PatientRoutineDataSet (
-    id serial  NOT NULL,
+CREATE TABLE DataSet (
+    idDataSet serial  NOT NULL,
     idPatient int  NOT NULL,
     idRoutine int  NOT NULL,
-    idDataSet int  NOT NULL,
-    CONSTRAINT unique_idPatient_idRoutine_idDataSet UNIQUE (idPatient, idRoutine, idDataSet) NOT DEFERRABLE  INITIALLY IMMEDIATE,
-    CONSTRAINT PatientRoutineDataSet_pk PRIMARY KEY (id)
+    fecha_realizacion TIME NOT NULL,
+    datatype varchar(20)  NOT NULL,
+    measurement int  NOT NULL,
+    unit varchar(3)  NOT NULL,
+    CONSTRAINT PatientRoutineDataSet_pk PRIMARY KEY (idDataSet)
 );
 
 -- Table: Routine
 CREATE TABLE Routine (
     idRoutine serial  NOT NULL,
-    creator varchar(15)  NOT NULL,
+    creator int  NOT NULL,
     name varchar(15)  NOT NULL,
     totalTime int  NOT NULL,
     difficulty int  NOT NULL,
-    CONSTRAINT unique_creator_name UNIQUE (creator, name) NOT DEFERRABLE  INITIALLY IMMEDIATE,
+    CONSTRAINT unique_creator_name UNIQUE (id_usuario_creador, name) NOT DEFERRABLE  INITIALLY IMMEDIATE,
     CONSTRAINT Routine_pk PRIMARY KEY (idRoutine)
 );
 
@@ -134,21 +127,11 @@ ALTER TABLE Patient ADD CONSTRAINT Paciente_User
     INITIALLY IMMEDIATE
 ;
 
--- Reference: makes_dataSet (table: PatientRoutineDataSet)
-ALTER TABLE PatientRoutineDataSet ADD CONSTRAINT makes_dataSet
-    FOREIGN KEY (idDataSet)
-    REFERENCES DataSet (idDataSet)
-    ON DELETE  CASCADE 
-    ON UPDATE  CASCADE 
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE
-;
-
 -- Reference: makes_patient (table: PatientRoutineDataSet)
-ALTER TABLE PatientRoutineDataSet ADD CONSTRAINT makes_patient
+ALTER TABLE DataSet ADD CONSTRAINT makes_patient
     FOREIGN KEY (idPatient)
     REFERENCES Patient (id)
-    ON DELETE  CASCADE 
+    ON DELETE  CASCADE
     ON UPDATE  CASCADE 
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
@@ -185,12 +168,22 @@ ALTER TABLE Patient ADD CONSTRAINT patient_medic
 ;
 
 -- Reference: realiza_rutina (table: PatientRoutineDataSet)
-ALTER TABLE PatientRoutineDataSet ADD CONSTRAINT realiza_rutina
+ALTER TABLE DataSet ADD CONSTRAINT realiza_rutina
     FOREIGN KEY (idRoutine)
     REFERENCES Routine (idRoutine)
-    ON DELETE  CASCADE 
+    ON DELETE  RESTRICT
     ON UPDATE  CASCADE 
     NOT DEFERRABLE 
+    INITIALLY IMMEDIATE
+;
+
+-- Reference: rutina-usuario (table: routine)
+ALTER TABLE Routine ADD CONSTRAINT fk_usuario_rutina
+    FOREIGN KEY (id_usuario_creador)
+    REFERENCES Usuario (id)
+    ON DELETE  SET NULL
+    ON UPDATE  CASCADE
+    NOT DEFERRABLE
     INITIALLY IMMEDIATE
 ;
 

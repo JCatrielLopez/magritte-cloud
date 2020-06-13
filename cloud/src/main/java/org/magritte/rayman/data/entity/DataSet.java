@@ -1,32 +1,31 @@
 package org.magritte.rayman.data.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.util.Set;
+import java.util.Date;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "dataset")
+@Table(name = "patientroutinedataset")
 public class DataSet {
-
-    public static final String NAME_TABLE = "dataSet";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,21 +34,26 @@ public class DataSet {
     private Integer idDataSet;
 
     @ToString.Include
+    @ManyToOne
+    @JoinColumn(name = "idpatient")
+    private Patient patient;
+
+    @ToString.Include
+    @ManyToOne
+    @JoinColumn(name = "idroutine")
+    private Routine routine;
+
+    @ToString.Include
+    private Date fecha_realizacion;
+
+    @ToString.Include
     @Column(name = "datatype")
     private String dataType;
 
     @ToString.Include
-    private int measurement;
-
-    @ToString.Include
     private String unit;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = NAME_TABLE)
-    private Set<PatientRoutineDataSet> patientRoutineDataSet;
+    @ToString.Include
+    private int measurement;
 
-    public DataSet(String dataType, int measurement, String unit) {
-        this.dataType = dataType;
-        this.measurement = measurement;
-        this.unit = unit;
-    }
-}
+   }
