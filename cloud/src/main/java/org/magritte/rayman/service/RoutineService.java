@@ -70,4 +70,8 @@ public class RoutineService {
     public void save(Session session) {
         sessionRepository.save(session);
     }
+
+    public void delete(Routine routine) {
+        routineRepository.delete(routine);
+    }
 }

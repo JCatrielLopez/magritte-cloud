@@ -1,13 +1,16 @@
 package org.magritte.rayman.rest.controller;
 
 import org.magritte.rayman.data.entity.Routine;
+import org.magritte.rayman.data.entity.Session;
 import org.magritte.rayman.rest.request.RoutineRequest;
 import org.magritte.rayman.rest.request.SessionRequest;
 import org.magritte.rayman.rest.response.RoutineResponse;
 import org.magritte.rayman.rest.response.SessionResponse;
 import org.magritte.rayman.service.RoutineService;
+import org.magritte.rayman.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +23,10 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(name = "/routine")
@@ -27,6 +34,9 @@ public class RoutineController {
 
     @Autowired
     private RoutineService routineService;
+
+    @Autowired
+    private SessionService sessionService;
 
     @GetMapping("/routine/{id}")
     @ResponseBody
@@ -70,7 +80,7 @@ public class RoutineController {
         return routineService.getRoutinesByCreator(creator);
     }
 
-    @PostMapping("/routine")
+    @PostMapping("/routine") //TODO
     @ResponseStatus(code = HttpStatus.OK)
     public void addRoutine(@RequestBody @Valid RoutineRequest request) {
         routineService.save(request.toNewEntity());
@@ -78,8 +88,32 @@ public class RoutineController {
 
     @PostMapping("/routine/{idRoutine}/session")
     @ResponseStatus(code = HttpStatus.OK)
+    @Transactional
     public void addSession(@PathVariable Integer idRoutine, @RequestBody @Valid SessionRequest request) {
         Routine routine = routineService.getRoutineById(idRoutine);
-        routineService.save(request.toNewEntity(routine));
+        Optional<Session> optionalSession = sessionService.getSessionByRoutineAndName(routine, request.getName());
+        Session session = optionalSession.orElseGet(request::toNewEntity);
+        session.setRoutine(routine);
+        routine.add(session);
+        routineService.save(session);
+    }
+
+    @DeleteMapping("/routine/{id}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public void removeRoutine(@PathVariable Integer id) {
+        Routine routine = routineService.getRoutineById(id);
+        routineService.delete(routine);
+    }
+
+    @DeleteMapping("/routine/{id}/session/{name}")
+    @ResponseStatus(code = HttpStatus.OK)
+    @Transactional
+    public void removeSession(@PathVariable Integer id, @PathVariable String name) {
+        Routine routine = routineService.getRoutineById(id);
+        Set<Session> sessionSet = routine.getSessions().stream()
+                .filter(session -> !Objects.equals(session.getName(), name))
+                .collect(Collectors.toSet());
+        routine.setSessions(sessionSet);
+        routineService.save(routine);
     }
 }

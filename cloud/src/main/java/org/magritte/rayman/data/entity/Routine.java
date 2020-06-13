@@ -64,4 +64,8 @@ public class Routine {
         this.totalTime = totalTime;
         this.difficulty = difficulty;
     }
+
+    public void add(Session session) {
+        this.sessions.add(session);
+    }
 }

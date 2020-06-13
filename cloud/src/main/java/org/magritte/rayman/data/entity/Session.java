@@ -55,10 +55,9 @@ public class Session {
     @Column(name = "breaktime")
     private int breakTime;
 
-    public Session(Routine routine, String name, int numberOfSeries,
+    public Session(String name, int numberOfSeries,
                    int numberOfRepetitions, int exerciseTime,
                    int breakTime) {
-        this.routine = routine;
         this.name = name;
         this.numberOfSeries = numberOfSeries;
         this.numberOfRepetitions = numberOfRepetitions;

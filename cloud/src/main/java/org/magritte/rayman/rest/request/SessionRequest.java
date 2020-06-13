@@ -32,14 +32,16 @@ public class SessionRequest {
     @NotNull
     private int numberOfRepetitions;
 
+    @Min(0)
     @NotNull
     private int exerciseTime;
 
+    @Min(0)
     @NotNull
     private int breakTime;
 
-    public Session toNewEntity(Routine routine) {
-        return new Session(routine, getName(), getNumberOfSeries(),
+    public Session toNewEntity() {
+        return new Session(getName(), getNumberOfSeries(),
                 getNumberOfRepetitions(), getExerciseTime(), getBreakTime());
     }
 }

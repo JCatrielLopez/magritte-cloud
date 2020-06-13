@@ -92,9 +92,7 @@ public class AccessoryController {
     @ResponseStatus(code = HttpStatus.OK)
     @Transactional
     public void removeAccessoryData(@PathVariable Integer idAccessory, @PathVariable Integer idData) {
-        Accessory accessory = Optional.of(idAccessory)
-                .map(accessoryService::getAccessoryById)
-                .orElseThrow(AccessoryNotFoundException::new);
+        Accessory accessory = accessoryService.getAccessoryById(idAccessory);
         Set<Data> newData = accessory.getData().stream()
                 .filter(data -> !Objects.equals(data.getIdData(), idData))
                 .collect(Collectors.toSet());
