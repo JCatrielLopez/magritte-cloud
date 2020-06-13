@@ -6,12 +6,14 @@ import org.magritte.rayman.data.entity.User;
 import org.magritte.rayman.data.repository.RoutineRepository;
 import org.magritte.rayman.data.repository.SessionRepository;
 import org.magritte.rayman.exceptions.RoutineNotFoundException;
+import org.magritte.rayman.rest.request.SessionRequest;
 import org.magritte.rayman.rest.response.RoutineResponse;
-import org.magritte.rayman.rest.response.SessionResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,33 +48,32 @@ public class RoutineService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Obtengo las sesiones a partir de un id de rutina
-     *
-     * @param routine filtrar la rutina
-     * @return lista de sesiones
-     */
-    public List<SessionResponse> getSessions(Routine routine) {
-        return sessionRepository.findByRoutine(routine);
-    }
-
     public List<RoutineResponse> getRoutinesByName(String name) {
-        return routineRepository.findAllByName(name);
+        return routineRepository.findByName(name);
     }
 
-    public List<RoutineResponse> getRoutinesByUser(User user) {
-        return routineRepository.findAllByUser(user);
+    public List<RoutineResponse> getRoutinesByCreator(User user) {
+        return routineRepository.findByUser(user);
     }
 
     public void save(Routine routine) {
         routineRepository.save(routine);
     }
 
-    public void save(Session session) {
-        sessionRepository.save(session);
-    }
-
     public void delete(Routine routine) {
         routineRepository.delete(routine);
+    }
+
+    public Optional<Routine> getRoutineByUserAndName(User user, String name) {
+        return routineRepository.findByUserAndName(user, name);
+    }
+
+    public void save(Routine routine, Set<SessionRequest> requests) {
+        requests.forEach(request -> {
+            Optional<Session> optionalSession = sessionRepository.findByRoutineAndName(routine, request.getName());
+            Session session = optionalSession.orElseGet(() -> request.toNewEntity(routine));
+            routine.add(session);
+            if (optionalSession.isEmpty()) sessionRepository.save(session);
+        });
     }
 }

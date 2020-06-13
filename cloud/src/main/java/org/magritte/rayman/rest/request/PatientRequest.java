@@ -3,6 +3,7 @@ package org.magritte.rayman.rest.request;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.magritte.rayman.data.entity.Medic;
 import org.magritte.rayman.data.entity.Patient;
 
 import javax.validation.constraints.Max;
@@ -41,9 +42,13 @@ public class PatientRequest extends UserRequest {
     @Getter
     private float weight;
 
-    public Patient toNewEntity() {
+    @Min(1)
+    @Getter
+    private Integer medic_id;
+
+    public Patient toNewEntity(Medic medic) {
         return new Patient(getDni(), getFirstname(), getLastname(), getPassword(), getEmail(),
-                getBirthdate(), getGender(), getHeight(), getWeight());
+                getBirthdate(), getGender(), getHeight(), getWeight(), medic);
     }
 
     public char getGender() {

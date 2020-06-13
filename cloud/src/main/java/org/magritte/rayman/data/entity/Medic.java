@@ -31,7 +31,7 @@ public class Medic extends User {
     private int license;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = NAME_TABLE)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = NAME_TABLE)
     private Set<Patient> patients;
 
     public Medic(String dni, String name, String lastname, String password,

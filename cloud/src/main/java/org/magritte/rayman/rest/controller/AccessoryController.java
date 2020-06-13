@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -61,8 +63,7 @@ public class AccessoryController {
     @Transactional
     public void addAccessory(@RequestBody @Valid AccessoryRequest request) {
         // En estos casos no lanzo error porque en caso de que no exista, lo inserto sino lo actualizo.
-        Optional<Accessory> optionalAccessory = Optional.of(request.getName())
-                .flatMap(accessoryService::getAccessoryByName);
+        Optional<Accessory> optionalAccessory = accessoryService.getAccessoryByName(request.getName());
         Accessory accessory = optionalAccessory.orElseGet(request::toNewEntity);
         accessoryService.save(accessory, request.getData());
     }
@@ -72,11 +73,7 @@ public class AccessoryController {
     @Transactional
     public void addData(@PathVariable Integer id, @RequestBody @Valid DataRequest request) {
         Accessory accessory = accessoryService.getAccessoryById(id);
-        Optional<Data> optionalData = dataService.getDataByDataType(request.getDataType());
-        Data newData = optionalData.orElseGet(request::toNewEntity);
-        newData.add(accessory);
-        accessory.add(newData);
-        accessoryService.save(accessory);
+        accessoryService.save(accessory, Set.of(request));
     }
 
     @DeleteMapping("/accessory/{id}")

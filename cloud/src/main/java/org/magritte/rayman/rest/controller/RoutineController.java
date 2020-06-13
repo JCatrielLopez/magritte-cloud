@@ -66,7 +66,7 @@ public class RoutineController {
     @ResponseStatus(code = HttpStatus.OK)
     public List<SessionResponse> getSessions(@PathVariable Integer idRoutine) {
         Routine routine = routineService.getRoutineById(idRoutine);
-        return routineService.getSessions(routine);
+        return sessionService.getSessions(routine);
     }
 
     @GetMapping("/routines/name/{name}")
@@ -77,20 +77,27 @@ public class RoutineController {
         return routineService.getRoutinesByName(name);
     }
 
-    @GetMapping("/routines/creator/{creator}")
+    @GetMapping("/routines/idUser/{idUser}")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
     @Transactional
     public List<RoutineResponse> getRoutinesByCreator(@PathVariable Integer idUser) {
         User user = userService.getUserById(idUser);
-        return routineService.getRoutinesByUser(user);
+        return routineService.getRoutinesByCreator(user);
     }
 
     @PostMapping("/routine") //TODO
     @ResponseStatus(code = HttpStatus.OK)
+    @Transactional
     public void addRoutine(@RequestBody @Valid RoutineRequest request) {
         User user = userService.getUserById(request.getIdUser());
-        routineService.save(request.toNewEntity(user));
+        Optional<Routine> optionalRoutine = routineService.getRoutineByUserAndName(user, request.getName());
+        Routine routine = optionalRoutine.orElseGet(() -> {
+            Routine r = request.toNewEntity(user);
+            routineService.save(r);
+            return r;
+        });
+        routineService.save(routine, request.getSessions());
     }
 
     @PostMapping("/routine/{idRoutine}/session")
@@ -98,11 +105,7 @@ public class RoutineController {
     @Transactional
     public void addSession(@PathVariable Integer idRoutine, @RequestBody @Valid SessionRequest request) {
         Routine routine = routineService.getRoutineById(idRoutine);
-        Optional<Session> optionalSession = sessionService.getSessionByRoutineAndName(routine, request.getName());
-        Session session = optionalSession.orElseGet(request::toNewEntity);
-        session.setRoutine(routine);
-        routine.add(session);
-        routineService.save(session);
+        routineService.save(routine, Set.of(request));
     }
 
     @DeleteMapping("/routine/{id}")

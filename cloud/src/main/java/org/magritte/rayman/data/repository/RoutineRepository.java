@@ -16,8 +16,9 @@ public interface RoutineRepository extends JpaRepository<Routine, Integer> {
     @NotNull
     Optional<Routine> findById(@NotNull Integer id);
 
-    List<RoutineResponse> findAllByName(@NotNull String name);
+    List<RoutineResponse> findByName(@NotNull String name);
 
-    List<RoutineResponse> findAllByUser(@NotNull User user);
+    List<RoutineResponse> findByUser(@NotNull User user);
 
+    Optional<Routine> findByUserAndName(User user, String name);
 }

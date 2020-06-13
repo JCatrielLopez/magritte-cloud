@@ -48,16 +48,17 @@ public class Patient extends User {
     private Set<DataSet> dataSets;
 
     public Patient(String dni, String name, String lastname, String password, String email,
-                   Date birthdate, char gender, int height, float weight) {
+                   Date birthdate, char gender, int height, float weight, Medic medic) {
         super(dni, name, lastname, password, email, PATIENT);
         this.birthdate = birthdate;
         this.gender = gender;
         this.height = height;
         this.weight = weight;
+        this.medic = medic;
     }
 
     public Patient(String dni, String name, String lastname, String email,
-                   Date birthdate, char gender, int height, float weight) {
-        this(dni, name, lastname, null, email, birthdate, gender, height, weight);
+                   Date birthdate, char gender, int height, float weight, Medic medic) {
+        this(dni, name, lastname, null, email, birthdate, gender, height, weight, medic);
     }
 }

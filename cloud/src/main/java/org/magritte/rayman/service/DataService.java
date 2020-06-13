@@ -27,4 +27,8 @@ public class DataService {
     public Optional<Data> getDataByDataType(String dataType) {
         return dataRepository.getDataByDataType(dataType);
     }
+
+    public void save(Data newData) {
+        dataRepository.save(newData);
+    }
 }

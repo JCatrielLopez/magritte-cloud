@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -37,7 +38,7 @@ public class Routine {
     private Integer idRoutine;
 
     @ToString.Include
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "iduser")
     private User user;
 
@@ -66,6 +67,7 @@ public class Routine {
         this.name = name;
         this.totalTime = totalTime;
         this.difficulty = difficulty;
+        this.sessions = new HashSet<>();
     }
 
     public void add(Session session) {

@@ -11,6 +11,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -34,6 +35,10 @@ public class RoutineRequest {
     @Max(5)
     @NotNull
     private int difficulty;
+
+    @Size(min = 1)
+    @NotNull
+    private Set<SessionRequest> sessions;
 
     public Routine toNewEntity(User user) {
         return new Routine(user, getName(), getTotalTime(), getDifficulty());

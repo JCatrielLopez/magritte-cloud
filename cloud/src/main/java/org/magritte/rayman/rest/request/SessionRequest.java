@@ -40,8 +40,8 @@ public class SessionRequest {
     @NotNull
     private int breakTime;
 
-    public Session toNewEntity() {
-        return new Session(getName(), getNumberOfSeries(),
+    public Session toNewEntity(Routine routine) {
+        return new Session(routine, getName(), getNumberOfSeries(),
                 getNumberOfRepetitions(), getExerciseTime(), getBreakTime());
     }
 }

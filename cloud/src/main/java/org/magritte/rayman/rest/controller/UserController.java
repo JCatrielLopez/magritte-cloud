@@ -101,7 +101,12 @@ public class UserController {
      */
     @PostMapping("/patient")
     public void addPatient(@RequestBody @NotNull @Valid PatientRequest request) {
-        userService.save(request.toNewEntity());
+        Integer medic_id = request.getMedic_id();
+        Medic medic = null;
+        if (Objects.nonNull(medic_id)) {
+            medic = (Medic) userService.getUserById(medic_id);
+        }
+        userService.save(request.toNewEntity(medic));
     }
 
     /**
