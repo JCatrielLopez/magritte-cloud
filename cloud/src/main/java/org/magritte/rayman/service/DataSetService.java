@@ -2,6 +2,7 @@ package org.magritte.rayman.service;
 
 import org.jetbrains.annotations.NotNull;
 import org.magritte.rayman.data.entity.DataSet;
+import org.magritte.rayman.data.entity.Patient;
 import org.magritte.rayman.data.repository.DataSetRepository;
 import org.magritte.rayman.exceptions.DataSetNotFoundException;
 import org.magritte.rayman.rest.response.DataSetResponse;
@@ -31,15 +32,15 @@ public class DataSetService {
                 .collect(Collectors.toList());
     }
 
-    public List<DataSetResponse> getDataSetsByDataType(String dataType) {
-        return dataSetRepository.findByDataType(dataType);
+    public void save(DataSet toNewEntity) {
+        toNewEntity.getPatient().addExercise(toNewEntity);
+        toNewEntity.getRoutine().addRealization(toNewEntity);
+        dataSetRepository.save(toNewEntity);
     }
 
-    public List<DataSetResponse> getDataSetsByMeasurement(int measurement) {
-        return dataSetRepository.findByMeasurement(measurement);
-    }
-
-    public List<DataSetResponse> getDataSetsByUnit(String unit) {
-        return dataSetRepository.findByUnit(unit);
+    public List<DataSetResponse> getDataSetByPatient(Patient patient) {
+        return dataSetRepository.findAllByPatient(patient).stream()
+                .map(DataSetResponse::new)
+                .collect(Collectors.toList());
     }
 }

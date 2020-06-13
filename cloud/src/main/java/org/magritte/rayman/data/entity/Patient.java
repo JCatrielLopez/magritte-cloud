@@ -13,6 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -60,5 +61,10 @@ public class Patient extends User {
     public Patient(String dni, String name, String lastname, String email,
                    Date birthdate, char gender, int height, float weight, Medic medic) {
         this(dni, name, lastname, null, email, birthdate, gender, height, weight, medic);
+        dataSets = new HashSet<>();
+    }
+
+    public void addExercise(DataSet dataSet){
+        dataSets.add(dataSet);
     }
 }

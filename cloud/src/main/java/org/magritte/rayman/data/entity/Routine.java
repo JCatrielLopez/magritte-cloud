@@ -68,9 +68,14 @@ public class Routine {
         this.totalTime = totalTime;
         this.difficulty = difficulty;
         this.sessions = new HashSet<>();
+        this.dataSets = new HashSet<>();
     }
 
     public void add(Session session) {
         this.sessions.add(session);
+    }
+
+    public void addRealization(DataSet dataSet){
+        dataSets.add(dataSet);
     }
 }
