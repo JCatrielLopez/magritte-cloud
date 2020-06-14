@@ -47,6 +47,8 @@ public class UserController {
      * @return List of all users
      */
     @GetMapping("/users")
+    @ResponseBody
+    @ResponseStatus(code = HttpStatus.OK)
     // Hay que especificar /users, sino da error -> "User not found!".
     List<UserResponse> all() {
         return userService.allUsers();
@@ -73,6 +75,8 @@ public class UserController {
      * @return UserResponse
      */
     @GetMapping("/user")
+    @ResponseBody
+    @ResponseStatus(code = HttpStatus.OK)
     public UserResponse getUserByDni(@RequestParam String dni) {
         User user = userService.getUserByDni(dni);
         return user.getUserType() == PATIENT ? new PatientResponse(user) : new MedicResponse(user);
@@ -86,6 +90,7 @@ public class UserController {
      * @return User: medic or patient depending on the case
      */
     @GetMapping("/user/login")
+    @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
     public UserResponse login(@RequestParam String dni, @RequestParam String password) {
         UserResponse userResponse = userService.login(dni, password);
@@ -99,6 +104,8 @@ public class UserController {
      * @return Lista de pacientes
      */
     @GetMapping("/patients")
+    @ResponseBody
+    @ResponseStatus(code = HttpStatus.OK)
     public List<PatientResponse> getPatients() {
         return userService.getPatients();
     }
@@ -110,6 +117,8 @@ public class UserController {
      * @return paciente
      */
     @GetMapping("/patient/{id}")
+    @ResponseBody
+    @ResponseStatus(code = HttpStatus.OK)
     public PatientResponse getPatient(@PathVariable Integer id) {
         User user = userService.getUserById(id);
         return new PatientResponse(user);
@@ -121,6 +130,8 @@ public class UserController {
      * @return Lista de medicos
      */
     @GetMapping("/medics")
+    @ResponseBody
+    @ResponseStatus(code = HttpStatus.OK)
     public List<MedicResponse> getMedics() {
         return userService.getMedics();
     }
@@ -132,6 +143,8 @@ public class UserController {
      * @return medico
      */
     @GetMapping("/medic/{id}")
+    @ResponseBody
+    @ResponseStatus(code = HttpStatus.OK)
     public MedicResponse getMedic(@PathVariable Integer id) {
         User user = userService.getUserById(id);
         return new MedicResponse(user);
@@ -144,6 +157,8 @@ public class UserController {
      * @return Lista de pacientes
      */
     @GetMapping("/medic/patients/{id}")
+    @ResponseBody
+    @ResponseStatus(code = HttpStatus.OK)
     public List<PatientResponse> getPatientsFromMedic(@PathVariable Integer id) {
         return userService.getPatientsFromMedic(id);
     }
@@ -154,6 +169,8 @@ public class UserController {
      * @return SimulationResponse
      */
     @GetMapping("/checkStatus")
+    @ResponseBody
+    @ResponseStatus(code = HttpStatus.OK)
     public SimulationResponse getHeartRate() {
         return new SimulationResponse();
 
@@ -165,6 +182,7 @@ public class UserController {
      * @param request el cuerpo json del medico
      */
     @PostMapping("/medic")
+    @ResponseStatus(code = HttpStatus.OK)
     public void addMedic(@RequestBody @NotNull @Valid MedicRequest request) {
         userService.save(request.toNewEntity());
     }
@@ -175,6 +193,7 @@ public class UserController {
      * @param request el cuerpo json del paciente
      */
     @PostMapping("/patient")
+    @ResponseStatus(code = HttpStatus.OK)
     public void addPatient(@RequestBody @NotNull @Valid PatientRequest request) {
         Integer medic_id = request.getMedic_id();
         Medic medic = null;
@@ -202,6 +221,7 @@ public class UserController {
      * @param id id del usuario a filtrar
      */
     @DeleteMapping("/user/{id}")
+    @ResponseStatus(code = HttpStatus.OK)
     public void deleteUser(@PathVariable Integer id) {
         User userToDelete = Optional.of(id)
                 .map(userService::getUserById)
