@@ -44,7 +44,6 @@ public class Patient extends User {
     @ToString.Include
     private Medic medic;
 
-    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = NAME_TABLE)
     private Set<DataSet> dataSets;
 
@@ -61,10 +60,10 @@ public class Patient extends User {
     public Patient(String dni, String name, String lastname, String email,
                    Date birthdate, char gender, int height, float weight, Medic medic) {
         this(dni, name, lastname, null, email, birthdate, gender, height, weight, medic);
-        dataSets = new HashSet<>();
+        this.dataSets = new HashSet<>();
     }
 
     public void addExercise(DataSet dataSet){
-        dataSets.add(dataSet);
+        this.dataSets.add(dataSet);
     }
 }
