@@ -23,6 +23,7 @@ public class AccessoryRequest {
     @NotNull
     private String name;
 
+    @Size(min = 1)
     @NotNull
     private Set<DataRequest> data;
 

@@ -43,16 +43,6 @@ public class RoutineController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/routine/{id}")
-    @ResponseBody
-    @ResponseStatus(code = HttpStatus.OK)
-    @Transactional
-    // https://stackoverflow.com/questions/15359306/how-to-fetch-fetchtype-lazy-associations-with-jpa-and-hibernate-in-a-spring-cont
-    public RoutineResponse getRoutine(@PathVariable Integer id) {
-        Routine routine = routineService.getRoutineById(id);
-        return new RoutineResponse(routine);
-    }
-
     @GetMapping("/routines")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
@@ -67,6 +57,16 @@ public class RoutineController {
     public List<SessionResponse> getSessions(@PathVariable Integer idRoutine) {
         Routine routine = routineService.getRoutineById(idRoutine);
         return sessionService.getSessions(routine);
+    }
+
+    @GetMapping("/routine/{id}")
+    @ResponseBody
+    @ResponseStatus(code = HttpStatus.OK)
+    @Transactional
+    // https://stackoverflow.com/questions/15359306/how-to-fetch-fetchtype-lazy-associations-with-jpa-and-hibernate-in-a-spring-cont
+    public RoutineResponse getRoutine(@PathVariable Integer id) {
+        Routine routine = routineService.getRoutineById(id);
+        return new RoutineResponse(routine);
     }
 
     @GetMapping("/routines/name/{name}")

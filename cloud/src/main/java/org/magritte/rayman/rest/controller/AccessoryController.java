@@ -40,6 +40,14 @@ public class AccessoryController {
     @Autowired
     private DataService dataService;
 
+    @GetMapping("/accessories")
+    @ResponseBody
+    @ResponseStatus(code = HttpStatus.OK)
+    @Transactional
+    public List<AccessoryResponse> getAccessories() {
+        return accessoryService.getAccessories();
+    }
+
     @GetMapping("/accessory/{id}")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
@@ -48,14 +56,6 @@ public class AccessoryController {
     public AccessoryResponse getRoutine(@PathVariable Integer id) {
         Accessory accessory = accessoryService.getAccessoryById(id);
         return new AccessoryResponse(accessory);
-    }
-
-    @GetMapping("/accessories")
-    @ResponseBody
-    @ResponseStatus(code = HttpStatus.OK)
-    @Transactional
-    public List<AccessoryResponse> getAccessories() {
-        return accessoryService.getAccessories();
     }
 
     @PostMapping("/accessory")
