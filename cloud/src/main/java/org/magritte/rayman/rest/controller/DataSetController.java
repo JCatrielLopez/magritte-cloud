@@ -62,12 +62,15 @@ public class DataSetController {
     }
 
     @PostMapping("/dataset")
+    @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
     @Transactional
-    public void addDataSet(@RequestBody @Valid DataSetRequest request){
+    public DataSetResponse addDataSet(@RequestBody @Valid DataSetRequest request){
         Patient patient = (Patient) userService.getUserById(request.getIdPatient());
         Routine routine = routineService.getRoutineById(request.getIdRoutine());
-        dataSetService.save(request.toNewEntity(patient, routine));
+        DataSet dataSet = request.toNewEntity(patient, routine);
+        dataSetService.save(dataSet);
+        return new DataSetResponse(dataSet);
     }
 
 }

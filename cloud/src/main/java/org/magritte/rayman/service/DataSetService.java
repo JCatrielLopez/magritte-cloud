@@ -31,12 +31,12 @@ public class DataSetService {
                 .collect(Collectors.toList());
     }
 
-    public void save(@NotNull DataSet toNewEntity) {
-        Patient patient = toNewEntity.getPatient();
-        Routine routine = toNewEntity.getRoutine();
-        patient.addExercise(toNewEntity);
-        routine.addRealization(toNewEntity);
-        dataSetRepository.save(toNewEntity);
+    public void save(@NotNull DataSet dataset) {
+        Patient patient = dataset.getPatient();
+        Routine routine = dataset.getRoutine();
+        patient.addExercise(dataset);
+        routine.addRealization(dataset);
+        dataSetRepository.save(dataset);
     }
 
     public List<DataSetResponse> getDataSetByPatient(@NotNull Patient patient) {

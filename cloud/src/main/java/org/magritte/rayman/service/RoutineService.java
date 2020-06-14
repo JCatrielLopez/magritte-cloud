@@ -11,10 +11,13 @@ import org.magritte.rayman.data.repository.SessionRepository;
 import org.magritte.rayman.exceptions.RoutineNotFoundException;
 import org.magritte.rayman.rest.request.AccessoryRequest;
 import org.magritte.rayman.rest.request.SessionRequest;
+import org.magritte.rayman.rest.response.AccessoryResponse;
 import org.magritte.rayman.rest.response.RoutineResponse;
+import org.magritte.rayman.rest.response.SessionResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -75,23 +78,29 @@ public class RoutineService {
         return routineRepository.findByUserAndName(user, name);
     }
 
-    public void save(@NotNull Routine routine, @NotNull Set<SessionRequest> requests) {
+    public Set<SessionResponse> save(@NotNull Routine routine, @NotNull Set<SessionRequest> requests) {
+        Set<SessionResponse> sessions = new HashSet<>();
         requests.forEach(request -> {
             Optional<Session> optionalSession = sessionRepository.findByRoutineAndName(routine, request.getName());
             Session session = optionalSession.orElseGet(() -> request.toNewEntity(routine));
+            sessions.add(new SessionResponse(session));
             routine.add(session);
             if (optionalSession.isEmpty()) sessionRepository.save(session);
         });
+        return sessions;
     }
 
-    public void saveAccessory(@NotNull Routine routine, @NotNull Set<AccessoryRequest> requests) {
+    public Set<AccessoryResponse> saveAccessory(@NotNull Routine routine, @NotNull Set<AccessoryRequest> requests) {
+        Set<AccessoryResponse> accessories = new HashSet<>();
         requests.forEach(request -> {
             Optional<Accessory> optionalAccessory = accessoryRepository.findByName(request.getName());
             Accessory accessory = optionalAccessory.orElseGet(request::toNewEntity);
+            accessories.add(new AccessoryResponse(accessory));
             accessory.add(routine);
             routine.add(accessory);
             if (optionalAccessory.isEmpty()) accessoryRepository.save(accessory);
         });
         routineRepository.save(routine);
+        return accessories;
     }
 }

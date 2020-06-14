@@ -4,8 +4,10 @@ import org.magritte.rayman.data.entity.Accessory;
 import org.magritte.rayman.data.entity.Data;
 import org.magritte.rayman.exceptions.AccessoryNotFoundException;
 import org.magritte.rayman.rest.request.AccessoryRequest;
-import org.magritte.rayman.rest.request.DataRequest;
+import org.magritte.rayman.rest.request.DatasRequest;
 import org.magritte.rayman.rest.response.AccessoryResponse;
+import org.magritte.rayman.rest.response.DataResponse;
+import org.magritte.rayman.rest.response.DatasResponse;
 import org.magritte.rayman.service.AccessoryService;
 import org.magritte.rayman.service.DataService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -61,19 +61,21 @@ public class AccessoryController {
     @PostMapping("/accessory")
     @ResponseStatus(code = HttpStatus.OK)
     @Transactional
-    public void addAccessory(@RequestBody @Valid AccessoryRequest request) {
+    public AccessoryResponse addAccessory(@RequestBody @Valid AccessoryRequest request) {
         // En estos casos no lanzo error porque en caso de que no exista, lo inserto sino lo actualizo.
         Optional<Accessory> optionalAccessory = accessoryService.getAccessoryByName(request.getName());
         Accessory accessory = optionalAccessory.orElseGet(request::toNewEntity);
         accessoryService.save(accessory, request.getData());
+        return new AccessoryResponse(accessory);
     }
 
     @PostMapping("/accessory/{id}/data")
     @ResponseStatus(code = HttpStatus.OK)
     @Transactional
-    public void addData(@PathVariable Integer id, @RequestBody @Valid DataRequest request) {
+    public DatasResponse addData(@PathVariable Integer id, @RequestBody @Valid DatasRequest request) {
         Accessory accessory = accessoryService.getAccessoryById(id);
-        accessoryService.save(accessory, Set.of(request));
+        Set<DataResponse> dataResponses = accessoryService.save(accessory, request.getData());
+        return new DatasResponse(dataResponses);
     }
 
     @DeleteMapping("/accessory/{id}")

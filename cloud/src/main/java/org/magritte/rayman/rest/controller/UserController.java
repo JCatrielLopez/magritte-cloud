@@ -2,6 +2,7 @@ package org.magritte.rayman.rest.controller;
 
 import org.jetbrains.annotations.NotNull;
 import org.magritte.rayman.data.entity.Medic;
+import org.magritte.rayman.data.entity.Patient;
 import org.magritte.rayman.data.entity.User;
 import org.magritte.rayman.exceptions.UserNotFoundException;
 import org.magritte.rayman.rest.request.MedicRequest;
@@ -182,9 +183,12 @@ public class UserController {
      * @param request el cuerpo json del medico
      */
     @PostMapping("/medic")
+    @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
-    public void addMedic(@RequestBody @NotNull @Valid MedicRequest request) {
-        userService.save(request.toNewEntity());
+    public MedicResponse addMedic(@RequestBody @NotNull @Valid MedicRequest request) {
+        Medic user = request.toNewEntity();
+        userService.save(user);
+        return new MedicResponse(user);
     }
 
     /**
@@ -193,14 +197,17 @@ public class UserController {
      * @param request el cuerpo json del paciente
      */
     @PostMapping("/patient")
+    @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
-    public void addPatient(@RequestBody @NotNull @Valid PatientRequest request) {
+    public PatientResponse addPatient(@RequestBody @NotNull @Valid PatientRequest request) {
         Integer medic_id = request.getMedic_id();
         Medic medic = null;
         if (Objects.nonNull(medic_id)) {
             medic = (Medic) userService.getUserById(medic_id);
         }
-        userService.save(request.toNewEntity(medic));
+        Patient patient = request.toNewEntity(medic);
+        userService.save(patient);
+        return new PatientResponse(patient);
     }
 
     /**
@@ -210,9 +217,14 @@ public class UserController {
      * @param idMedic   id del medico a setear
      */
     @PostMapping("/patient/{idPatient}")
+    @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
-    public void setMedicToPatient(@PathVariable Integer idPatient, @RequestParam Integer idMedic) {
-        userService.setMedicToPatient(idPatient, idMedic);
+    public PatientResponse setMedicToPatient(@PathVariable Integer idPatient, @RequestParam Integer idMedic) {
+        Patient patient = (Patient) userService.getUserById(idPatient);
+        Medic medic = (Medic) userService.getUserById(idMedic);
+        patient.setMedic(medic);
+        userService.save(patient);
+        return new PatientResponse(patient);
     }
 
     /**

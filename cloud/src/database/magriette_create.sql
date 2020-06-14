@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2020-06-14 14:15:04.006
+-- Last modification date: 2020-06-14 15:49:29.708
 
 -- tables
 -- Table: Accessory
@@ -110,7 +110,9 @@ CREATE TABLE routine_accessory (
 -- Reference: DataSet_Patient (table: DataSet)
 ALTER TABLE DataSet ADD CONSTRAINT DataSet_Patient
     FOREIGN KEY (idPatient)
-    REFERENCES Patient (id)  
+    REFERENCES Patient (id)
+    ON DELETE  CASCADE 
+    ON UPDATE  CASCADE 
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
 ;
@@ -118,7 +120,9 @@ ALTER TABLE DataSet ADD CONSTRAINT DataSet_Patient
 -- Reference: DataSet_Routine (table: DataSet)
 ALTER TABLE DataSet ADD CONSTRAINT DataSet_Routine
     FOREIGN KEY (idRoutine)
-    REFERENCES Routine (idRoutine)  
+    REFERENCES Routine (idRoutine)
+    ON DELETE  CASCADE 
+    ON UPDATE  CASCADE 
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
 ;
@@ -146,7 +150,9 @@ ALTER TABLE Patient ADD CONSTRAINT Paciente_User
 -- Reference: Routine_Usuario (table: Routine)
 ALTER TABLE Routine ADD CONSTRAINT Routine_Usuario
     FOREIGN KEY (idUser)
-    REFERENCES Usuario (id)  
+    REFERENCES Usuario (id)
+    ON DELETE  CASCADE 
+    ON UPDATE  CASCADE 
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
 ;

@@ -6,8 +6,11 @@ import org.magritte.rayman.data.entity.User;
 import org.magritte.rayman.rest.request.AccessoriesRequest;
 import org.magritte.rayman.rest.request.RoutineRequest;
 import org.magritte.rayman.rest.request.SessionsRequest;
+import org.magritte.rayman.rest.response.AccessoriesResponse;
+import org.magritte.rayman.rest.response.AccessoryResponse;
 import org.magritte.rayman.rest.response.RoutineResponse;
 import org.magritte.rayman.rest.response.SessionResponse;
+import org.magritte.rayman.rest.response.SessionsResponse;
 import org.magritte.rayman.service.RoutineService;
 import org.magritte.rayman.service.SessionService;
 import org.magritte.rayman.service.UserService;
@@ -87,10 +90,11 @@ public class RoutineController {
         return routineService.getRoutinesByCreator(user);
     }
 
-    @PostMapping("/routine") //TODO
+    @PostMapping("/routine")
+    @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
     @Transactional
-    public void addRoutine(@RequestBody @Valid RoutineRequest request) {
+    public RoutineResponse addRoutine(@RequestBody @Valid RoutineRequest request) {
         User user = userService.getUserById(request.getIdUser());
         Optional<Routine> optionalRoutine = routineService.getRoutineByUserAndName(user, request.getName());
         Routine routine = optionalRoutine.orElseGet(() -> {
@@ -99,22 +103,26 @@ public class RoutineController {
             return r;
         });
         routineService.save(routine, request.getSessions());
+        return new RoutineResponse(routine);
     }
 
     @PostMapping("/routine/{idRoutine}/sessions")
+    @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
     @Transactional
-    public void addSession(@PathVariable Integer idRoutine, @RequestBody @Valid SessionsRequest request) {
+    public SessionsResponse addSession(@PathVariable Integer idRoutine, @RequestBody @Valid SessionsRequest request) {
         Routine routine = routineService.getRoutineById(idRoutine);
-        routineService.save(routine, request.getSessions());
+        Set<SessionResponse> sessions = routineService.save(routine, request.getSessions());
+        return new SessionsResponse(sessions);
     }
 
     @PostMapping("/routine/{idRoutine}/accessories")
     @ResponseStatus(code = HttpStatus.OK)
     @Transactional
-    public void addAccessory(@PathVariable Integer idRoutine, @RequestBody @Valid AccessoriesRequest request) {
+    public AccessoriesResponse addAccessory(@PathVariable Integer idRoutine, @RequestBody @Valid AccessoriesRequest request) {
         Routine routine = routineService.getRoutineById(idRoutine);
-        routineService.saveAccessory(routine, request.getAccessories());
+        Set<AccessoryResponse> accessories = routineService.saveAccessory(routine, request.getAccessories());
+        return new AccessoriesResponse(accessories);
     }
 
     @DeleteMapping("/routine/{id}")

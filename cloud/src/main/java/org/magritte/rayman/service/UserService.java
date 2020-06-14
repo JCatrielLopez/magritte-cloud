@@ -47,13 +47,6 @@ public class UserService {
         return user.getUserType() == MEDIC ? new MedicResponse(user) : new PatientResponse(user);
     }
 
-    public void setMedicToPatient(@NotNull Integer idPatient, @NotNull Integer idMedic) {
-        Patient patient = (Patient) userRepository.findById(idPatient).orElseThrow(UserNotFoundException::new);
-        Medic medic = (Medic) userRepository.findById(idMedic).orElseThrow(UserNotFoundException::new);
-        patient.setMedic(medic);
-        userRepository.save(patient);
-    }
-
     @Transactional
     public List<PatientResponse> getPatientsFromMedic(@NotNull Integer id) {
         Medic medic = (Medic) userRepository.findById(id).orElseThrow(UserNotFoundException::new);

@@ -8,9 +8,11 @@ import org.magritte.rayman.data.repository.DataRepository;
 import org.magritte.rayman.exceptions.AccessoryNotFoundException;
 import org.magritte.rayman.rest.request.DataRequest;
 import org.magritte.rayman.rest.response.AccessoryResponse;
+import org.magritte.rayman.rest.response.DataResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -37,15 +39,18 @@ public class AccessoryService {
                 .collect(Collectors.toList());
     }
 
-    public void save(@NotNull Accessory accessory,@NotNull Set<DataRequest> requests) {
+    public Set<DataResponse> save(@NotNull Accessory accessory,@NotNull Set<DataRequest> requests) {
+        Set<DataResponse> dataResponses = new HashSet<>();
         requests.forEach(dataRequest -> {
             Optional<Data> optionalData = dataRepository.findByDataType(dataRequest.getDataType());
             Data data = optionalData.orElseGet(dataRequest::toNewEntity);
+            dataResponses.add(new DataResponse(data));
             data.add(accessory);
             accessory.add(data);
             if (optionalData.isEmpty()) dataRepository.save(data);
         });
         accessoryRepository.save(accessory);
+        return dataResponses;
     }
 
     public void save(@NotNull Accessory accessory) {
