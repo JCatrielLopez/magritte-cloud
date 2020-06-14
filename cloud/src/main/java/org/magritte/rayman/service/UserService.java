@@ -5,6 +5,7 @@ import org.magritte.rayman.data.entity.Patient;
 import org.magritte.rayman.data.entity.User;
 import org.magritte.rayman.data.repository.UserRepository;
 import org.magritte.rayman.exceptions.UserNotFoundException;
+import org.magritte.rayman.exceptions.UserNotValidException;
 import org.magritte.rayman.rest.response.MedicResponse;
 import org.magritte.rayman.rest.response.PatientResponse;
 import org.magritte.rayman.rest.response.UserResponse;
@@ -42,7 +43,7 @@ public class UserService {
 
     public UserResponse login(String dni, String password) {
         User user = userRepository.findByDni(dni).orElseThrow(UserNotFoundException::new);
-        if (!Objects.equals(user.getPassword(), password)) return null;
+        if (!Objects.equals(user.getPassword(), password)) throw new UserNotValidException();
         return user.getUserType() == MEDIC ? new MedicResponse(user) : new PatientResponse(user);
     }
 

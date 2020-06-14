@@ -17,8 +17,33 @@ public class UserNotFoundAdvice {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(UserNotValidException.class)
+    public ResponseEntity<String> userNotValidHandler(UserNotValidException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(InvalidInputException.class)
     public ResponseEntity<String> invalidInputHandler(InvalidInputException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(RoutineNotFoundException.class)
+    public ResponseEntity<String> routineNotFoundHandler(RoutineNotFoundException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(AccessoryNotFoundException.class)
+    public ResponseEntity<String> accessoryNotFoundHandler(AccessoryNotFoundException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(DataNotFoundException.class)
+    public ResponseEntity<String> dataNotFoundHandler(DataNotFoundException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(DataSetNotFoundException.class)
+    public ResponseEntity<String> dataSetNotFoundHandler(DataSetNotFoundException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

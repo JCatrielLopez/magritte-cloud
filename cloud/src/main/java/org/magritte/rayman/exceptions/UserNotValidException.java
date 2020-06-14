@@ -2,7 +2,7 @@ package org.magritte.rayman.exceptions;
 
 public class UserNotValidException extends RuntimeException {
 
-    UserNotValidException() {
+    public UserNotValidException() {
         super("Wrong dni or password");
     }
 }
