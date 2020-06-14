@@ -3,8 +3,9 @@ package org.magritte.rayman.rest.controller;
 import org.magritte.rayman.data.entity.Routine;
 import org.magritte.rayman.data.entity.Session;
 import org.magritte.rayman.data.entity.User;
+import org.magritte.rayman.rest.request.AccessoriesRequest;
 import org.magritte.rayman.rest.request.RoutineRequest;
-import org.magritte.rayman.rest.request.SessionRequest;
+import org.magritte.rayman.rest.request.SessionsRequest;
 import org.magritte.rayman.rest.response.RoutineResponse;
 import org.magritte.rayman.rest.response.SessionResponse;
 import org.magritte.rayman.service.RoutineService;
@@ -100,12 +101,20 @@ public class RoutineController {
         routineService.save(routine, request.getSessions());
     }
 
-    @PostMapping("/routine/{idRoutine}/session")
+    @PostMapping("/routine/{idRoutine}/sessions")
     @ResponseStatus(code = HttpStatus.OK)
     @Transactional
-    public void addSession(@PathVariable Integer idRoutine, @RequestBody @Valid SessionRequest request) {
+    public void addSession(@PathVariable Integer idRoutine, @RequestBody @Valid SessionsRequest request) {
         Routine routine = routineService.getRoutineById(idRoutine);
-        routineService.save(routine, Set.of(request));
+        routineService.save(routine, request.getSessions());
+    }
+
+    @PostMapping("/routine/{idRoutine}/accessories")
+    @ResponseStatus(code = HttpStatus.OK)
+    @Transactional
+    public void addAccessory(@PathVariable Integer idRoutine, @RequestBody @Valid AccessoriesRequest request) {
+        Routine routine = routineService.getRoutineById(idRoutine);
+        routineService.saveAccessory(routine, request.getAccessories());
     }
 
     @DeleteMapping("/routine/{id}")

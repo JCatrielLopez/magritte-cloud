@@ -3,6 +3,7 @@ package org.magritte.rayman.service;
 import org.jetbrains.annotations.NotNull;
 import org.magritte.rayman.data.entity.DataSet;
 import org.magritte.rayman.data.entity.Patient;
+import org.magritte.rayman.data.entity.Routine;
 import org.magritte.rayman.data.repository.DataSetRepository;
 import org.magritte.rayman.exceptions.DataSetNotFoundException;
 import org.magritte.rayman.rest.response.DataSetResponse;
@@ -18,8 +19,6 @@ public class DataSetService {
     @Autowired
     private DataSetRepository dataSetRepository;
 
-    //TODO Adaptar metodos a la nueva BD. Implementar solo los metodos necesarios.
-
     public DataSet getDataSetById(@NotNull Integer id) {
         return dataSetRepository
                 .findById(id)
@@ -32,15 +31,19 @@ public class DataSetService {
                 .collect(Collectors.toList());
     }
 
-    public void save(DataSet toNewEntity) {
-        toNewEntity.getPatient().addExercise(toNewEntity);
-        toNewEntity.getRoutine().addRealization(toNewEntity);
+    public void save(@NotNull DataSet toNewEntity) {
+        Patient patient = toNewEntity.getPatient();
+        Routine routine = toNewEntity.getRoutine();
+        patient.addExercise(toNewEntity);
+        routine.addRealization(toNewEntity);
         dataSetRepository.save(toNewEntity);
     }
 
-    public List<DataSetResponse> getDataSetByPatient(Patient patient) {
-        return dataSetRepository.findAllByPatient(patient).stream()
-                .map(DataSetResponse::new)
-                .collect(Collectors.toList());
+    public List<DataSetResponse> getDataSetByPatient(@NotNull Patient patient) {
+        return dataSetRepository.findByPatient(patient);
+    }
+
+    public List<DataSetResponse> getDataSetByPatientAndRoutine(@NotNull Patient patient, @NotNull Routine routine) {
+        return dataSetRepository.findByPatientAndRoutine(patient, routine);
     }
 }

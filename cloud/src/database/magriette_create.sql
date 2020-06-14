@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2020-06-13 15:03:47.432
+-- Last modification date: 2020-06-14 14:15:04.006
 
 -- tables
 -- Table: Accessory
@@ -100,9 +100,9 @@ CREATE TABLE accessory_data (
 -- Table: routine_accessory
 CREATE TABLE routine_accessory (
     id serial  NOT NULL,
-    routine_idroutine int  NOT NULL,
+    routines_idroutine int  NOT NULL,
     accessories_idaccessory int  NOT NULL,
-    CONSTRAINT unique_idRoutine_idAccessory UNIQUE (routine_idroutine, accessories_idaccessory) NOT DEFERRABLE  INITIALLY IMMEDIATE,
+    CONSTRAINT unique_idRoutine_idAccessory UNIQUE (routines_idroutine, accessories_idaccessory) NOT DEFERRABLE  INITIALLY IMMEDIATE,
     CONSTRAINT routine_accessory_pk PRIMARY KEY (id)
 );
 
@@ -203,7 +203,7 @@ ALTER TABLE routine_accessory ADD CONSTRAINT utiliza_accesorio
 
 -- Reference: utiliza_rutina (table: routine_accessory)
 ALTER TABLE routine_accessory ADD CONSTRAINT utiliza_rutina
-    FOREIGN KEY (routine_idroutine)
+    FOREIGN KEY (routines_idroutine)
     REFERENCES Routine (idRoutine)
     ON DELETE  CASCADE 
     ON UPDATE  CASCADE 

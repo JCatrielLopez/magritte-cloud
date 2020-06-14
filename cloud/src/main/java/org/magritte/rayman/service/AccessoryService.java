@@ -37,7 +37,7 @@ public class AccessoryService {
                 .collect(Collectors.toList());
     }
 
-    public void save(Accessory accessory, Set<DataRequest> requests) {
+    public void save(@NotNull Accessory accessory,@NotNull Set<DataRequest> requests) {
         requests.forEach(dataRequest -> {
             Optional<Data> optionalData = dataRepository.findByDataType(dataRequest.getDataType());
             Data data = optionalData.orElseGet(dataRequest::toNewEntity);
@@ -48,11 +48,11 @@ public class AccessoryService {
         accessoryRepository.save(accessory);
     }
 
-    public void save(Accessory accessory) {
+    public void save(@NotNull Accessory accessory) {
         accessoryRepository.save(accessory);
     }
 
-    public void delete(Accessory accessory) {
+    public void delete(@NotNull Accessory accessory) {
         accessoryRepository.delete(accessory);
     }
 

@@ -1,5 +1,6 @@
 package org.magritte.rayman.service;
 
+import org.jetbrains.annotations.NotNull;
 import org.magritte.rayman.data.entity.Medic;
 import org.magritte.rayman.data.entity.Patient;
 import org.magritte.rayman.data.entity.User;
@@ -26,27 +27,27 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public User getUserById(Integer id) {
+    public User getUserById(@NotNull Integer id) {
         return userRepository
                 .findById(id)
                 .orElseThrow(UserNotFoundException::new);
     }
 
-    public void save(User user) {
+    public void save(@NotNull User user) {
         userRepository.save(user);
     }
 
-    public void delete(User user) {
+    public void delete(@NotNull User user) {
         userRepository.delete(user);
     }
 
-    public UserResponse login(String dni, String password) {
+    public UserResponse login(@NotNull String dni, @NotNull String password) {
         User user = userRepository.findByDni(dni).orElseThrow(UserNotFoundException::new);
         if (!Objects.equals(user.getPassword(), password)) return null;
         return user.getUserType() == MEDIC ? new MedicResponse(user) : new PatientResponse(user);
     }
 
-    public void setMedicToPatient(Integer idPatient, Integer idMedic) {
+    public void setMedicToPatient(@NotNull Integer idPatient, @NotNull Integer idMedic) {
         Patient patient = (Patient) userRepository.findById(idPatient).orElseThrow(UserNotFoundException::new);
         Medic medic = (Medic) userRepository.findById(idMedic).orElseThrow(UserNotFoundException::new);
         patient.setMedic(medic);
@@ -54,7 +55,7 @@ public class UserService {
     }
 
     @Transactional
-    public List<PatientResponse> getPatientsFromMedic(Integer id) {
+    public List<PatientResponse> getPatientsFromMedic(@NotNull Integer id) {
         Medic medic = (Medic) userRepository.findById(id).orElseThrow(UserNotFoundException::new);
         return medic.getPatients().stream()
                 .map(PatientResponse::new)
@@ -80,7 +81,7 @@ public class UserService {
         }};
     }
 
-    public User getUserByDni(String dni) {
+    public User getUserByDni(@NotNull String dni) {
         return userRepository
                 .findByDni(dni)
                 .orElseThrow(UserNotFoundException::new);

@@ -1,5 +1,6 @@
 package org.magritte.rayman.service;
 
+import org.jetbrains.annotations.NotNull;
 import org.magritte.rayman.data.entity.Routine;
 import org.magritte.rayman.data.entity.Session;
 import org.magritte.rayman.data.repository.SessionRepository;
@@ -16,7 +17,7 @@ public class SessionService {
     @Autowired
     private SessionRepository sessionRepository;
 
-    public Optional<Session> getSessionByRoutineAndName(Routine routine, String name) {
+    public Optional<Session> getSessionByRoutineAndName(@NotNull Routine routine, @NotNull String name) {
         return sessionRepository.findByRoutineAndName(routine, name);
     }
 
@@ -26,11 +27,11 @@ public class SessionService {
      * @param routine filtrar la rutina
      * @return lista de sesiones
      */
-    public List<SessionResponse> getSessions(Routine routine) {
+    public List<SessionResponse> getSessions(@NotNull Routine routine) {
         return sessionRepository.findByRoutine(routine);
     }
 
-    public void save(Session session) {
+    public void save(@NotNull Session session) {
         sessionRepository.save(session);
     }
 }

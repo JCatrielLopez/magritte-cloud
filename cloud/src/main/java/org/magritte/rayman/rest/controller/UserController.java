@@ -2,10 +2,8 @@ package org.magritte.rayman.rest.controller;
 
 import org.jetbrains.annotations.NotNull;
 import org.magritte.rayman.data.entity.Medic;
-import org.magritte.rayman.data.entity.Patient;
 import org.magritte.rayman.data.entity.User;
 import org.magritte.rayman.exceptions.UserNotFoundException;
-import org.magritte.rayman.exceptions.UserNotValidException;
 import org.magritte.rayman.rest.request.MedicRequest;
 import org.magritte.rayman.rest.request.PatientRequest;
 import org.magritte.rayman.rest.response.MedicResponse;
@@ -27,7 +25,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -154,11 +151,10 @@ public class UserController {
     /**
      * Verifico el estado del dispositivo
      *
-     * @param
      * @return SimulationResponse
      */
     @GetMapping("/checkStatus")
-    public SimulationResponse getHeartRate(){
+    public SimulationResponse getHeartRate() {
         return new SimulationResponse();
 
     }

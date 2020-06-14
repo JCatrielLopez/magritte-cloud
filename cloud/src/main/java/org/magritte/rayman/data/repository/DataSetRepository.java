@@ -18,9 +18,9 @@ public interface DataSetRepository extends JpaRepository<DataSet, Integer> {
     @NotNull
     Optional<DataSet> findById(@NotNull Integer id);
 
-    List<DataSet> findAllByPatient(@NotNull Patient paciente);
+    List<DataSetResponse> findByPatient(@NotNull Patient paciente);
 
-    Set<DataSet> findByPatientAndRoutine(@NotNull Patient paciente, @NotNull Routine routine);
+    List<DataSetResponse> findByPatientAndRoutine(@NotNull Patient paciente, @NotNull Routine routine);
 
     List<DataSetResponse> findByDataType(String dataType);
 

@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -53,7 +54,11 @@ public class Routine {
     @ToString.Include
     private int difficulty;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = NAME_TABLE)
+    @JoinTable(name = "routine_accessory",
+            joinColumns = @JoinColumn(referencedColumnName = Routine.ID),
+            inverseJoinColumns = @JoinColumn(referencedColumnName = Accessory.ID)
+    )
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Accessory> accessories;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = NAME_TABLE)
@@ -76,7 +81,11 @@ public class Routine {
         this.sessions.add(session);
     }
 
-    public void addRealization(DataSet dataSet){
+    public void addRealization(DataSet dataSet) {
         this.dataSets.add(dataSet);
+    }
+
+    public void add(Accessory accessory) {
+        this.accessories.add(accessory);
     }
 }
