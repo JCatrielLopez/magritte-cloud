@@ -46,7 +46,6 @@ public class UserService {
         return user.getUserType() == MEDIC ? new MedicResponse(user) : new PatientResponse(user);
     }
 
-    @Transactional
     public List<PatientResponse> getPatientsFromMedic(@NotNull Integer id) {
         Medic medic = (Medic) userRepository.findById(id).orElseThrow(NoSuchElementException::new);
         return medic.getPatients().stream()

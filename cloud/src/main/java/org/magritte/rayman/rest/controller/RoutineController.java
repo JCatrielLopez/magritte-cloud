@@ -50,7 +50,7 @@ public class RoutineController {
     @GetMapping("/routines")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
-    @Transactional
+    @Transactional(rollbackOn = Exception.class)
     public List<RoutineResponse> getRoutines() {
         return routineService.getRoutines();
     }
@@ -66,7 +66,7 @@ public class RoutineController {
     @GetMapping("/routine/{id}")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
-    @Transactional
+    @Transactional(rollbackOn = Exception.class)
     // https://stackoverflow.com/questions/15359306/how-to-fetch-fetchtype-lazy-associations-with-jpa-and-hibernate-in-a-spring-cont
     public RoutineResponse getRoutine(@PathVariable Integer id) {
         Routine routine = routineService.getRoutineById(id);
@@ -76,7 +76,7 @@ public class RoutineController {
     @GetMapping("/routines/name/{name}")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
-    @Transactional
+    @Transactional(rollbackOn = Exception.class)
     public List<RoutineResponse> getRoutinesByName(@PathVariable String name) {
         return routineService.getRoutinesByName(name);
     }
@@ -84,7 +84,7 @@ public class RoutineController {
     @GetMapping("/routines/idUser/{idUser}")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
-    @Transactional
+    @Transactional(rollbackOn = Exception.class)
     public List<RoutineResponse> getRoutinesByCreator(@PathVariable Integer idUser) {
         User user = userService.getUserById(idUser);
         return routineService.getRoutinesByCreator(user);
@@ -93,7 +93,7 @@ public class RoutineController {
     @PostMapping("/routine")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
-    @Transactional
+    @Transactional(rollbackOn = Exception.class)
     public RoutineResponse addRoutine(@RequestBody @Valid RoutineRequest request) {
         User user = userService.getUserById(request.getIdUser());
         Optional<Routine> optionalRoutine = routineService.getRoutineByUserAndName(user, request.getName());
@@ -109,7 +109,7 @@ public class RoutineController {
     @PostMapping("/routine/{idRoutine}/sessions")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
-    @Transactional
+    @Transactional(rollbackOn = Exception.class)
     public SessionsResponse addSession(@PathVariable Integer idRoutine, @RequestBody @Valid SessionsRequest request) {
         Routine routine = routineService.getRoutineById(idRoutine);
         Set<SessionResponse> sessions = routineService.save(routine, request.getSessions());
@@ -118,7 +118,7 @@ public class RoutineController {
 
     @PostMapping("/routine/{idRoutine}/accessories")
     @ResponseStatus(code = HttpStatus.OK)
-    @Transactional
+    @Transactional(rollbackOn = Exception.class)
     public AccessoriesResponse addAccessory(@PathVariable Integer idRoutine, @RequestBody @Valid AccessoriesRequest request) {
         Routine routine = routineService.getRoutineById(idRoutine);
         Set<AccessoryResponse> accessories = routineService.saveAccessory(routine, request.getAccessories());
@@ -134,7 +134,7 @@ public class RoutineController {
 
     @DeleteMapping("/routine/{id}/session/{name}")
     @ResponseStatus(code = HttpStatus.OK)
-    @Transactional
+    @Transactional(rollbackOn = Exception.class)
     public void removeSession(@PathVariable Integer id, @PathVariable String name) {
         Routine routine = routineService.getRoutineById(id);
         Set<Session> sessionSet = routine.getSessions().stream()
