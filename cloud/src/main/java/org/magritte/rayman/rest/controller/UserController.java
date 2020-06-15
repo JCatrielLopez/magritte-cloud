@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -28,6 +29,7 @@ import static org.magritte.rayman.data.entity.Patient.PATIENT;
  */
 @RestController
 @RequestMapping(name = "/user")
+@Transactional(rollbackOn = Exception.class)
 public class UserController {
 
     @Autowired

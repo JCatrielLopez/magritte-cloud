@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(name = "/dataset")
+@Transactional(rollbackOn = Exception.class)
 public class DataSetController {
 
     @Autowired
@@ -74,7 +75,6 @@ public class DataSetController {
     @PostMapping("/dataset")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
-    @Transactional(rollbackOn = Exception.class)
     public DataSetResponse addDataSet(@RequestBody @Valid DataSetRequest request){
         Patient patient = (Patient) userService.getUserById(request.getIdPatient());
         Routine routine = routineService.getRoutineById(request.getIdRoutine());
