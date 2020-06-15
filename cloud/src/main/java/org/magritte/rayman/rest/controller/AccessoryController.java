@@ -33,7 +33,10 @@ public class AccessoryController {
     @ResponseStatus(code = HttpStatus.OK)
     @Transactional(rollbackOn = Exception.class)
     public List<AccessoryResponse> getAccessories() {
-        return accessoryService.getAccessories();
+        return accessoryService.getAccessories()
+                .stream()
+                .map(AccessoryResponse::new)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/accessory/{id}")
