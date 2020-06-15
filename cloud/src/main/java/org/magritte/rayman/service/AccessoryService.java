@@ -5,17 +5,13 @@ import org.magritte.rayman.data.entity.Accessory;
 import org.magritte.rayman.data.entity.Data;
 import org.magritte.rayman.data.repository.AccessoryRepository;
 import org.magritte.rayman.data.repository.DataRepository;
-import org.magritte.rayman.exceptions.AccessoryNotFoundException;
 import org.magritte.rayman.rest.request.DataRequest;
 import org.magritte.rayman.rest.response.AccessoryResponse;
 import org.magritte.rayman.rest.response.DataResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,7 +26,7 @@ public class AccessoryService {
     public Accessory getAccessoryById(@NotNull Integer id) {
         return accessoryRepository
                 .findById(id)
-                .orElseThrow(AccessoryNotFoundException::new);
+                .orElseThrow(NoSuchElementException::new);
     }
 
     public List<AccessoryResponse> getAccessories() {
