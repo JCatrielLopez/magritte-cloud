@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(name = "/dataset")
@@ -33,7 +34,10 @@ public class DataSetController {
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
     public List<DataSetResponse> getDataSets() {
-        return dataSetService.getDataSets();
+        return dataSetService.getDataSets()
+                .stream()
+                .map(DataSetResponse::new)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/dataset/{id}")
@@ -49,7 +53,10 @@ public class DataSetController {
     @ResponseStatus(code = HttpStatus.OK)
     public List<DataSetResponse> getDataSetByPatient(@PathVariable Integer id){
         Patient patient = (Patient) userService.getUserById(id);
-        return dataSetService.getDataSetByPatient(patient);
+        return dataSetService.getDataSetByPatient(patient)
+                .stream()
+                .map(DataSetResponse::new)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/dataset/patient/{idPatient}/routine/{idRoutine}")
@@ -58,7 +65,10 @@ public class DataSetController {
     public List<DataSetResponse> getDataSetByPatientAndRoutine(@PathVariable Integer idPatient, @PathVariable Integer idRoutine) {
         Patient patient = (Patient) userService.getUserById(idPatient);
         Routine routine = routineService.getRoutineById(idRoutine);
-        return dataSetService.getDataSetByPatientAndRoutine(patient, routine);
+        return dataSetService.getDataSetByPatientAndRoutine(patient, routine)
+                .stream()
+                .map(DataSetResponse::new)
+                .collect(Collectors.toList());
     }
 
     @PostMapping("/dataset")
