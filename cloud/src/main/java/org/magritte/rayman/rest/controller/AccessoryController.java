@@ -89,10 +89,13 @@ public class AccessoryController {
     @Transactional(rollbackOn = Exception.class)
     public void removeAccessoryData(@PathVariable Integer idAccessory, @PathVariable Integer idData) {
         Accessory accessory = accessoryService.getAccessoryById(idAccessory);
-        Set<Data> newData = accessory.getData().stream()
-                .filter(data -> !Objects.equals(data.getIdData(), idData))
-                .collect(Collectors.toSet());
-        accessory.setData(newData);
+
+        Optional<Data> dataOpt = accessory.getData().stream()
+                .filter(data -> data.getIdData().equals(idData))
+                .findFirst();
+
+        Data dataToRemove = dataOpt.orElseThrow(NoSuchElementException::new);
+        accessory.getData().remove(dataToRemove);
         accessoryService.save(accessory);
     }
 
