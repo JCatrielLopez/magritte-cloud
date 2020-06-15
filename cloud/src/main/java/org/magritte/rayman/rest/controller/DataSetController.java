@@ -64,7 +64,7 @@ public class DataSetController {
     @PostMapping("/dataset")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
-    @Transactional
+    @Transactional(rollbackOn = Exception.class)
     public DataSetResponse addDataSet(@RequestBody @Valid DataSetRequest request){
         Patient patient = (Patient) userService.getUserById(request.getIdPatient());
         Routine routine = routineService.getRoutineById(request.getIdRoutine());
