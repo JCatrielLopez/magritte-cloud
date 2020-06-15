@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Repository
 public interface DataSetRepository extends JpaRepository<DataSet, Integer> {
@@ -22,9 +21,9 @@ public interface DataSetRepository extends JpaRepository<DataSet, Integer> {
 
     List<DataSetResponse> findByPatientAndRoutine(@NotNull Patient paciente, @NotNull Routine routine);
 
-    List<DataSetResponse> findByDataType(String dataType);
+    List<DataSetResponse> findByDataType(@NotNull String dataType);
 
     List<DataSetResponse> findByMeasurement(int measurement);
 
-    List<DataSetResponse> findByUnit(String unit);
+    List<DataSetResponse> findByUnit(@NotNull String unit);
 }
