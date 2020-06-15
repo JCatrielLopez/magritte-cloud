@@ -5,12 +5,12 @@ import org.magritte.rayman.data.entity.DataSet;
 import org.magritte.rayman.data.entity.Patient;
 import org.magritte.rayman.data.entity.Routine;
 import org.magritte.rayman.data.repository.DataSetRepository;
-import org.magritte.rayman.exceptions.DataSetNotFoundException;
 import org.magritte.rayman.rest.response.DataSetResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,7 +22,7 @@ public class DataSetService {
     public DataSet getDataSetById(@NotNull Integer id) {
         return dataSetRepository
                 .findById(id)
-                .orElseThrow(DataSetNotFoundException::new);
+                .orElseThrow(NoSuchElementException::new);
     }
 
     public List<DataSetResponse> getDataSets() {

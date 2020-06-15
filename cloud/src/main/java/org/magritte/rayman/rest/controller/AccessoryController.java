@@ -2,7 +2,6 @@ package org.magritte.rayman.rest.controller;
 
 import org.magritte.rayman.data.entity.Accessory;
 import org.magritte.rayman.data.entity.Data;
-import org.magritte.rayman.exceptions.AccessoryNotFoundException;
 import org.magritte.rayman.rest.request.AccessoryRequest;
 import org.magritte.rayman.rest.request.DatasRequest;
 import org.magritte.rayman.rest.response.AccessoryResponse;
@@ -12,22 +11,11 @@ import org.magritte.rayman.service.AccessoryService;
 import org.magritte.rayman.service.DataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -83,7 +71,7 @@ public class AccessoryController {
     public void removeAccessory(@PathVariable Integer id) {
         Accessory accessory = Optional.of(id)
                 .map(accessoryService::getAccessoryById)
-                .orElseThrow(AccessoryNotFoundException::new);
+                .orElseThrow(NoSuchElementException::new);
         accessoryService.delete(accessory);
     }
 

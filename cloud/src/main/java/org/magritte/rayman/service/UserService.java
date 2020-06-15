@@ -2,10 +2,8 @@ package org.magritte.rayman.service;
 
 import org.jetbrains.annotations.NotNull;
 import org.magritte.rayman.data.entity.Medic;
-import org.magritte.rayman.data.entity.Patient;
 import org.magritte.rayman.data.entity.User;
 import org.magritte.rayman.data.repository.UserRepository;
-import org.magritte.rayman.exceptions.UserNotFoundException;
 import org.magritte.rayman.rest.response.MedicResponse;
 import org.magritte.rayman.rest.response.PatientResponse;
 import org.magritte.rayman.rest.response.UserResponse;
@@ -15,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -30,7 +29,7 @@ public class UserService {
     public User getUserById(@NotNull Integer id) {
         return userRepository
                 .findById(id)
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(NoSuchElementException::new);
     }
 
     public void save(@NotNull User user) {
@@ -42,14 +41,14 @@ public class UserService {
     }
 
     public UserResponse login(@NotNull String dni, @NotNull String password) {
-        User user = userRepository.findByDni(dni).orElseThrow(UserNotFoundException::new);
+        User user = userRepository.findByDni(dni).orElseThrow(NoSuchElementException::new);
         if (!Objects.equals(user.getPassword(), password)) return null;
         return user.getUserType() == MEDIC ? new MedicResponse(user) : new PatientResponse(user);
     }
 
     @Transactional
     public List<PatientResponse> getPatientsFromMedic(@NotNull Integer id) {
-        Medic medic = (Medic) userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        Medic medic = (Medic) userRepository.findById(id).orElseThrow(NoSuchElementException::new);
         return medic.getPatients().stream()
                 .map(PatientResponse::new)
                 .collect(Collectors.toList());
@@ -77,7 +76,7 @@ public class UserService {
     public User getUserByDni(@NotNull String dni) {
         return userRepository
                 .findByDni(dni)
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(NoSuchElementException::new);
     }
 }
 

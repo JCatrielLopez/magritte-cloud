@@ -4,7 +4,6 @@ import org.jetbrains.annotations.NotNull;
 import org.magritte.rayman.data.entity.Medic;
 import org.magritte.rayman.data.entity.Patient;
 import org.magritte.rayman.data.entity.User;
-import org.magritte.rayman.exceptions.UserNotFoundException;
 import org.magritte.rayman.rest.request.MedicRequest;
 import org.magritte.rayman.rest.request.PatientRequest;
 import org.magritte.rayman.rest.response.MedicResponse;
@@ -14,19 +13,11 @@ import org.magritte.rayman.rest.response.UserResponse;
 import org.magritte.rayman.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -95,7 +86,8 @@ public class UserController {
     @ResponseStatus(code = HttpStatus.OK)
     public UserResponse login(@RequestParam String dni, @RequestParam String password) {
         UserResponse userResponse = userService.login(dni, password);
-        if (Objects.isNull(userResponse)) throw new UserNotFoundException();
+        if (Objects.isNull(userResponse))
+            throw new NoSuchElementException();
         return userResponse;
     }
 
@@ -237,7 +229,7 @@ public class UserController {
     public void deleteUser(@PathVariable Integer id) {
         User userToDelete = Optional.of(id)
                 .map(userService::getUserById)
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(NoSuchElementException::new);
         userService.delete(userToDelete);
     }
 }

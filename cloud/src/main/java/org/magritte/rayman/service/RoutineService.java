@@ -8,7 +8,6 @@ import org.magritte.rayman.data.entity.User;
 import org.magritte.rayman.data.repository.AccessoryRepository;
 import org.magritte.rayman.data.repository.RoutineRepository;
 import org.magritte.rayman.data.repository.SessionRepository;
-import org.magritte.rayman.exceptions.RoutineNotFoundException;
 import org.magritte.rayman.rest.request.AccessoryRequest;
 import org.magritte.rayman.rest.request.SessionRequest;
 import org.magritte.rayman.rest.response.AccessoryResponse;
@@ -17,10 +16,7 @@ import org.magritte.rayman.rest.response.SessionResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,7 +40,7 @@ public class RoutineService {
     public Routine getRoutineById(@NotNull Integer id) {
         return routineRepository
                 .findById(id)
-                .orElseThrow(RoutineNotFoundException::new);
+                .orElseThrow(NoSuchElementException::new);
     }
 
     /**
