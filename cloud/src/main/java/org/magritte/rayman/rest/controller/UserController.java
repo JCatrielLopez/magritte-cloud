@@ -45,6 +45,17 @@ public class UserController {
     private UserService userService;
 
     /**
+     * By default /user return all users
+     *
+     * @return List of all users
+     */
+    @GetMapping("/users")
+    // Hay que especificar /users, sino da error -> "User not found!".
+    List<UserResponse> all() {
+        return userService.allUsers();
+    }
+
+    /**
      * Obtiene un usuario a partir de su id
      *
      * @param id id del usuario a filtrar
@@ -55,6 +66,18 @@ public class UserController {
     @ResponseStatus(code = HttpStatus.OK)
     public UserResponse getUser(@PathVariable Integer id) {
         User user = userService.getUserById(id);
+        return user.getUserType() == PATIENT ? new PatientResponse(user) : new MedicResponse(user);
+    }
+
+    /**
+     * Obtengo el usuario dado un dni
+     *
+     * @param dni dni del usuario a filtrar
+     * @return UserResponse
+     */
+    @GetMapping("/user")
+    public UserResponse getUserByDni(@RequestParam String dni) {
+        User user = userService.getUserByDni(dni);
         return user.getUserType() == PATIENT ? new PatientResponse(user) : new MedicResponse(user);
     }
 
@@ -74,14 +97,70 @@ public class UserController {
     }
 
     /**
-     * By default /user return all users
+     * Obtiene todos los pacientes
      *
-     * @return List of all users
+     * @return Lista de pacientes
      */
-    @GetMapping("/users")
-    // Hay que especificar /users, sino da error -> "User not found!".
-    List<UserResponse> all() {
-        return userService.allUsers();
+    @GetMapping("/patients")
+    public List<PatientResponse> getPatients() {
+        return userService.getPatients();
+    }
+
+    /**
+     * Obtiene un paciente a partir de su id
+     *
+     * @param id id del paciente a filtrar
+     * @return paciente
+     */
+    @GetMapping("/patient/{id}")
+    public PatientResponse getPatient(@PathVariable Integer id) {
+        User user = userService.getUserById(id);
+        return new PatientResponse(user);
+    }
+
+    /**
+     * Obtiene todos los medicos
+     *
+     * @return Lista de medicos
+     */
+    @GetMapping("/medics")
+    public List<MedicResponse> getMedics() {
+        return userService.getMedics();
+    }
+
+    /**
+     * Obtiene el medico a partir del id
+     *
+     * @param id id del medico a filtrar
+     * @return medico
+     */
+    @GetMapping("/medic/{id}")
+    public MedicResponse getMedic(@PathVariable Integer id) {
+        User user = userService.getUserById(id);
+        return new MedicResponse(user);
+    }
+
+    /**
+     * Obtener los pacientes asociados al medico correspondiente
+     *
+     * @param id id del medico a filtrar
+     * @return Lista de pacientes
+     */
+    @GetMapping("/medic/patients/{id}")
+    public List<PatientResponse> getPatientsFromMedic(@PathVariable Integer id) {
+        return userService.getPatientsFromMedic(id);
+    }
+
+    /**
+     * Verifico el estado del dispositivo
+     *
+     * @param
+     * @return SimulationResponse
+     */
+    @GetMapping("/checkStatus")
+    public SimulationResponse getHeartRate(){
+        return new SimulationResponse();
+
     }
 
     /**
@@ -110,61 +189,6 @@ public class UserController {
     }
 
     /**
-     * Obtiene un paciente a partir de su id
-     *
-     * @param id id del paciente a filtrar
-     * @return paciente
-     */
-    @GetMapping("/patient/{id}")
-    public PatientResponse getPatient(@PathVariable Integer id) {
-        User user = userService.getUserById(id);
-        return new PatientResponse(user);
-    }
-
-    /**
-     * Obtiene el medico a partir del id
-     *
-     * @param id id del medico a filtrar
-     * @return medico
-     */
-    @GetMapping("/medic/{id}")
-    public MedicResponse getMedic(@PathVariable Integer id) {
-        User user = userService.getUserById(id);
-        return new MedicResponse(user);
-    }
-
-    /**
-     * Obtiene todos los pacientes
-     *
-     * @return Lista de pacientes
-     */
-    @GetMapping("/patients")
-    public List<PatientResponse> getPatients() {
-        return userService.getPatients();
-    }
-
-    /**
-     * Obtiene todos los medicos
-     *
-     * @return Lista de medicos
-     */
-    @GetMapping("/medics")
-    public List<MedicResponse> getMedics() {
-        return userService.getMedics();
-    }
-
-    /**
-     * Obtener los pacientes asociados al medico correspondiente
-     *
-     * @param id id del medico a filtrar
-     * @return Lista de pacientes
-     */
-    @GetMapping("/medic/patients/{id}")
-    public List<PatientResponse> getPatientsFromMedic(@PathVariable Integer id) {
-        return userService.getPatientsFromMedic(id);
-    }
-
-    /**
      * Setear el medico al paciente a partir de un id
      *
      * @param idPatient id del paciente a filtrar
@@ -187,29 +211,5 @@ public class UserController {
                 .map(userService::getUserById)
                 .orElseThrow(UserNotFoundException::new);
         userService.delete(userToDelete);
-    }
-
-    /**
-     * Obtengo el usuario dado un dni
-     *
-     * @param dni dni del usuario a filtrar
-     * @return UserResponse
-     */
-    @GetMapping("/user")
-    public UserResponse getUserByDni(@RequestParam String dni) {
-        User user = userService.getUserByDni(dni);
-        return user.getUserType() == PATIENT ? new PatientResponse(user) : new MedicResponse(user);
-    }
-
-    /**
-     * Verifico el estado del dispositivo
-     *
-     * @param
-     * @return SimulationResponse
-     */
-    @GetMapping("/checkStatus")
-    public SimulationResponse getHeartRate(){
-        return new SimulationResponse();
-
     }
 }
