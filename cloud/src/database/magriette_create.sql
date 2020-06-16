@@ -23,7 +23,7 @@ CREATE TABLE DataSet (
     id serial  NOT NULL,
     idPatient int  NOT NULL,
     idRoutine int  NOT NULL,
-    dateOfRealization time  NOT NULL,
+    dateOfRealization timestamp  NOT NULL,
     dataType varchar(20)  NOT NULL,
     measurement int  NOT NULL,
     unit varchar(3)  NOT NULL,
