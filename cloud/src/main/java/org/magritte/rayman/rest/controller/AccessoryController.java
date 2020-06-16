@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(name = "/accessory")
+@Transactional(rollbackOn = Exception.class)
 public class AccessoryController {
 
     @Autowired
@@ -31,15 +32,16 @@ public class AccessoryController {
     @GetMapping("/accessories")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
-    @Transactional(rollbackOn = Exception.class)
     public List<AccessoryResponse> getAccessories() {
-        return accessoryService.getAccessories();
+        return accessoryService.getAccessories()
+                .stream()
+                .map(AccessoryResponse::new)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/accessory/{id}")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
-    @Transactional(rollbackOn = Exception.class)
     // https://stackoverflow.com/questions/15359306/how-to-fetch-fetchtype-lazy-associations-with-jpa-and-hibernate-in-a-spring-cont
     public AccessoryResponse getRoutine(@PathVariable Integer id) {
         Accessory accessory = accessoryService.getAccessoryById(id);
@@ -48,7 +50,6 @@ public class AccessoryController {
 
     @PostMapping("/accessory")
     @ResponseStatus(code = HttpStatus.OK)
-    @Transactional(rollbackOn = Exception.class)
     public AccessoryResponse addAccessory(@RequestBody @Valid AccessoryRequest request) {
         // En estos casos no lanzo error porque en caso de que no exista, lo inserto sino lo actualizo.
         Optional<Accessory> optionalAccessory = accessoryService.getAccessoryByName(request.getName());
@@ -59,7 +60,6 @@ public class AccessoryController {
 
     @PostMapping("/accessory/{id}/data")
     @ResponseStatus(code = HttpStatus.OK)
-    @Transactional(rollbackOn = Exception.class)
     public DatasResponse addData(@PathVariable Integer id, @RequestBody @Valid DatasRequest request) {
         Accessory accessory = accessoryService.getAccessoryById(id);
         Set<DataResponse> dataResponses = accessoryService.save(accessory, request.getData());
@@ -77,7 +77,6 @@ public class AccessoryController {
 
     @DeleteMapping("/accessory/{idAccessory}/data/{idData}")
     @ResponseStatus(code = HttpStatus.OK)
-    @Transactional(rollbackOn = Exception.class)
     public void removeAccessoryData(@PathVariable Integer idAccessory, @PathVariable Integer idData) {
         Accessory accessory = accessoryService.getAccessoryById(idAccessory);
 

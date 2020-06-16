@@ -6,13 +6,11 @@ import org.magritte.rayman.data.entity.Data;
 import org.magritte.rayman.data.repository.AccessoryRepository;
 import org.magritte.rayman.data.repository.DataRepository;
 import org.magritte.rayman.rest.request.DataRequest;
-import org.magritte.rayman.rest.response.AccessoryResponse;
 import org.magritte.rayman.rest.response.DataResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class AccessoryService {
@@ -29,10 +27,8 @@ public class AccessoryService {
                 .orElseThrow(NoSuchElementException::new);
     }
 
-    public List<AccessoryResponse> getAccessories() {
-        return accessoryRepository.findAll().stream()
-                .map(AccessoryResponse::new)
-                .collect(Collectors.toList());
+    public List<Accessory> getAccessories() {
+        return accessoryRepository.findAll();
     }
 
     public Set<DataResponse> save(@NotNull Accessory accessory,@NotNull Set<DataRequest> requests) {

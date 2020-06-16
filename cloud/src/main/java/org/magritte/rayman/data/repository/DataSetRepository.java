@@ -4,7 +4,6 @@ import org.jetbrains.annotations.NotNull;
 import org.magritte.rayman.data.entity.DataSet;
 import org.magritte.rayman.data.entity.Patient;
 import org.magritte.rayman.data.entity.Routine;
-import org.magritte.rayman.rest.response.DataSetResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -17,13 +16,13 @@ public interface DataSetRepository extends JpaRepository<DataSet, Integer> {
     @NotNull
     Optional<DataSet> findById(@NotNull Integer id);
 
-    List<DataSetResponse> findByPatient(@NotNull Patient paciente);
+    List<DataSet> findByPatient(@NotNull Patient paciente);
 
-    List<DataSetResponse> findByPatientAndRoutine(@NotNull Patient paciente, @NotNull Routine routine);
+    List<DataSet> findByPatientAndRoutine(@NotNull Patient paciente, @NotNull Routine routine);
 
-    List<DataSetResponse> findByDataType(@NotNull String dataType);
+    List<DataSet> findByDataType(@NotNull String dataType);
 
-    List<DataSetResponse> findByMeasurement(int measurement);
+    List<DataSet> findByMeasurement(int measurement);
 
-    List<DataSetResponse> findByUnit(@NotNull String unit);
+    List<DataSet> findByUnit(@NotNull String unit);
 }
