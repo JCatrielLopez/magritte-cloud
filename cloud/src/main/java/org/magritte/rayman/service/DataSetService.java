@@ -3,14 +3,13 @@ package org.magritte.rayman.service;
 import org.jetbrains.annotations.NotNull;
 import org.magritte.rayman.data.entity.DataSet;
 import org.magritte.rayman.data.entity.Patient;
+import org.magritte.rayman.data.entity.Routine;
 import org.magritte.rayman.data.repository.DataSetRepository;
-import org.magritte.rayman.exceptions.DataSetNotFoundException;
-import org.magritte.rayman.rest.response.DataSetResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.NoSuchElementException;
 
 @Service
 public class DataSetService {
@@ -18,29 +17,29 @@ public class DataSetService {
     @Autowired
     private DataSetRepository dataSetRepository;
 
-    //TODO Adaptar metodos a la nueva BD. Implementar solo los metodos necesarios.
-
     public DataSet getDataSetById(@NotNull Integer id) {
         return dataSetRepository
                 .findById(id)
-                .orElseThrow(DataSetNotFoundException::new);
+                .orElseThrow(NoSuchElementException::new);
     }
 
-    public List<DataSetResponse> getDataSets() {
-        return dataSetRepository.findAll().stream()
-                .map(DataSetResponse::new)
-                .collect(Collectors.toList());
+    public List<DataSet> getDataSets() {
+        return dataSetRepository.findAll();
     }
 
-    public void save(DataSet toNewEntity) {
-        toNewEntity.getPatient().addExercise(toNewEntity);
-        toNewEntity.getRoutine().addRealization(toNewEntity);
-        dataSetRepository.save(toNewEntity);
+    public void save(@NotNull DataSet dataset) {
+        Patient patient = dataset.getPatient();
+        Routine routine = dataset.getRoutine();
+        patient.addExercise(dataset);
+        routine.addRealization(dataset);
+        dataSetRepository.save(dataset);
     }
 
-    public List<DataSetResponse> getDataSetByPatient(Patient patient) {
-        return dataSetRepository.findAllByPatient(patient).stream()
-                .map(DataSetResponse::new)
-                .collect(Collectors.toList());
+    public List<DataSet> getDataSetByPatient(@NotNull Patient patient) {
+        return dataSetRepository.findByPatient(patient);
+    }
+
+    public List<DataSet> getDataSetByPatientAndRoutine(@NotNull Patient patient, @NotNull Routine routine) {
+        return dataSetRepository.findByPatientAndRoutine(patient, routine);
     }
 }

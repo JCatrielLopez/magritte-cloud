@@ -13,10 +13,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(name = "/dataset")
+@Transactional(rollbackOn = Exception.class)
 public class DataSetController {
 
     @Autowired
@@ -28,19 +31,18 @@ public class DataSetController {
     @Autowired
     private RoutineService routineService;
 
-    //TODO implementar get de un paciente y una rutina.
-    // Adaptar a la nueva BD implementando solo los metodos que sean necesarios.
-    // GET historial de un paciente.
-    // GET historial de un paciente que realizo cierta rutina.
-    // POST nuevo conjunto de datos.
-
     @GetMapping("/datasets")
+    @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
     public List<DataSetResponse> getDataSets() {
-        return dataSetService.getDataSets();
+        return dataSetService.getDataSets()
+                .stream()
+                .map(DataSetResponse::new)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/dataset/{id}")
+    @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
     public DataSetResponse getDataSetById(@PathVariable Integer id) {
         DataSet dataSetById = dataSetService.getDataSetById(id);
@@ -48,19 +50,37 @@ public class DataSetController {
     }
 
     @GetMapping("/dataset/patient/{id}")
+    @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
     public List<DataSetResponse> getDataSetByPatient(@PathVariable Integer id){
         Patient patient = (Patient) userService.getUserById(id);
-        return dataSetService.getDataSetByPatient(patient);
+        return dataSetService.getDataSetByPatient(patient)
+                .stream()
+                .map(DataSetResponse::new)
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/dataset/patient/{idPatient}/routine/{idRoutine}")
+    @ResponseBody
+    @ResponseStatus(code = HttpStatus.OK)
+    public List<DataSetResponse> getDataSetByPatientAndRoutine(@PathVariable Integer idPatient, @PathVariable Integer idRoutine) {
+        Patient patient = (Patient) userService.getUserById(idPatient);
+        Routine routine = routineService.getRoutineById(idRoutine);
+        return dataSetService.getDataSetByPatientAndRoutine(patient, routine)
+                .stream()
+                .map(DataSetResponse::new)
+                .collect(Collectors.toList());
     }
 
     @PostMapping("/dataset")
+    @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
-    @Transactional
-    public void addDataSet(@RequestBody DataSetRequest dsr){
-        Patient p = (Patient) userService.getUserById(dsr.getIdPatient());
-        Routine r = routineService.getRoutineById(dsr.getIdRoutine());
-        dataSetService.save(dsr.toNewEntity(p,r));
+    public DataSetResponse addDataSet(@RequestBody @Valid DataSetRequest request){
+        Patient patient = (Patient) userService.getUserById(request.getIdPatient());
+        Routine routine = routineService.getRoutineById(request.getIdRoutine());
+        DataSet dataSet = request.toNewEntity(patient, routine);
+        dataSetService.save(dataSet);
+        return new DataSetResponse(dataSet);
     }
 
 }

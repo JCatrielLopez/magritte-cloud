@@ -16,5 +16,5 @@ public interface SessionRepository extends JpaRepository<Session, Integer> {
 
     List<SessionResponse> findByRoutine(@NotNull Routine routine);
 
-    Optional<Session> findByRoutineAndName(Routine routine, String name);
+    Optional<Session> findByRoutineAndName(@NotNull Routine routine, @NotNull String name);
 }

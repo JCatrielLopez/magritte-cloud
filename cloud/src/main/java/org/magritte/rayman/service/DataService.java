@@ -1,11 +1,12 @@
 package org.magritte.rayman.service;
 
+import org.jetbrains.annotations.NotNull;
 import org.magritte.rayman.data.entity.Data;
 import org.magritte.rayman.data.repository.DataRepository;
-import org.magritte.rayman.exceptions.DataNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -14,21 +15,21 @@ public class DataService {
     @Autowired
     private DataRepository dataRepository;
 
-    public Data getDataById(Integer idData) {
+    public Data getDataById(@NotNull Integer idData) {
         return dataRepository
                 .findById(idData)
-                .orElseThrow(DataNotFoundException::new);
+                .orElseThrow(NoSuchElementException::new);
     }
 
-    public void delete(Data data) {
+    public void delete(@NotNull Data data) {
         dataRepository.delete(data);
     }
 
-    public Optional<Data> getDataByDataType(String dataType) {
+    public Optional<Data> getDataByDataType(@NotNull String dataType) {
         return dataRepository.getDataByDataType(dataType);
     }
 
-    public void save(Data newData) {
+    public void save(@NotNull Data newData) {
         dataRepository.save(newData);
     }
 }

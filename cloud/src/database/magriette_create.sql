@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2020-06-13 15:03:47.432
+-- Last modification date: 2020-06-14 15:49:29.708
 
 -- tables
 -- Table: Accessory
@@ -23,7 +23,7 @@ CREATE TABLE DataSet (
     id serial  NOT NULL,
     idPatient int  NOT NULL,
     idRoutine int  NOT NULL,
-    dateOfRealization time  NOT NULL,
+    dateOfRealization timestamp  NOT NULL,
     dataType varchar(20)  NOT NULL,
     measurement int  NOT NULL,
     unit varchar(3)  NOT NULL,
@@ -100,9 +100,9 @@ CREATE TABLE accessory_data (
 -- Table: routine_accessory
 CREATE TABLE routine_accessory (
     id serial  NOT NULL,
-    routine_idroutine int  NOT NULL,
+    routines_idroutine int  NOT NULL,
     accessories_idaccessory int  NOT NULL,
-    CONSTRAINT unique_idRoutine_idAccessory UNIQUE (routine_idroutine, accessories_idaccessory) NOT DEFERRABLE  INITIALLY IMMEDIATE,
+    CONSTRAINT unique_idRoutine_idAccessory UNIQUE (routines_idroutine, accessories_idaccessory) NOT DEFERRABLE  INITIALLY IMMEDIATE,
     CONSTRAINT routine_accessory_pk PRIMARY KEY (id)
 );
 
@@ -110,7 +110,9 @@ CREATE TABLE routine_accessory (
 -- Reference: DataSet_Patient (table: DataSet)
 ALTER TABLE DataSet ADD CONSTRAINT DataSet_Patient
     FOREIGN KEY (idPatient)
-    REFERENCES Patient (id)  
+    REFERENCES Patient (id)
+    ON DELETE  CASCADE 
+    ON UPDATE  CASCADE 
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
 ;
@@ -118,7 +120,9 @@ ALTER TABLE DataSet ADD CONSTRAINT DataSet_Patient
 -- Reference: DataSet_Routine (table: DataSet)
 ALTER TABLE DataSet ADD CONSTRAINT DataSet_Routine
     FOREIGN KEY (idRoutine)
-    REFERENCES Routine (idRoutine)  
+    REFERENCES Routine (idRoutine)
+    ON DELETE  CASCADE 
+    ON UPDATE  CASCADE 
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
 ;
@@ -146,7 +150,9 @@ ALTER TABLE Patient ADD CONSTRAINT Paciente_User
 -- Reference: Routine_Usuario (table: Routine)
 ALTER TABLE Routine ADD CONSTRAINT Routine_Usuario
     FOREIGN KEY (idUser)
-    REFERENCES Usuario (id)  
+    REFERENCES Usuario (id)
+    ON DELETE  CASCADE 
+    ON UPDATE  CASCADE 
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
 ;
@@ -203,7 +209,7 @@ ALTER TABLE routine_accessory ADD CONSTRAINT utiliza_accesorio
 
 -- Reference: utiliza_rutina (table: routine_accessory)
 ALTER TABLE routine_accessory ADD CONSTRAINT utiliza_rutina
-    FOREIGN KEY (routine_idroutine)
+    FOREIGN KEY (routines_idroutine)
     REFERENCES Routine (idRoutine)
     ON DELETE  CASCADE 
     ON UPDATE  CASCADE 
