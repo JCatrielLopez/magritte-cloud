@@ -17,7 +17,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.time.LocalTime;
 import java.util.Date;
 
 @NoArgsConstructor
@@ -48,7 +47,7 @@ public class DataSet {
 
     @ToString.Include
     @Column(name = "dateofrealization")
-    private LocalTime dateOfRealization;
+    private Date dateOfRealization;
 
     @ToString.Include
     @Column(name = "datatype")
@@ -60,7 +59,7 @@ public class DataSet {
     @ToString.Include
     private int measurement;
 
-    public DataSet(Patient patient, Routine routine, LocalTime dateOfRealization, String dataType, String unit, int measurement) {
+    public DataSet(Patient patient, Routine routine, Date dateOfRealization, String dataType, String unit, int measurement) {
         this.patient = patient;
         this.routine = routine;
         this.dateOfRealization = dateOfRealization;

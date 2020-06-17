@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.magritte.rayman.data.entity.DataSet;
-import java.time.LocalTime;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -14,7 +14,7 @@ public class DataSetResponse {
     private Integer idDataSet;
     private Integer idPatient;
     private Integer idRoutine;
-    private LocalTime dateOfRealization;
+    private Date dateOfRealization;
     private String dataType;
     private int measurement;
     private String unit;
