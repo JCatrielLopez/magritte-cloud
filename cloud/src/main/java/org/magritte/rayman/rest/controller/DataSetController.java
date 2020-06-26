@@ -5,6 +5,7 @@ import org.magritte.rayman.data.entity.Patient;
 import org.magritte.rayman.data.entity.Routine;
 import org.magritte.rayman.rest.request.DataSetRequest;
 import org.magritte.rayman.rest.response.DataSetResponse;
+import org.magritte.rayman.rest.response.StatsResponse;
 import org.magritte.rayman.service.DataSetService;
 import org.magritte.rayman.service.RoutineService;
 import org.magritte.rayman.service.UserService;
@@ -12,11 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.spi.DirObjectFactory;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
+import java.util.stream.DoubleStream;
+import org.apache.commons.math3.stat.StatUtils;
 @RestController
 @RequestMapping(name = "/dataset")
 @Transactional(rollbackOn = Exception.class)
@@ -83,4 +87,50 @@ public class DataSetController {
         return new DataSetResponse(dataSet);
     }
 
+    /**
+     *
+     *
+     * @return
+     */
+    @GetMapping("/stats/{id}")
+    @ResponseBody
+    @ResponseStatus(code = HttpStatus.OK)
+    public StatsResponse getStatsByUnit(@PathVariable Integer id, @RequestParam String unit) {
+
+        Predicate<DataSet> pr = a->(!a.getUnit().equalsIgnoreCase(unit));
+        Patient patient = (Patient) userService.getUserById(id);
+
+        List<DataSet> patient_dataset = dataSetService.getDataSetByPatient(patient);
+        List<DataSet> global_dataset = dataSetService.getDataSets();
+        patient_dataset.removeIf(pr);
+        global_dataset.removeIf(pr);
+
+        double[] global_array = global_dataset
+                .stream()
+                .mapToDouble(DataSet::getMeasurement)
+                .toArray();
+
+        double[] patient_array = patient_dataset
+                .stream()
+                .mapToDouble(DataSet::getMeasurement)
+                .toArray();
+
+
+        StatsResponse out = new StatsResponse();
+
+        out.setPatient(id);
+        out.setUnit(unit);
+        out.setMean(StatUtils.mean(patient_array));
+        out.setMax(StatUtils.max(patient_array));
+        out.setMin(StatUtils.min(patient_array));
+        out.setVariance(StatUtils.percentile(patient_array, out.getMean()));
+
+        out.setGlobal_mean(StatUtils.mean(global_array));
+        out.setGlobal_max(StatUtils.max(global_array));
+        out.setGlobal_min(StatUtils.min(global_array));
+        out.setGlobal_mode(StatUtils.mode(global_array));
+        out.setGlobal_variance(StatUtils.variance(global_array, out.getGlobal_mean()));
+
+        return out;
+    }
 }
