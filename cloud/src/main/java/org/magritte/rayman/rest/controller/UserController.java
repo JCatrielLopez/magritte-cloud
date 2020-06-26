@@ -136,7 +136,7 @@ public class UserController {
      *
      * @return Lista de medicos
      */
-    @GetMapping("/medics")
+    @GetMapping("/medics/specialization")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
     public List<MedicResponse> getMedicsBySpecialization(@RequestParam String specialization){

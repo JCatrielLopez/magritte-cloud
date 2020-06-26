@@ -90,11 +90,12 @@ public class DataSetController {
     @GetMapping("/datasets/date")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
-    public List<DataSetResponse> getLatestDataset(@RequestParam String date){
+    public List<DataSetResponse> getLatestDataset(@RequestParam Integer idPatient, @RequestParam String date){
+        Patient patient = (Patient) userService.getUserById(idPatient);
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         try{
             Date limitDate = df.parse(date);
-            return dataSetService.getLatestDataSetByDate(limitDate).stream()
+            return dataSetService.getLatestDataSetByDate(patient, limitDate).stream()
                     .map(DataSetResponse::new)
                     .collect(Collectors.toList());
         }

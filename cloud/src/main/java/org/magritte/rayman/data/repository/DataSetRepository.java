@@ -21,7 +21,7 @@ public interface DataSetRepository extends JpaRepository<DataSet, Integer> {
 
     List<DataSet> findByPatientAndRoutine(@NotNull Patient paciente, @NotNull Routine routine);
 
-    List<DataSet> findByDateOfRealization(@NotNull Date dateOfRealization);
+    List<DataSet> findByPatientAndDateOfRealizationBetween(@NotNull Patient patient, @NotNull Date baseDate, @NotNull Date limitDate);
 
     List<DataSet> findByDataType(@NotNull String dataType);
 

@@ -44,15 +44,7 @@ public class DataSetService {
         return dataSetRepository.findByPatientAndRoutine(patient, routine);
     }
 
-    public List<DataSet> getLatestDataSetByDate(Date dateLimit){
-        List<DataSet> salida = new ArrayList<>();
-        Calendar calendar = Calendar.getInstance();
-        Date today = Calendar.getInstance().getTime();
-        calendar.setTime(dateLimit);
-        while (calendar.getTime().before(today)){
-            salida.addAll(dataSetRepository.findByDateOfRealization(calendar.getTime()));
-            calendar.add(Calendar.DATE, 1);
-        }
-        return salida;
+    public List<DataSet> getLatestDataSetByDate(Patient patient, Date dateLimit){
+        return dataSetRepository.findByPatientAndDateOfRealizationBetween(patient, dateLimit, Calendar.getInstance().getTime());
     }
 }
