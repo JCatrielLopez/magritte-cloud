@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -81,6 +85,21 @@ public class DataSetController {
         DataSet dataSet = request.toNewEntity(patient, routine);
         dataSetService.save(dataSet);
         return new DataSetResponse(dataSet);
+    }
+
+    @GetMapping("/datasets/date")
+    @ResponseBody
+    @ResponseStatus(code = HttpStatus.OK)
+    public List<DataSetResponse> getLatestDataset(@RequestParam String date){
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        try{
+            Date limitDate = df.parse(date);
+            return dataSetService.getLatestDataSetByDate(limitDate).stream()
+                    .map(DataSetResponse::new)
+                    .collect(Collectors.toList());
+        }
+        catch(ParseException e){ e.getStackTrace();}
+        return null;
     }
 
 }

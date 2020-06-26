@@ -7,11 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -40,9 +36,9 @@ public class Patient extends User {
     @ToString.Include
     private float weight;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @ToString.Include
-    private Medic medic;
+    private Set<Medic> medic;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = NAME_TABLE)
     private Set<DataSet> dataSets;
@@ -54,7 +50,8 @@ public class Patient extends User {
         this.gender = gender;
         this.height = height;
         this.weight = weight;
-        this.medic = medic;
+        this.medic = new HashSet<>();
+        this.medic.add(medic);
     }
 
     public Patient(String dni, String name, String lastname, String email,
@@ -66,4 +63,6 @@ public class Patient extends User {
     public void addExercise(DataSet dataSet){
         this.dataSets.add(dataSet);
     }
+
+    public void addMedic(Medic medic){ this.medic.add(medic); }
 }

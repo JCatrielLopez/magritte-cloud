@@ -64,6 +64,16 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
+    public List<MedicResponse> getMedicsBySpecialization(@NotNull String specialization){
+        List<MedicResponse> medicos = this.getMedics();
+        List<MedicResponse> salida = new ArrayList<>();
+        for (MedicResponse m : medicos){
+            if (m.getSpecialization().equals(specialization))
+                salida.add(m);
+        }
+        return salida;
+    }
+
     public List<UserResponse> allUsers() {
         return new ArrayList<>() {{
             addAll(getPatients());

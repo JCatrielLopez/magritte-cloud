@@ -132,6 +132,18 @@ public class UserController {
     }
 
     /**
+     * Obtiene los medicos con una cierta especialidad
+     *
+     * @return Lista de medicos
+     */
+    @GetMapping("/medics")
+    @ResponseBody
+    @ResponseStatus(code = HttpStatus.OK)
+    public List<MedicResponse> getMedicsBySpecialization(@RequestParam String specialization){
+        return userService.getMedicsBySpecialization(specialization);
+    }
+
+    /**
      * Obtiene el medico a partir del id
      *
      * @param id id del medico a filtrar
@@ -216,7 +228,7 @@ public class UserController {
     public PatientResponse setMedicToPatient(@PathVariable Integer idPatient, @RequestParam Integer idMedic) {
         Patient patient = (Patient) userService.getUserById(idPatient);
         Medic medic = (Medic) userService.getUserById(idMedic);
-        patient.setMedic(medic);
+        patient.addMedic(medic);
         userService.save(patient);
         return new PatientResponse(patient);
     }
