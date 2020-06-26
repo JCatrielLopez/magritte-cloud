@@ -1,10 +1,12 @@
 package org.magritte.rayman.rest.controller;
 
 import org.magritte.rayman.data.entity.DataSet;
+import org.magritte.rayman.data.entity.Medic;
 import org.magritte.rayman.data.entity.Patient;
 import org.magritte.rayman.data.entity.Routine;
 import org.magritte.rayman.rest.request.DataSetRequest;
 import org.magritte.rayman.rest.response.DataSetResponse;
+import org.magritte.rayman.rest.response.PatientResponse;
 import org.magritte.rayman.rest.response.StatsResponse;
 import org.magritte.rayman.service.DataSetService;
 import org.magritte.rayman.service.RoutineService;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.naming.spi.DirObjectFactory;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.util.HashSet;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -88,9 +91,9 @@ public class DataSetController {
     }
 
     /**
+     * Get a summary of the patient data filtered by unit
      *
-     *
-     * @return
+     * @return StatsResponse
      */
     @GetMapping("/stats/{id}")
     @ResponseBody
@@ -133,4 +136,26 @@ public class DataSetController {
 
         return out;
     }
+
+    /**
+     * Get a summary of all the patients linked to a doctor
+     *
+     * @return List of StatsResponse
+     */
+    @GetMapping("/stats/medic/{id}")
+    @ResponseBody
+    @ResponseStatus(code = HttpStatus.OK)
+    public HashSet<StatsResponse> getStatsByDoctor(@PathVariable Integer id, @RequestParam String unit) {
+
+        List<PatientResponse> patients = userService.getPatientsFromMedic(id);
+        HashSet<StatsResponse> out = new HashSet<>();
+
+        for(PatientResponse p: patients){
+            out.add(getStatsByUnit(p.getId(), unit));
+        }
+
+        return out;
+
+    }
+
 }
