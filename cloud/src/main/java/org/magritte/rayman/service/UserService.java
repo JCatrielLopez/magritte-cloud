@@ -40,8 +40,8 @@ public class UserService {
         userRepository.delete(user);
     }
 
-    public UserResponse login(@NotNull String dni, @NotNull String password) {
-        User user = userRepository.findByDni(dni).orElseThrow(NoSuchElementException::new);
+    public UserResponse login(@NotNull String nickname, @NotNull String password) {
+        User user = userRepository.findByNickname(nickname).orElseThrow(NoSuchElementException::new);
         if (!Objects.equals(user.getPassword(), password)) return null;
         return user.getUserType() == MEDIC ? new MedicResponse(user) : new PatientResponse(user);
     }

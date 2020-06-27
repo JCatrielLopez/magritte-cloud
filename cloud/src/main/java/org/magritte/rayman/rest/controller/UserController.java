@@ -79,15 +79,15 @@ public class UserController {
     /**
      * Sign in user
      *
-     * @param dni      user identifier
+     * @param nickname      user identifier
      * @param password password corresponding to the user
      * @return User: medic or patient depending on the case
      */
     @GetMapping("/user/login")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
-    public UserResponse login(@RequestParam String dni, @RequestParam String password) {
-        UserResponse userResponse = userService.login(dni, password);
+    public UserResponse login(@RequestParam String nickname, @RequestParam String password) {
+        UserResponse userResponse = userService.login(nickname, password);
         if (Objects.isNull(userResponse))
             throw new NoSuchElementException();
         return userResponse;
