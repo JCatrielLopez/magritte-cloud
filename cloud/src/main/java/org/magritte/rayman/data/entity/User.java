@@ -40,6 +40,9 @@ public abstract class User {
     private Integer id;
 
     @ToString.Include
+    private String nickname;
+
+    @ToString.Include
     private String dni;
 
     @ToString.Include
@@ -56,6 +59,12 @@ public abstract class User {
 
     @ToString.Include
     private char userType;
+
+    @ToString.Include
+    private String nativeLanguage;
+
+    @ToString.Include
+    private String city;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private Set<Routine> routines;

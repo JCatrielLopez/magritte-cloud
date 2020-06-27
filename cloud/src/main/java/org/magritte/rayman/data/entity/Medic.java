@@ -31,6 +31,9 @@ public class Medic extends User {
     @ToString.Include
     private int license;
 
+    @ToString.Include
+    private boolean availability;
+
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = NAME_TABLE)
     private Set<Patient> patients;

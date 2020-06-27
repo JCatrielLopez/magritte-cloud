@@ -36,6 +36,9 @@ public class Data {
     @Column(name = "datatype")
     private String dataType;
 
+    @ToString.Include
+    private String unit;
+
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = NAME_TABLE)
     private Set<Accessory> accessories;
 
