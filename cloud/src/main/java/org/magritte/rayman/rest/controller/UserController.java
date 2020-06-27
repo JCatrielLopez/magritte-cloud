@@ -170,6 +170,12 @@ public class UserController {
         return userService.getPatientsFromMedic(id);
     }
 
+    /**
+     * Obtener los medicos asociados al paciente correspondiente
+     *
+     * @param id id del paciente a filtrar
+     * @return Lista de medicos
+     */
     @GetMapping("/patient/medics/{id}")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
