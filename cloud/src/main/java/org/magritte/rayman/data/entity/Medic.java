@@ -11,6 +11,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -39,10 +40,15 @@ public class Medic extends User {
         super(dni, name, lastname, password, email, MEDIC);
         this.specialization = specialization;
         this.license = license;
+        this.patients = new HashSet<>();
     }
 
     public Medic(String dni, String name, String lastname,
                  String email, String specialization, int license) {
         this(dni, name, lastname, null, email, specialization, license);
+    }
+
+    public void addPatient(Patient patient) {
+        this.patients.add(patient);
     }
 }

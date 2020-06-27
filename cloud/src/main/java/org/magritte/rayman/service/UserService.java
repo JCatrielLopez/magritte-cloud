@@ -2,6 +2,7 @@ package org.magritte.rayman.service;
 
 import org.jetbrains.annotations.NotNull;
 import org.magritte.rayman.data.entity.Medic;
+import org.magritte.rayman.data.entity.Patient;
 import org.magritte.rayman.data.entity.User;
 import org.magritte.rayman.data.repository.UserRepository;
 import org.magritte.rayman.rest.response.MedicResponse;
@@ -85,6 +86,15 @@ public class UserService {
         return userRepository
                 .findByDni(dni)
                 .orElseThrow(NoSuchElementException::new);
+    }
+
+    public PatientResponse setMedicToPatient(Integer idPatient, Integer idMedic){
+        Patient patient = (Patient) this.getUserById(idPatient);
+        Medic medic = (Medic) this.getUserById(idMedic);
+        patient.addMedic(medic);
+        medic.addPatient(patient);
+        this.save(patient);
+        return new PatientResponse(patient);
     }
 }
 

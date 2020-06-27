@@ -226,11 +226,7 @@ public class UserController {
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
     public PatientResponse setMedicToPatient(@PathVariable Integer idPatient, @RequestParam Integer idMedic) {
-        Patient patient = (Patient) userService.getUserById(idPatient);
-        Medic medic = (Medic) userService.getUserById(idMedic);
-        patient.addMedic(medic);
-        userService.save(patient);
-        return new PatientResponse(patient);
+        return userService.setMedicToPatient(idPatient, idMedic);
     }
 
     /**
