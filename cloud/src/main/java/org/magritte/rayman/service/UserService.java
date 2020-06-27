@@ -96,5 +96,12 @@ public class UserService {
         this.save(medic);
         return new PatientResponse(patient);
     }
+
+    public List<MedicResponse> getMedicsFromPatient(Integer id) {
+        Patient patient = (Patient) userRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        return patient.getMedic().stream()
+                .map(MedicResponse::new)
+                .collect(Collectors.toList());
+    }
 }
 

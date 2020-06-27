@@ -170,6 +170,13 @@ public class UserController {
         return userService.getPatientsFromMedic(id);
     }
 
+    @GetMapping("/patient/medics/{id}")
+    @ResponseBody
+    @ResponseStatus(code = HttpStatus.OK)
+    public List<MedicResponse> getMedicsFromPatient(@PathVariable Integer id) {
+        return userService.getMedicsFromPatient(id);
+    }
+
     /**
      * Verifico el estado del dispositivo
      *
