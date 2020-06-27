@@ -36,7 +36,7 @@ public class Patient extends User {
     @ToString.Include
     private float weight;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = NAME_TABLE)
     @ToString.Include
     private Set<Medic> medic;
 

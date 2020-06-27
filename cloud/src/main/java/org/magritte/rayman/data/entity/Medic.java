@@ -24,6 +24,7 @@ public class Medic extends User {
 
     public static final char MEDIC = 'M';
     public static final String NAME_TABLE = "medic";
+    public static final String ID = "idMedic";
 
     @ToString.Include
     private String specialization;
@@ -35,8 +36,8 @@ public class Medic extends User {
     private boolean availability;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = NAME_TABLE)
-    private Set<Patient> patients;
+    @OneToMany(fetch = FetchType.LAZY)
+    private Set<Patient> patient;
 
     public Medic(String dni, String nickname, String name, String lastname, String password,
                  String email, String nativeLanguage, String city, String specialization, int license, boolean available) {
@@ -44,7 +45,7 @@ public class Medic extends User {
         this.specialization = specialization;
         this.license = license;
         this.availability = available;
-        this.patients = new HashSet<>();
+        this.patient = new HashSet<>();
     }
 
     public Medic(String dni, String nickname, String name, String lastname,
@@ -53,6 +54,6 @@ public class Medic extends User {
     }
 
     public void addPatient(Patient patient) {
-        this.patients.add(patient);
+        this.patient.add(patient);
     }
 }

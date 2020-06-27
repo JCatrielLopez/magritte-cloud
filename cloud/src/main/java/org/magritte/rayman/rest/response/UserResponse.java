@@ -28,7 +28,7 @@ public class UserResponse {
         this.lastname = user.getLastname();
         this.email = user.getEmail();
         this.user_type = String.valueOf(user.getUserType());
-        this.nativeLanguage = user.getNativeLanguage();
+        this.nativeLanguage = user.getNativelanguage();
         this.city = user.getCity();
     }
 }

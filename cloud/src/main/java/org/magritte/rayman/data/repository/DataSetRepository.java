@@ -22,10 +22,4 @@ public interface DataSetRepository extends JpaRepository<DataSet, Integer> {
     List<DataSet> findByPatientAndRoutine(@NotNull Patient paciente, @NotNull Routine routine);
 
     List<DataSet> findByPatientAndDateOfRealizationBetween(@NotNull Patient patient, @NotNull Date baseDate, @NotNull Date limitDate);
-
-    List<DataSet> findByDataType(@NotNull String dataType);
-
-    List<DataSet> findByMeasurement(int measurement);
-
-    List<DataSet> findByUnit(@NotNull String unit);
 }

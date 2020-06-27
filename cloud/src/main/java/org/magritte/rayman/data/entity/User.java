@@ -61,7 +61,7 @@ public abstract class User {
     private char userType;
 
     @ToString.Include
-    private String nativeLanguage;
+    private String nativelanguage;
 
     @ToString.Include
     private String city;
@@ -69,7 +69,8 @@ public abstract class User {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private Set<Routine> routines;
 
-    public User(String dni, String nickname, String name, String lastname, String password, String email, char userType, String nativeLanguage, String city) {
+    public User(String dni, String nickname, String name, String lastname, String password, String email,
+                char userType, String nativeLanguage, String city) {
         this.dni = dni;
         this.nickname = nickname;
         this.firstname = name;
@@ -77,18 +78,19 @@ public abstract class User {
         this.password = password;
         this.email = email;
         this.userType = userType;
-        this.nativeLanguage = nativeLanguage;
+        this.nativelanguage = nativeLanguage;
         this.city = city;
     }
 
-    public User(String dni, String nickname, String name, String lastname, String email, char userType, String nativeLanguage, String city) {
+    public User(String dni, String nickname, String name, String lastname, String email, char userType,
+                String nativeLanguage, String city) {
         this.dni = dni;
         this.nickname = nickname;
         this.firstname = name;
         this.lastname = lastname;
         this.email = email;
         this.userType = userType;
-        this.nativeLanguage = nativeLanguage;
+        this.nativelanguage = nativeLanguage;
         this.city = city;
     }
 }

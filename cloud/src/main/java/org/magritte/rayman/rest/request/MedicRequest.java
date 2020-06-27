@@ -27,6 +27,6 @@ public class MedicRequest extends UserRequest {
 
     public Medic toNewEntity() {
         return new Medic(getDni(), getNickname(), getFirstname(), getLastname(), getPassword(),
-                getEmail(), getNativeLanguage(), getCity(), getSpecialization(), getLicense());
+                getEmail(), getNativeLanguage(), getCity(), getSpecialization(), getLicense(), isAvailability());
     }
 }

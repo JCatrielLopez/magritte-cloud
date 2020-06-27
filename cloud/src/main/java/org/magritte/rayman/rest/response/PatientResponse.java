@@ -23,7 +23,7 @@ public class PatientResponse extends UserResponse {
     private char gender;
     private int height;
     private float weight;
-    private Set<MedicResponse> medic; //no se si lo pondria cada vez que devolvemos un paciente, sino que cuando pidan la lista de medicos.
+    //private Set<MedicResponse> medic; //no se si lo pondria cada vez que devolvemos un paciente, sino que cuando pidan la lista de medicos.
 
     public PatientResponse(User user) {
         super(user);
@@ -32,8 +32,8 @@ public class PatientResponse extends UserResponse {
         this.gender = patient.getGender();
         this.height = patient.getHeight();
         this.weight = patient.getWeight();
-        this.medic = patient.getMedic().stream()
-                    .map(MedicResponse::new)
-                    .collect(Collectors.toSet());
+//        this.medic = patient.getMedic().stream()
+//                    .map(MedicResponse::new)
+//                    .collect(Collectors.toSet());
     }
 }

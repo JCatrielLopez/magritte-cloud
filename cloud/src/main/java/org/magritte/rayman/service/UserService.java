@@ -48,7 +48,7 @@ public class UserService {
 
     public List<PatientResponse> getPatientsFromMedic(@NotNull Integer id) {
         Medic medic = (Medic) userRepository.findById(id).orElseThrow(NoSuchElementException::new);
-        return medic.getPatients().stream()
+        return medic.getPatient().stream()
                 .map(PatientResponse::new)
                 .collect(Collectors.toList());
     }
@@ -93,7 +93,7 @@ public class UserService {
         Medic medic = (Medic) this.getUserById(idMedic);
         patient.addMedic(medic);
         medic.addPatient(patient);
-        this.save(patient);
+        this.save(medic);
         return new PatientResponse(patient);
     }
 }
