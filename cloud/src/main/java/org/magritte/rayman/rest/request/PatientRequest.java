@@ -47,8 +47,8 @@ public class PatientRequest extends UserRequest {
     private Integer medic_id;
 
     public Patient toNewEntity(Medic medic) {
-        return new Patient(getDni(), getFirstname(), getLastname(), getPassword(), getEmail(),
-                getBirthdate(), getGender(), getHeight(), getWeight(), medic);
+        return new Patient(getDni(), getNickname(), getFirstname(), getLastname(), getPassword(), getEmail(), getNativeLanguage(),
+                getCity(), getBirthdate(), getGender(), getHeight(), getWeight(), medic);
     }
 
     public char getGender() {

@@ -23,6 +23,10 @@ public abstract class UserRequest {
 
     @Size(max = 15)
     @NotNull
+    private String nickname;
+
+    @Size(max = 15)
+    @NotNull
     private String firstname;
 
     @Size(max = 15)
@@ -37,5 +41,13 @@ public abstract class UserRequest {
     @Email
     @NotNull
     private String email;
+
+    @Size(max = 15)
+    @NotNull
+    private String nativeLanguage;
+
+    @Size(max = 15)
+    @NotNull
+    private String city;
 
 }

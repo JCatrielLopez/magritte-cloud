@@ -38,17 +38,18 @@ public class Medic extends User {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = NAME_TABLE)
     private Set<Patient> patients;
 
-    public Medic(String dni, String name, String lastname, String password,
-                 String email, String specialization, int license) {
-        super(dni, name, lastname, password, email, MEDIC);
+    public Medic(String dni, String nickname, String name, String lastname, String password,
+                 String email, String nativeLanguage, String city, String specialization, int license, boolean available) {
+        super(dni, nickname, name, lastname, password, email, MEDIC, nativeLanguage, city);
         this.specialization = specialization;
         this.license = license;
+        this.availability = available;
         this.patients = new HashSet<>();
     }
 
-    public Medic(String dni, String name, String lastname,
-                 String email, String specialization, int license) {
-        this(dni, name, lastname, null, email, specialization, license);
+    public Medic(String dni, String nickname, String name, String lastname,
+                 String email, String nativeLanguage, String city, String specialization, int license, boolean available) {
+        this(dni, nickname, name, lastname, null, email, nativeLanguage, city, specialization, license, available);
     }
 
     public void addPatient(Patient patient) {

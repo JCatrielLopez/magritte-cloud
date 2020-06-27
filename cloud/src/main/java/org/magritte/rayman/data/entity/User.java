@@ -69,21 +69,27 @@ public abstract class User {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private Set<Routine> routines;
 
-    public User(String dni, String name, String lastname, String password, String email, char userType) {
+    public User(String dni, String nickname, String name, String lastname, String password, String email, char userType, String nativeLanguage, String city) {
         this.dni = dni;
+        this.nickname = nickname;
         this.firstname = name;
         this.lastname = lastname;
         this.password = password;
         this.email = email;
         this.userType = userType;
+        this.nativeLanguage = nativeLanguage;
+        this.city = city;
     }
 
-    public User(String dni, String name, String lastname, String email, char userType) {
+    public User(String dni, String nickname, String name, String lastname, String email, char userType, String nativeLanguage, String city) {
         this.dni = dni;
+        this.nickname = nickname;
         this.firstname = name;
         this.lastname = lastname;
         this.email = email;
         this.userType = userType;
+        this.nativeLanguage = nativeLanguage;
+        this.city = city;
     }
 }
 

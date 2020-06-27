@@ -42,9 +42,10 @@ public class Data {
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = NAME_TABLE)
     private Set<Accessory> accessories;
 
-    public Data(String dataType) {
+    public Data(String dataType, String unit) {
         this.accessories = new HashSet<>();
         this.dataType = dataType;
+        this.unit = unit;
     }
 
     public void add(Accessory accessory) {

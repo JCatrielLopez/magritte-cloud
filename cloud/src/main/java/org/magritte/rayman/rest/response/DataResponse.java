@@ -12,9 +12,11 @@ public class DataResponse {
 
     private Integer idData;
     private String dataType;
+    private String unit;
 
     public DataResponse(Data data) {
         this.idData = data.getIdData();
         this.dataType = data.getDataType();
+        this.unit = data.getUnit();
     }
 }

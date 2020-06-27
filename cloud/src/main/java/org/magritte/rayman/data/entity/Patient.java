@@ -43,9 +43,9 @@ public class Patient extends User {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = NAME_TABLE)
     private Set<DataSet> dataSets;
 
-    public Patient(String dni, String name, String lastname, String password, String email,
-                   Date birthdate, char gender, int height, float weight, Medic medic) {
-        super(dni, name, lastname, password, email, PATIENT);
+    public Patient(String dni, String nickname, String name, String lastname, String password, String email,
+                   String nativeLanguage, String city, Date birthdate, char gender, int height, float weight, Medic medic) {
+        super(dni, nickname, name, lastname, password, email, PATIENT, nativeLanguage, city);
         this.birthdate = birthdate;
         this.gender = gender;
         this.height = height;
@@ -54,9 +54,9 @@ public class Patient extends User {
         this.medic.add(medic);
     }
 
-    public Patient(String dni, String name, String lastname, String email,
+    public Patient(String dni, String nickname, String name, String lastname, String email, String nativeLanguage, String city,
                    Date birthdate, char gender, int height, float weight, Medic medic) {
-        this(dni, name, lastname, null, email, birthdate, gender, height, weight, medic);
+        this(dni, nickname, name, lastname, null, email, nativeLanguage, city, birthdate, gender, height, weight, medic);
         this.dataSets = new HashSet<>();
     }
 

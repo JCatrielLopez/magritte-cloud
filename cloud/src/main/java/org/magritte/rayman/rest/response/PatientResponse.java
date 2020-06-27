@@ -23,7 +23,7 @@ public class PatientResponse extends UserResponse {
     private char gender;
     private int height;
     private float weight;
-    private Set<MedicResponse> medic;
+    private Set<MedicResponse> medic; //no se si lo pondria cada vez que devolvemos un paciente, sino que cuando pidan la lista de medicos.
 
     public PatientResponse(User user) {
         super(user);
