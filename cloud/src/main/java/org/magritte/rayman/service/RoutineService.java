@@ -55,11 +55,15 @@ public class RoutineService {
     }
 
     public List<RoutineResponse> getRoutinesByName(@NotNull String name) {
-        return routineRepository.findByName(name);
+        return routineRepository.findByName(name).stream()
+                .map(RoutineResponse::new)
+                .collect(Collectors.toList());
     }
 
     public List<RoutineResponse> getRoutinesByCreator(@NotNull User user) {
-        return routineRepository.findByUser(user);
+        return routineRepository.findByUser(user).stream()
+                .map(RoutineResponse::new)
+                .collect(Collectors.toList());
     }
 
     public void save(@NotNull Routine routine) {

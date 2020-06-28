@@ -16,10 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -73,6 +70,16 @@ public class RoutineController {
     public List<RoutineResponse> getRoutinesByCreator(@PathVariable Integer idUser) {
         User user = userService.getUserById(idUser);
         return routineService.getRoutinesByCreator(user);
+    }
+
+    @GetMapping("/routines/idUserAndName")
+    @ResponseBody
+    @ResponseStatus(code = HttpStatus.OK)
+    public RoutineResponse getRoutinesByCreatorAndName(@RequestParam Integer idUser, @RequestParam String name) {
+        User user = userService.getUserById(idUser);
+        Optional<Routine> routine = routineService.getRoutineByUserAndName(user, name);
+        Routine r = routine.orElseThrow(NoSuchElementException::new);
+        return new RoutineResponse(r);
     }
 
     @PostMapping("/routine")

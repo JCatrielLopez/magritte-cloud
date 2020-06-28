@@ -3,7 +3,6 @@ package org.magritte.rayman.data.repository;
 import org.jetbrains.annotations.NotNull;
 import org.magritte.rayman.data.entity.Routine;
 import org.magritte.rayman.data.entity.User;
-import org.magritte.rayman.rest.response.RoutineResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,9 +15,9 @@ public interface RoutineRepository extends JpaRepository<Routine, Integer> {
     @NotNull
     Optional<Routine> findById(@NotNull Integer id);
 
-    List<RoutineResponse> findByName(@NotNull String name);
+    List<Routine> findByName(@NotNull String name);
 
-    List<RoutineResponse> findByUser(@NotNull User user);
+    List<Routine> findByUser(@NotNull User user);
 
     Optional<Routine> findByUserAndName(@NotNull User user, @NotNull String name);
 }
