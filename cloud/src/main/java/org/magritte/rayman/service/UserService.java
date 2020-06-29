@@ -110,5 +110,15 @@ public class UserService {
         userRepository.save(medic);
         return medic;
     }
+
+    public List<MedicResponse> getMedicsByCity(String city) {
+        List<MedicResponse> medicos = this.getMedics();
+        List<MedicResponse> salida = new ArrayList<>();
+        for (MedicResponse m : medicos){
+            if (m.getCity().equals(city))
+                salida.add(m);
+        }
+        return salida;
+    }
 }
 

@@ -4,6 +4,8 @@ import org.jetbrains.annotations.NotNull;
 import org.magritte.rayman.data.entity.Medic;
 import org.magritte.rayman.data.entity.Patient;
 import org.magritte.rayman.data.entity.User;
+import org.magritte.rayman.mail.SenderMail;
+import org.magritte.rayman.rest.request.AlertRequest;
 import org.magritte.rayman.rest.request.MedicRequest;
 import org.magritte.rayman.rest.request.PatientRequest;
 import org.magritte.rayman.rest.response.MedicResponse;
@@ -17,10 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 import static org.magritte.rayman.data.entity.Patient.PATIENT;
 
@@ -261,5 +260,71 @@ public class UserController {
     @ResponseStatus(code = HttpStatus.OK)
     public MedicResponse changeAvailability(@PathVariable Integer id){
         return new MedicResponse(userService.changeAvailability(id));
+    }
+
+    @PostMapping("/emergencyAlert")
+    @ResponseBody
+    @ResponseStatus(code = HttpStatus.OK)
+    public MedicResponse searchAvailableMedic(@RequestBody AlertRequest alertRequest){
+        Patient patient = (Patient) userService.getUserById(alertRequest.getIdUser());
+        Set<Medic> medicosAsociados = patient.getMedic();
+        String firstname = patient.getFirstname();
+        String lastname = patient.getLastname();
+        String causa = alertRequest.getRazon();
+        String fecha = alertRequest.getFecha();
+        String direccion = alertRequest.getDireccion();
+
+        for (Medic medic : medicosAsociados){
+            if (medic.isAvailability() &&
+                    medic.getCity().equals(patient.getCity()) &&
+                    medic.getSpecialization().equals(alertRequest.getEspecialista())){
+                SenderMail senderMail = new SenderMail();
+                senderMail.addRecepient(medic.getEmail());
+                String message = "Su paciente " + firstname + " " + lastname + " solicita de su asistencia medica debido a "
+                        + causa + ". Se requiere de su presencia en la direccion: " + direccion + ".\nHora de alerta: " + fecha;
+                senderMail.sendMail(message);
+                return new MedicResponse(medic);
+            }
+        }
+
+        List<MedicResponse> medicosEspecializados = userService.getMedicsBySpecialization(alertRequest.getEspecialista());
+        for (MedicResponse medic : medicosEspecializados){
+            if (medic.isAvailability() &&
+                    medic.getCity().equals(patient.getCity())){
+                SenderMail senderMail = new SenderMail();
+                senderMail.addRecepient(medic.getEmail());
+                String message = "Un paciente llamado " + firstname + " " + lastname + " solicita asistencia medica debido a "
+                        + causa + ". Como su medico de cabecera no se encuentra disponible en este momento, solicitamos su ayuda " +
+                        "ya que figura como disponible y se trata de una emergencia de su rubro. Creemos que su servicio " +
+                        "es de vital importancia. Se requiere de su presencia en la direccion: " + direccion + ".\nHora de alerta: " + fecha;
+                senderMail.sendMail(message);
+                return medic;
+            }
+        }
+
+        List<MedicResponse> medicosEnCiudad = userService.getMedicsByCity(patient.getCity());
+        for (MedicResponse medic : medicosEnCiudad){
+            if (medic.isAvailability()){
+                SenderMail senderMail = new SenderMail();
+                senderMail.addRecepient(medic.getEmail());
+                String message = "Un paciente llamado " + firstname + " " + lastname + " solicita asistencia medica debido a "
+                        + causa + ". Como no se encuentran medicos disponibles que cubran esta causa, se solicita su presencia " +
+                        "en la direccion: " + direccion + ".\nHora de alerta: " + fecha;
+                senderMail.sendMail(message);
+                return medic;
+            }
+        }
+        for (MedicResponse medic : medicosEnCiudad){
+                SenderMail senderMail = new SenderMail();
+                senderMail.addRecepient(medic.getEmail());
+                String message = "Un paciente llamado" + firstname + " " + lastname + " solicita asistencia medica debido a "
+                        + causa + ". Se requiere la presencia  de algun medico en la direccion: " + direccion + ". " +
+                        "Por favor comunicarse con la central para coordinar y confirmar su asistencia.\nHora de alerta: " + fecha;
+                senderMail.sendMail(message);
+        }
+        MedicResponse salida = new MedicResponse();
+        salida.setFirstname("Todos");
+        salida.setLastname("Todos");
+        return salida;
     }
 }
