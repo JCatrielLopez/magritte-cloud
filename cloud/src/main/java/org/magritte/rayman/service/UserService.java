@@ -103,5 +103,12 @@ public class UserService {
                 .map(MedicResponse::new)
                 .collect(Collectors.toList());
     }
+
+    public Medic changeAvailability(Integer id) {
+        Medic medic = (Medic) userRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        medic.setAvailability(!medic.isAvailability());
+        userRepository.save(medic);
+        return medic;
+    }
 }
 

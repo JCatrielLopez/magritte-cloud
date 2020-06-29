@@ -255,4 +255,11 @@ public class UserController {
                 .orElseThrow(NoSuchElementException::new);
         userService.delete(userToDelete);
     }
+
+    @PostMapping("/medic/available/{id}")
+    @ResponseBody
+    @ResponseStatus(code = HttpStatus.OK)
+    public MedicResponse changeAvailability(@PathVariable Integer id){
+        return new MedicResponse(userService.changeAvailability(id));
+    }
 }
