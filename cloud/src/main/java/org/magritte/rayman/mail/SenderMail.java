@@ -19,7 +19,7 @@ import javax.mail.internet.MimeMessage;
 @Getter
 public class SenderMail {
     // Recipient's email ID needs to be mentioned.
-    private Vector<String> to;
+    private Vector<String> to = new Vector<>();
 
     // Sender's email ID needs to be mentioned
     private String from = "informacionrayman@gmail.com";
