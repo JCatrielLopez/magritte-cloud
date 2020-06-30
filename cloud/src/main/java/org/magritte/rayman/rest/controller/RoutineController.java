@@ -82,6 +82,16 @@ public class RoutineController {
         return new RoutineResponse(r);
     }
 
+    @GetMapping("/routines/userNicknameAndName")
+    @ResponseBody
+    @ResponseStatus(code = HttpStatus.OK)
+    public RoutineResponse getRoutinesByNicknameAndName(@RequestParam String nickname, @RequestParam String name) {
+        User user = userService.getUserByNickname(nickname);
+        Optional<Routine> routine = routineService.getRoutineByUserAndName(user, name);
+        Routine r = routine.orElseThrow(NoSuchElementException::new);
+        return new RoutineResponse(r);
+    }
+
     @PostMapping("/routine")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)

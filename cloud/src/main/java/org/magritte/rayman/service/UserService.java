@@ -88,6 +88,12 @@ public class UserService {
                 .orElseThrow(NoSuchElementException::new);
     }
 
+    public User getUserByNickname(@NotNull String nickname) {
+        return userRepository
+                .findByNickname(nickname)
+                .orElseThrow(NoSuchElementException::new);
+    }
+
     public PatientResponse setMedicToPatient(Integer idPatient, Integer idMedic){
         Patient patient = (Patient) this.getUserById(idPatient);
         Medic medic = (Medic) this.getUserById(idMedic);

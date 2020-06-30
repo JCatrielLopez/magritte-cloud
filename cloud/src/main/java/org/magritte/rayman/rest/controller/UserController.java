@@ -76,6 +76,20 @@ public class UserController {
     }
 
     /**
+     * Obtengo el usuario dado un nickname
+     *
+     * @param nickname dni del usuario a filtrar
+     * @return UserResponse
+     */
+    @GetMapping("/user/nickname")
+    @ResponseBody
+    @ResponseStatus(code = HttpStatus.OK)
+    public UserResponse getUserByNickname(@RequestParam String nickname) {
+        User user = userService.getUserByNickname(nickname);
+        return user.getUserType() == PATIENT ? new PatientResponse(user) : new MedicResponse(user);
+    }
+
+    /**
      * Sign in user
      *
      * @param nickname      user identifier
