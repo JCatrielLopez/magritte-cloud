@@ -72,6 +72,14 @@ public class RoutineController {
         return routineService.getRoutinesByCreator(user);
     }
 
+    @GetMapping("/routines/userNickname")
+    @ResponseBody
+    @ResponseStatus(code = HttpStatus.OK)
+    public List<RoutineResponse> getRoutinesByCreatorNickname(@RequestParam String nickname) {
+        User user = userService.getUserByNickname(nickname);
+        return routineService.getRoutinesByCreator(user);
+    }
+
     @GetMapping("/routines/idUserAndName")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
