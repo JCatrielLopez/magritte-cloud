@@ -14,6 +14,7 @@ public class DataSetResponse {
     private Integer idDataSet;
     private Integer idPatient;
     private Integer idRoutine;
+    private String nameRoutine;
     private Date dateOfRealization;
     private Date dateOfData;
     private String dataType;
@@ -24,6 +25,7 @@ public class DataSetResponse {
         this.idDataSet = dataSet.getId();
         this.idPatient = dataSet.getPatient().getId();
         this.idRoutine = dataSet.getRoutine().getIdRoutine();
+        this.nameRoutine = dataSet.getRoutine().getName();
         this.dateOfRealization = dataSet.getDateOfRealization();
         this.dateOfData = dataSet.getDateOfData();
         this.dataType = dataSet.getData().getDataType();
