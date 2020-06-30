@@ -1,5 +1,6 @@
 package org.magritte.rayman.rest.controller;
 
+import org.apache.commons.math3.stat.descriptive.summary.Sum;
 import org.magritte.rayman.data.entity.DataSet;
 import org.magritte.rayman.data.entity.Patient;
 import org.magritte.rayman.data.entity.Routine;
@@ -130,14 +131,13 @@ public class DataSetController {
         out.setMax(sum.getMax());
         out.setMin(sum.getMin());
         out.setVariance(sum.getVariance());
-
+      
         HashSet<SummaryResponse> routines_stats = new HashSet<>();
         for(Routine routine: patient.getRoutines()){
             routines_stats.add(this.getRoutineSummary(routine.getIdRoutine(), unit));
         }
 
         out.setRoutines(routines_stats);
-
         return out;
     }
 

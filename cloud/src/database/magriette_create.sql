@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2020-06-14 15:49:29.708
+-- Last modification date: 2020-06-27 18:42:40.95
 
 -- tables
 -- Table: Accessory
@@ -14,6 +14,7 @@ CREATE TABLE Accessory (
 CREATE TABLE Data (
     idData serial  NOT NULL,
     dataType varchar(20)  NOT NULL,
+    unit varchar(3)  NOT NULL,
     CONSTRAINT unique_dataType_data UNIQUE (dataType) NOT DEFERRABLE  INITIALLY IMMEDIATE,
     CONSTRAINT Data_pk PRIMARY KEY (idData)
 );
@@ -24,9 +25,9 @@ CREATE TABLE DataSet (
     idPatient int  NOT NULL,
     idRoutine int  NOT NULL,
     dateOfRealization timestamp  NOT NULL,
-    dataType varchar(20)  NOT NULL,
     measurement int  NOT NULL,
-    unit varchar(3)  NOT NULL,
+    dataOfData timestamp  NOT NULL,
+    idData int  NOT NULL,
     CONSTRAINT DataSet_pk PRIMARY KEY (id)
 );
 
@@ -35,6 +36,7 @@ CREATE TABLE Medic (
     id int  NOT NULL,
     specialization varchar(30)  NOT NULL,
     license int  NOT NULL,
+    availability boolean  NOT NULL,
     CONSTRAINT unique_license UNIQUE (license) NOT DEFERRABLE  INITIALLY IMMEDIATE,
     CONSTRAINT Medic_pk PRIMARY KEY (id)
 );
@@ -46,7 +48,6 @@ CREATE TABLE Patient (
     gender char(1)  NOT NULL,
     height int  NOT NULL,
     weight decimal(6,3)  NOT NULL,
-    medic_id int  NULL,
     CONSTRAINT Patient_pk PRIMARY KEY (id)
 );
 
@@ -77,14 +78,18 @@ CREATE TABLE Session (
 -- Table: Usuario
 CREATE TABLE Usuario (
     id serial  NOT NULL,
+    nickname varchar(15)  NOT NULL,
     dni varchar(9)  NOT NULL,
     firstname varchar(15)  NOT NULL,
     lastname varchar(15)  NOT NULL,
     password varchar(13)  NOT NULL,
     email varchar(50)  NOT NULL,
     user_type char(1)  NOT NULL,
+    nativeLanguage varchar(15)  NOT NULL,
+    city varchar(15)  NOT NULL,
     CONSTRAINT unique_DNI UNIQUE (dni) NOT DEFERRABLE  INITIALLY IMMEDIATE,
     CONSTRAINT unique_email UNIQUE (email) NOT DEFERRABLE  INITIALLY IMMEDIATE,
+    CONSTRAINT unique_nickname UNIQUE (nickname) NOT DEFERRABLE  INITIALLY IMMEDIATE,
     CONSTRAINT Usuario_pk PRIMARY KEY (id)
 );
 
@@ -97,6 +102,15 @@ CREATE TABLE accessory_data (
     CONSTRAINT accessory_data_pk PRIMARY KEY (id)
 );
 
+-- Table: medic_patient
+CREATE TABLE medic_patient (
+    id serial  NOT NULL,
+    Medic_id int  NOT NULL,
+    Patient_id int  NOT NULL,
+    CONSTRAINT unique_medic_patient UNIQUE (Medic_id, Patient_id) NOT DEFERRABLE  INITIALLY IMMEDIATE,
+    CONSTRAINT medic_patient_pk PRIMARY KEY (id)
+);
+
 -- Table: routine_accessory
 CREATE TABLE routine_accessory (
     id serial  NOT NULL,
@@ -107,6 +121,14 @@ CREATE TABLE routine_accessory (
 );
 
 -- foreign keys
+-- Reference: DataSet_Data (table: DataSet)
+ALTER TABLE DataSet ADD CONSTRAINT DataSet_Data
+    FOREIGN KEY (idData)
+    REFERENCES Data (idData)  
+    NOT DEFERRABLE 
+    INITIALLY IMMEDIATE
+;
+
 -- Reference: DataSet_Patient (table: DataSet)
 ALTER TABLE DataSet ADD CONSTRAINT DataSet_Patient
     FOREIGN KEY (idPatient)
@@ -157,6 +179,22 @@ ALTER TABLE Routine ADD CONSTRAINT Routine_Usuario
     INITIALLY IMMEDIATE
 ;
 
+-- Reference: SeAsocia_Medic (table: medic_patient)
+ALTER TABLE medic_patient ADD CONSTRAINT SeAsocia_Medic
+    FOREIGN KEY (Medic_id)
+    REFERENCES Medic (id)  
+    NOT DEFERRABLE 
+    INITIALLY IMMEDIATE
+;
+
+-- Reference: SeAsocia_Patient (table: medic_patient)
+ALTER TABLE medic_patient ADD CONSTRAINT SeAsocia_Patient
+    FOREIGN KEY (Patient_id)
+    REFERENCES Patient (id)  
+    NOT DEFERRABLE 
+    INITIALLY IMMEDIATE
+;
+
 -- Reference: mide_accesorio (table: accessory_data)
 ALTER TABLE accessory_data ADD CONSTRAINT mide_accesorio
     FOREIGN KEY (accessories_idaccessory)
@@ -172,16 +210,6 @@ ALTER TABLE accessory_data ADD CONSTRAINT mide_dato
     FOREIGN KEY (data_iddata)
     REFERENCES Data (idData)
     ON DELETE  CASCADE 
-    ON UPDATE  CASCADE 
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE
-;
-
--- Reference: patient_medic (table: Patient)
-ALTER TABLE Patient ADD CONSTRAINT patient_medic
-    FOREIGN KEY (medic_id)
-    REFERENCES Medic (id)
-    ON DELETE  SET NULL 
     ON UPDATE  CASCADE 
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
