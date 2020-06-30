@@ -131,7 +131,13 @@ public class DataSetController {
         out.setMax(sum.getMax());
         out.setMin(sum.getMin());
         out.setVariance(sum.getVariance());
+      
+        HashSet<SummaryResponse> routines_stats = new HashSet<>();
+        for(Routine routine: patient.getRoutines()){
+            routines_stats.add(this.getRoutineSummary(routine.getIdRoutine(), unit));
+        }
 
+        out.setRoutines(routines_stats);
         return out;
     }
 
