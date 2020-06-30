@@ -13,11 +13,13 @@ public class MedicResponse extends UserResponse {
 
     private String specialization;
     private int license;
+    private boolean availability;
 
     public MedicResponse(User user) {
         super(user);
         Medic medic = (Medic) user;
         this.specialization = medic.getSpecialization();
         this.license = medic.getLicense();
+        this.availability = medic.isAvailability();
     }
 }

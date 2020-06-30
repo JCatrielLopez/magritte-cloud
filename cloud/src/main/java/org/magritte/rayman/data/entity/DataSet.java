@@ -50,21 +50,23 @@ public class DataSet {
     private Date dateOfRealization;
 
     @ToString.Include
-    @Column(name = "datatype")
-    private String dataType;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "iddata")
+    private Data data;
 
     @ToString.Include
-    private String unit;
+    @Column(name = "dataofdata")
+    private Date dateOfData;
 
     @ToString.Include
     private int measurement;
 
-    public DataSet(Patient patient, Routine routine, Date dateOfRealization, String dataType, String unit, int measurement) {
+    public DataSet(Patient patient, Routine routine, Data data, Date dateOfRealization, int measurement, Date dateOfData) {
         this.patient = patient;
         this.routine = routine;
         this.dateOfRealization = dateOfRealization;
-        this.dataType = dataType;
-        this.unit = unit;
+        this.data = data;
+        this.dateOfData = dateOfData;
         this.measurement = measurement;
     }
 

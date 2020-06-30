@@ -7,6 +7,7 @@ import org.magritte.rayman.data.entity.Routine;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,9 +21,5 @@ public interface DataSetRepository extends JpaRepository<DataSet, Integer> {
 
     List<DataSet> findByPatientAndRoutine(@NotNull Patient paciente, @NotNull Routine routine);
 
-    List<DataSet> findByDataType(@NotNull String dataType);
-
-    List<DataSet> findByMeasurement(int measurement);
-
-    List<DataSet> findByUnit(@NotNull String unit);
+    List<DataSet> findByPatientAndDateOfRealizationBetween(@NotNull Patient patient, @NotNull Date baseDate, @NotNull Date limitDate);
 }

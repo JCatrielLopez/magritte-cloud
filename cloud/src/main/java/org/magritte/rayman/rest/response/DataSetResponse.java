@@ -15,6 +15,7 @@ public class DataSetResponse {
     private Integer idPatient;
     private Integer idRoutine;
     private Date dateOfRealization;
+    private Date dateOfData;
     private String dataType;
     private int measurement;
     private String unit;
@@ -24,8 +25,9 @@ public class DataSetResponse {
         this.idPatient = dataSet.getPatient().getId();
         this.idRoutine = dataSet.getRoutine().getIdRoutine();
         this.dateOfRealization = dataSet.getDateOfRealization();
-        this.dataType = dataSet.getDataType();
+        this.dateOfData = dataSet.getDateOfData();
+        this.dataType = dataSet.getData().getDataType();
         this.measurement = dataSet.getMeasurement();
-        this.unit = dataSet.getUnit();
+        this.unit = dataSet.getData().getUnit();
     }
 }

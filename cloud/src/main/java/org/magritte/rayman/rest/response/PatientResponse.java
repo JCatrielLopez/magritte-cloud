@@ -9,6 +9,8 @@ import org.magritte.rayman.data.entity.User;
 
 import java.util.Date;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -21,7 +23,7 @@ public class PatientResponse extends UserResponse {
     private char gender;
     private int height;
     private float weight;
-    private int medic_id;
+    //private Set<MedicResponse> medic; //no se si lo pondria cada vez que devolvemos un paciente, sino que cuando pidan la lista de medicos.
 
     public PatientResponse(User user) {
         super(user);
@@ -30,11 +32,8 @@ public class PatientResponse extends UserResponse {
         this.gender = patient.getGender();
         this.height = patient.getHeight();
         this.weight = patient.getWeight();
-        Medic medic = patient.getMedic();
-        if (Objects.isNull(medic)) {
-            this.medic_id = NO_VALUE;
-        } else {
-            this.medic_id = medic.getId();
-        }
+//        this.medic = patient.getMedic().stream()
+//                    .map(MedicResponse::new)
+//                    .collect(Collectors.toSet());
     }
 }

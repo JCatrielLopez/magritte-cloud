@@ -1,11 +1,13 @@
 package org.magritte.rayman.rest.controller;
 
 import org.apache.commons.math3.stat.descriptive.summary.Sum;
+import org.magritte.rayman.data.entity.Data;
 import org.magritte.rayman.data.entity.DataSet;
 import org.magritte.rayman.data.entity.Patient;
 import org.magritte.rayman.data.entity.Routine;
 import org.magritte.rayman.rest.request.DataSetRequest;
 import org.magritte.rayman.rest.response.*;
+import org.magritte.rayman.service.DataService;
 import org.magritte.rayman.service.DataSetService;
 import org.magritte.rayman.service.RoutineService;
 import org.magritte.rayman.service.UserService;
@@ -15,6 +17,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -36,6 +42,9 @@ public class DataSetController {
 
     @Autowired
     private RoutineService routineService;
+
+    @Autowired
+    private DataService dataService;
 
     @GetMapping("/datasets")
     @ResponseBody
@@ -84,11 +93,28 @@ public class DataSetController {
     public DataSetResponse addDataSet(@RequestBody @Valid DataSetRequest request){
         Patient patient = (Patient) userService.getUserById(request.getIdPatient());
         Routine routine = routineService.getRoutineById(request.getIdRoutine());
-        DataSet dataSet = request.toNewEntity(patient, routine);
+        Data data = dataService.getDataById(request.getIdData());
+        DataSet dataSet = request.toNewEntity(patient, routine, data);
         dataSetService.save(dataSet);
         return new DataSetResponse(dataSet);
     }
 
+    @GetMapping("/datasets/date")
+    @ResponseBody
+    @ResponseStatus(code = HttpStatus.OK)
+    public List<DataSetResponse> getLatestDataset(@RequestParam Integer idPatient, @RequestParam String date) {
+        Patient patient = (Patient) userService.getUserById(idPatient);
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date limitDate = df.parse(date);
+            return dataSetService.getLatestDataSetByDate(patient, limitDate).stream()
+                    .map(DataSetResponse::new)
+                    .collect(Collectors.toList());
+        } catch (ParseException e) {
+            e.getStackTrace();
+        }
+        return null;
+    }
 
     private SummaryResponse getSummary(Collection<DataSet> collection ){
         SummaryResponse out = new SummaryResponse();
@@ -116,7 +142,7 @@ public class DataSetController {
     @ResponseStatus(code = HttpStatus.OK)
     public SummaryResponse getPatientSummary(@PathVariable Integer id, @RequestParam String unit) {
 
-        Predicate<DataSet> pr = a->(!a.getUnit().equalsIgnoreCase(unit));
+        Predicate<DataSet> pr = a->(!a.getData().getUnit().equalsIgnoreCase(unit));
         Patient patient = (Patient) userService.getUserById(id);
 
         List<DataSet> patient_dataset = dataSetService.getDataSetByPatient(patient);
@@ -151,7 +177,7 @@ public class DataSetController {
     @ResponseStatus(code = HttpStatus.OK)
     public SummaryResponse getRoutineSummary(@PathVariable Integer id, @RequestParam String unit) {
 
-        Predicate<DataSet> pr = a->(!a.getUnit().equalsIgnoreCase(unit));
+        Predicate<DataSet> pr = a->(!a.getData().getUnit().equalsIgnoreCase(unit));
         Routine routine = routineService.getRoutineById(id);
 
         Set<DataSet> routine_dataset = routine.getDataSets();
@@ -202,7 +228,7 @@ public class DataSetController {
     @ResponseStatus(code = HttpStatus.OK)
     public SummaryResponse getStatsGlobal(@RequestParam String unit) {
 
-        Predicate<DataSet> pr = a->(!a.getUnit().equalsIgnoreCase(unit));
+        Predicate<DataSet> pr = a->(!a.getData().getUnit().equalsIgnoreCase(unit));
         List<DataSet> all_datasets = dataSetService.getDataSets();
         all_datasets.removeIf(pr);
 

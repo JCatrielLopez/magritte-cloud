@@ -11,6 +11,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -23,6 +24,7 @@ public class Medic extends User {
 
     public static final char MEDIC = 'M';
     public static final String NAME_TABLE = "medic";
+    public static final String ID = "idMedic";
 
     @ToString.Include
     private String specialization;
@@ -30,19 +32,28 @@ public class Medic extends User {
     @ToString.Include
     private int license;
 
-    @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = NAME_TABLE)
-    private Set<Patient> patients;
+    @ToString.Include
+    private boolean availability;
 
-    public Medic(String dni, String name, String lastname, String password,
-                 String email, String specialization, int license) {
-        super(dni, name, lastname, password, email, MEDIC);
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY)
+    private Set<Patient> patient;
+
+    public Medic(String dni, String nickname, String name, String lastname, String password,
+                 String email, String nativeLanguage, String city, String specialization, int license, boolean available) {
+        super(dni, nickname, name, lastname, password, email, MEDIC, nativeLanguage, city);
         this.specialization = specialization;
         this.license = license;
+        this.availability = available;
+        this.patient = new HashSet<>();
     }
 
-    public Medic(String dni, String name, String lastname,
-                 String email, String specialization, int license) {
-        this(dni, name, lastname, null, email, specialization, license);
+    public Medic(String dni, String nickname, String name, String lastname,
+                 String email, String nativeLanguage, String city, String specialization, int license, boolean available) {
+        this(dni, nickname, name, lastname, null, email, nativeLanguage, city, specialization, license, available);
+    }
+
+    public void addPatient(Patient patient) {
+        this.patient.add(patient);
     }
 }

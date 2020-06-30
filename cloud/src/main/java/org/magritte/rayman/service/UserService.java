@@ -2,6 +2,7 @@ package org.magritte.rayman.service;
 
 import org.jetbrains.annotations.NotNull;
 import org.magritte.rayman.data.entity.Medic;
+import org.magritte.rayman.data.entity.Patient;
 import org.magritte.rayman.data.entity.User;
 import org.magritte.rayman.data.repository.UserRepository;
 import org.magritte.rayman.rest.response.MedicResponse;
@@ -39,15 +40,15 @@ public class UserService {
         userRepository.delete(user);
     }
 
-    public UserResponse login(@NotNull String dni, @NotNull String password) {
-        User user = userRepository.findByDni(dni).orElseThrow(NoSuchElementException::new);
+    public UserResponse login(@NotNull String nickname, @NotNull String password) {
+        User user = userRepository.findByNickname(nickname).orElseThrow(NoSuchElementException::new);
         if (!Objects.equals(user.getPassword(), password)) return null;
         return user.getUserType() == MEDIC ? new MedicResponse(user) : new PatientResponse(user);
     }
 
     public List<PatientResponse> getPatientsFromMedic(@NotNull Integer id) {
         Medic medic = (Medic) userRepository.findById(id).orElseThrow(NoSuchElementException::new);
-        return medic.getPatients().stream()
+        return medic.getPatient().stream()
                 .map(PatientResponse::new)
                 .collect(Collectors.toList());
     }
@@ -64,6 +65,16 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
+    public List<MedicResponse> getMedicsBySpecialization(@NotNull String specialization){
+        List<MedicResponse> medicos = this.getMedics();
+        List<MedicResponse> salida = new ArrayList<>();
+        for (MedicResponse m : medicos){
+            if (m.getSpecialization().equals(specialization))
+                salida.add(m);
+        }
+        return salida;
+    }
+
     public List<UserResponse> allUsers() {
         return new ArrayList<>() {{
             addAll(getPatients());
@@ -75,6 +86,39 @@ public class UserService {
         return userRepository
                 .findByDni(dni)
                 .orElseThrow(NoSuchElementException::new);
+    }
+
+    public PatientResponse setMedicToPatient(Integer idPatient, Integer idMedic){
+        Patient patient = (Patient) this.getUserById(idPatient);
+        Medic medic = (Medic) this.getUserById(idMedic);
+        patient.addMedic(medic);
+        medic.addPatient(patient);
+        this.save(medic);
+        return new PatientResponse(patient);
+    }
+
+    public List<MedicResponse> getMedicsFromPatient(Integer id) {
+        Patient patient = (Patient) userRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        return patient.getMedic().stream()
+                .map(MedicResponse::new)
+                .collect(Collectors.toList());
+    }
+
+    public Medic changeAvailability(Integer id) {
+        Medic medic = (Medic) userRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        medic.setAvailability(!medic.isAvailability());
+        userRepository.save(medic);
+        return medic;
+    }
+
+    public List<MedicResponse> getMedicsByCity(String city) {
+        List<MedicResponse> medicos = this.getMedics();
+        List<MedicResponse> salida = new ArrayList<>();
+        for (MedicResponse m : medicos){
+            if (m.getCity().equals(city))
+                salida.add(m);
+        }
+        return salida;
     }
 }
 

@@ -21,7 +21,11 @@ public class DataRequest {
     @NotNull
     private String dataType;
 
+    @Size(min = 1, max = 3)
+    @NotNull
+    private String unit;
+
     public Data toNewEntity() {
-        return new Data(getDataType());
+        return new Data(getDataType(), getUnit());
     }
 }

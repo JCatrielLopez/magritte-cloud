@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.magritte.rayman.data.entity.Data;
 import org.magritte.rayman.data.entity.DataSet;
 import org.magritte.rayman.data.entity.Patient;
 import org.magritte.rayman.data.entity.Routine;
@@ -37,29 +38,38 @@ public class DataSetRequest {
     @NotNull
     private String dateOfRealization;
 
-    @Size(min = 3, max = 20)
+    @Min(1)
     @NotNull
     @Getter
-    private String dataType;
+    private Integer idData;
 
-    @Size(min = 1, max = 3)
+    @Pattern(regexp = "^\\d{4}-\\d{1,2}-\\d{1,2} \\d{2}:\\d{2}:\\d{2}$", message = "El formato de la fecha deberia ser: yyyy-MM-dd hh:mm:ss")
     @NotNull
-    @Getter
-    private String unit;
+    private String dateOfData;
 
     @Min(0)
     @NotNull
     @Getter
     private int measurement;
 
-    public DataSet toNewEntity(Patient patient, Routine routine) {
-        return new DataSet(patient, routine, getDateOfRealization(), getDataType(), getUnit(), getMeasurement());
+    public DataSet toNewEntity(Patient patient, Routine routine, Data data) {
+        return new DataSet(patient, routine, data, getDateOfRealization(), getMeasurement(), getDateOfData());
     }
 
     public Date getDateOfRealization() {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         try {
             return dateFormat.parse(dateOfRealization);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Date getDateOfData() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        try {
+            return dateFormat.parse(dateOfData);
         } catch (ParseException e) {
             e.printStackTrace();
             return null;
