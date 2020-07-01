@@ -13,6 +13,5 @@ public class SummaryPatientResponse extends SummaryResponse{
 
     private Integer idPatient;
     private String unit;
-    private HashSet<SummaryResponse> routines;
 
 }
