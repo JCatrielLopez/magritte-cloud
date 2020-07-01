@@ -127,7 +127,7 @@ public class DataSetController {
         out.setAvg(StatUtils.mean(values_array));
         out.setMax(StatUtils.max(values_array));
         out.setMin(StatUtils.min(values_array));
-        out.setVariance(StatUtils.percentile(values_array, out.getAvg()));
+        out.setVariance(StatUtils.variance(values_array, out.getAvg()));
 
         return out;
     }
