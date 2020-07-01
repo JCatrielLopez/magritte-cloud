@@ -132,30 +132,6 @@ public class DataSetController {
         return out;
     }
 
-    public SummaryResponse getStatsFromDatasetFromDate(@RequestParam Integer idPatient, @RequestParam String date){
-        Patient patient = (Patient) userService.getUserById(idPatient);
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            Date limitDate = df.parse(date);
-            List<DataSet> dataSets = dataSetService.getLatestDataSetByDate(patient, limitDate);
-
-            SummaryDatasetResponse out = new SummaryDatasetResponse();
-            SummaryResponse sum = this.getSummary(dataSets);
-
-            out.setDatasets(dataSets.stream().map(DataSetResponse::new).collect(Collectors.toList()));
-            out.setAvg(sum.getAvg());
-            out.setMax(sum.getMax());
-            out.setMin(sum.getMin());
-            out.setVariance(sum.getVariance());
-
-            return out;
-        }
-        catch (ParseException e) {
-            e.getStackTrace();
-        }
-        return null;
-    }
-
     /**
      * Get a summary of the patient data filtered by unit (all routines)
      *
@@ -164,31 +140,35 @@ public class DataSetController {
     @GetMapping("/stats/patient/{id}")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
-    public SummaryResponse getPatientSummary(@PathVariable Integer id, @RequestParam String unit) {
+    public SummaryResponse getPatientSummary(@PathVariable Integer id, @RequestParam String unit, @RequestParam String date) {
 
         Predicate<DataSet> pr = a->(!a.getData().getUnit().equalsIgnoreCase(unit));
         Patient patient = (Patient) userService.getUserById(id);
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
-        List<DataSet> patient_dataset = dataSetService.getDataSetByPatient(patient);
-        patient_dataset.removeIf(pr);
 
-        SummaryResponse sum = this.getSummary(patient_dataset);
-        SummaryPatientResponse out = new SummaryPatientResponse();
+        try{
+            Date limitDate = df.parse(date);
+            List<DataSet> patient_dataset = dataSetService.getLatestDataSetByDate(patient, limitDate);;
+            patient_dataset.removeIf(pr);
 
-        out.setIdPatient(id);
-        out.setUnit(unit);
-        out.setAvg(sum.getAvg());
-        out.setMax(sum.getMax());
-        out.setMin(sum.getMin());
-        out.setVariance(sum.getVariance());
-      
-        HashSet<SummaryResponse> routines_stats = new HashSet<>();
-        for(Routine routine: patient.getRoutines()){
-            routines_stats.add(this.getRoutineSummary(routine.getIdRoutine(), unit));
+            SummaryResponse sum = this.getSummary(patient_dataset);
+            SummaryPatientResponse out = new SummaryPatientResponse();
+
+            out.setIdPatient(id);
+            out.setUnit(unit);
+            out.setAvg(sum.getAvg());
+            out.setMax(sum.getMax());
+            out.setMin(sum.getMin());
+            out.setVariance(sum.getVariance());
+            out.setDatasets(patient_dataset.stream().map(DataSetResponse::new).collect(Collectors.toList()));
+
+            return out;
         }
+        catch(ParseException e){ e.getStackTrace(); }
+        return null;
 
-        out.setRoutines(routines_stats);
-        return out;
+
     }
 
     /**
@@ -228,13 +208,13 @@ public class DataSetController {
     @GetMapping("/stats/medic/{id}")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
-    public HashSet<SummaryResponse> getStatsByDoctor(@PathVariable Integer id, @RequestParam String unit) {
+    public HashSet<SummaryResponse> getStatsByDoctor(@PathVariable Integer id, @RequestParam String unit, @RequestParam String date) {
 
         List<PatientResponse> patients = userService.getPatientsFromMedic(id);
         HashSet<SummaryResponse> out = new HashSet<>();
 
         for(PatientResponse p: patients){
-            out.add(getPatientSummary(p.getId(), unit));
+            out.add(getPatientSummary(p.getId(), unit, date));
         }
 
         return out;
