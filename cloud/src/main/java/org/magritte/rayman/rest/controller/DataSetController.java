@@ -132,6 +132,30 @@ public class DataSetController {
         return out;
     }
 
+    public SummaryResponse getStatsFromDatasetFromDate(@RequestParam Integer idPatient, @RequestParam String date){
+        Patient patient = (Patient) userService.getUserById(idPatient);
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date limitDate = df.parse(date);
+            List<DataSet> dataSets = dataSetService.getLatestDataSetByDate(patient, limitDate);
+
+            SummaryDatasetResponse out = new SummaryDatasetResponse();
+            SummaryResponse sum = this.getSummary(dataSets);
+
+            out.setDatasets(dataSets.stream().map(DataSetResponse::new).collect(Collectors.toList()));
+            out.setAvg(sum.getAvg());
+            out.setMax(sum.getMax());
+            out.setMin(sum.getMin());
+            out.setVariance(sum.getVariance());
+
+            return out;
+        }
+        catch (ParseException e) {
+            e.getStackTrace();
+        }
+        return null;
+    }
+
     /**
      * Get a summary of the patient data filtered by unit (all routines)
      *
