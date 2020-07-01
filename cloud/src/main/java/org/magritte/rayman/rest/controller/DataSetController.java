@@ -162,6 +162,7 @@ public class DataSetController {
         out.setMax(sum.getMax());
         out.setMin(sum.getMin());
         out.setVariance(sum.getVariance());
+        out.setDatasets(patient_dataset.stream().map(DataSetResponse::new).collect(Collectors.toList()));
 
         return out;
     }
@@ -194,7 +195,7 @@ public class DataSetController {
         out.setMax(sum.getMax());
         out.setMin(sum.getMin());
         out.setVariance(sum.getVariance());
-
+        out.setDatasets(routine_dataset.stream().map(DataSetResponse::new).collect(Collectors.toList()));
         return out;
     }
 
