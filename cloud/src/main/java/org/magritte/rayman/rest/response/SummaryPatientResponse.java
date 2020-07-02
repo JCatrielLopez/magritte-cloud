@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.HashSet;
+import java.util.List;
 
 @Getter
 @Setter
@@ -13,5 +13,6 @@ public class SummaryPatientResponse extends SummaryResponse{
 
     private Integer idPatient;
     private String unit;
+    private List<DataSetResponse> datasets;
 
 }

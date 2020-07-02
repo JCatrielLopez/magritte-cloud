@@ -148,23 +148,32 @@ public class DataSetController {
         Predicate<DataSet> pr = a->(!a.getData().getUnit().equalsIgnoreCase(unit));
 
         Patient patient = (Patient) userService.getUserById(id);
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
         List<DataSet> patient_dataset = dataSetService.getDataSetByPatient(patient);
         patient_dataset.removeIf(pr);
         patient_dataset.removeIf(pr_max_time);
 
-        SummaryResponse sum = this.getSummary(patient_dataset);
-        SummaryPatientResponse out = new SummaryPatientResponse();
+        try{
+            Date limitDate = df.parse(date);
+            List<DataSet> patient_dataset = dataSetService.getLatestDataSetByDate(patient, limitDate);;
+            patient_dataset.removeIf(pr);
 
-        out.setIdPatient(id);
-        out.setUnit(unit);
-        out.setAvg(sum.getAvg());
-        out.setMax(sum.getMax());
-        out.setMin(sum.getMin());
-        out.setVariance(sum.getVariance());
-        out.setDatasets(patient_dataset.stream().map(DataSetResponse::new).collect(Collectors.toList()));
+            SummaryResponse sum = this.getSummary(patient_dataset);
+            SummaryPatientResponse out = new SummaryPatientResponse();
 
-        return out;
+            out.setIdPatient(id);
+            out.setUnit(unit);
+            out.setAvg(sum.getAvg());
+            out.setMax(sum.getMax());
+            out.setMin(sum.getMin());
+            out.setVariance(sum.getVariance());
+            out.setDatasets(patient_dataset.stream().map(DataSetResponse::new).collect(Collectors.toList()));
+
+            return out;
+        }
+        catch(ParseException e){ e.getStackTrace(); }
+        return null;
     }
 
     /**
@@ -184,7 +193,7 @@ public class DataSetController {
 
         Set<DataSet> routine_dataset = routine.getDataSets();
         routine_dataset.removeIf(pr);
-        routine_dataset.removeIf(pr_max_time);
+        routine_dataset.removeIf(pr_max_time);https://meet.jit.si/Magritte
 
         SummaryResponse sum = this.getSummary(routine_dataset);
         SummaryRoutineResponse out = new SummaryRoutineResponse();
