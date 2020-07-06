@@ -29,6 +29,10 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.apache.commons.math3.stat.StatUtils;
+
+/**
+ *  EndPoints para atender peticiones asociadas a DataSet
+ */
 @RestController
 @RequestMapping(name = "/dataset")
 @Transactional(rollbackOn = Exception.class)
@@ -46,6 +50,11 @@ public class DataSetController {
     @Autowired
     private DataService dataService;
 
+    /**
+     * Obtiene todos los DataSets
+     *
+     * @return Una lista con todos los DataSets, o una lista vacia si no existe ninguno.
+     */
     @GetMapping("/datasets")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
@@ -56,6 +65,12 @@ public class DataSetController {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Obtiene el DataSet con ID dado.
+     *
+     * @param id Id del DataSet.
+     * @return La informacion del DataSet, o si no existe NOT FOUND.
+     */
     @GetMapping("/dataset/{id}")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
@@ -64,6 +79,12 @@ public class DataSetController {
         return new DataSetResponse(dataSetById);
     }
 
+    /**
+     * Obtiene todos los DataSet de un paciente.
+     *
+     * @param id Id del paciente.
+     * @return Una lista con todos los DataSet de un paciente. Si el paciente no existe NOT FOUND.
+     */
     @GetMapping("/dataset/patient/{id}")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
@@ -75,6 +96,13 @@ public class DataSetController {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Obtiene todos los DataSet de un paciente y rutina dados.
+     *
+     * @param idPatient Id del paciente.
+     * @param idRoutine Id de la rutina.
+     * @return Una lista con la informacion de cada DataSet. Si no existen el paciente o la rutina, entonces NOT FOUND.
+     */
     @GetMapping("/dataset/patient/{idPatient}/routine/{idRoutine}")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
@@ -87,6 +115,12 @@ public class DataSetController {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Agrega un DataSet para un paciente, rutina y daos dados.
+     *
+     * @param request Informacion necesaria para agregar el DataSet.
+     * @return La informacion del DataSet agregado.
+     */
     @PostMapping("/dataset")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
@@ -99,6 +133,13 @@ public class DataSetController {
         return new DataSetResponse(dataSet);
     }
 
+    /**
+     * Obtiene los ultimos DataSet de un paciente comparando con la fecha dada como referencia.
+     *
+     * @param idPatient Id del paciente.
+     * @param date      Fecha de referencia.
+     * @return La lista de DataSet o una lista vacia. Si no existen el paciente o la fecha fuera incorrecta, entonces NOT FOUND.
+     */
     @GetMapping("/datasets/date")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
@@ -133,9 +174,9 @@ public class DataSetController {
     }
 
     /**
-     * Get a summary of the patient data filtered by unit (all routines)
+     * Obtiene informacion de resumen de DataSet de todas las rutinas para un paciente y Unidad de medida dados.
      *
-     * @return SummaryResponse
+     * @return El resumen con toda la informacion de los DataSet. Si no existe el paciente, entonces NOT FOUND.
      */
     @GetMapping("/stats/patient/{id}")
     @ResponseBody
@@ -172,9 +213,9 @@ public class DataSetController {
     }
 
     /**
-     * Get a summary of the patients data filtered by routine
+     * Obtiene un resumen de todos los DataSet para una rutina y unidad de medida dadas.
      *
-     * @return SummaryResponse
+     * @return La informacion de resumen para la rutina, o si no existe NOT FOUND.
      */
     @GetMapping("/stats/routine/{id}")
     @ResponseBody
@@ -201,9 +242,9 @@ public class DataSetController {
     }
 
     /**
-     * Get a summary of all the patients linked to a doctor
+     * Obtiene un resumen con la informacion de todos los pacientes para un doctor dado.
      *
-     * @return List of SummaryResponse
+     * @return Lista con toda la informacion de resumen. Si no existen datos para el paciente dado entonces NOT FOUND.
      */
     @GetMapping("/stats/medic/{id}")
     @ResponseBody
@@ -222,11 +263,10 @@ public class DataSetController {
     }
 
     /**
-     * Get a summary of all the patients
+     * Obtiene un resumen de todos los pacientes.
      *
-     * @return SummaryResponse
+     * @return Un resumen de los datos globales para todos los pacientes.
      */
-
     @GetMapping("/stats/global")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)

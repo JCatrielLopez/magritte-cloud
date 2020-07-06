@@ -24,7 +24,7 @@ import java.util.*;
 import static org.magritte.rayman.data.entity.Patient.PATIENT;
 
 /**
- * EndPoints
+ * EndPoints para atender peticiones asociadas a usuarios (Pacientes y Medicos)
  */
 @RestController
 @RequestMapping(name = "/user")
@@ -35,9 +35,9 @@ public class UserController {
     private UserService userService;
 
     /**
-     * By default /user return all users
+     * Obtiene un listado de todos los pacientes y medicos registrados.
      *
-     * @return List of all users
+     * @return Una lista con todos los usuarios, o una lista vacia en caso de no existir ninguno.
      */
     @GetMapping("/users")
     @ResponseBody
@@ -48,10 +48,10 @@ public class UserController {
     }
 
     /**
-     * Obtiene un usuario a partir de su id
+     * Obtiene el usuario correspondiente al ID dado.
      *
-     * @param id id del usuario a filtrar
-     * @return usuario: medico o paciente
+     * @param id id del usuario a obtener
+     * @return Si existe retorna el usuario (medico o paciente), sino NOT FOUND.
      */
     @GetMapping("/user/{id}")
     @ResponseBody
@@ -62,10 +62,10 @@ public class UserController {
     }
 
     /**
-     * Obtengo el usuario dado un dni
+     * Obtiene el usuario correspondiente al DNI dado.
      *
-     * @param dni dni del usuario a filtrar
-     * @return UserResponse
+     * @param dni dni del usuario a obtener
+     * @return Si existe retorna el usuario (medico o paciente), sino NOT FOUND.
      */
     @GetMapping("/user")
     @ResponseBody
@@ -76,10 +76,10 @@ public class UserController {
     }
 
     /**
-     * Obtengo el usuario dado un nickname
+     * Obtiene el usuario correspondiente al nickname dado.
      *
-     * @param nickname dni del usuario a filtrar
-     * @return UserResponse
+     * @param nickname Nickname del usuario a filtrar
+     * @return Si existe retorna el usuario (medico o paciente), sino NOT FOUND.
      */
     @GetMapping("/user/nickname")
     @ResponseBody
@@ -90,11 +90,11 @@ public class UserController {
     }
 
     /**
-     * Sign in user
+     * Inicia sesion de un usuario en el sistema.
      *
-     * @param nickname      user identifier
-     * @param password password corresponding to the user
-     * @return User: medic or patient depending on the case
+     * @param nickname Nickname del usuario
+     * @param password Contraseña del usuario
+     * @return Si existe retorna el usuario logueado (medico o paciente), sino NOT FOUND.
      */
     @GetMapping("/user/login")
     @ResponseBody
@@ -109,7 +109,7 @@ public class UserController {
     /**
      * Obtiene todos los pacientes
      *
-     * @return Lista de pacientes
+     * @return Lista de pacientes, o una lista vacia si no existe ninguno.
      */
     @GetMapping("/patients")
     @ResponseBody
@@ -121,8 +121,8 @@ public class UserController {
     /**
      * Obtiene un paciente a partir de su id
      *
-     * @param id id del paciente a filtrar
-     * @return paciente
+     * @param id id del paciente
+     * @return Si existe retorna el paciente, sino NOT FOUND.
      */
     @GetMapping("/patient/{id}")
     @ResponseBody
@@ -135,7 +135,7 @@ public class UserController {
     /**
      * Obtiene todos los medicos
      *
-     * @return Lista de medicos
+     * @return Lista de medicos, una lista vacia si no existe ninguno.
      */
     @GetMapping("/medics")
     @ResponseBody
@@ -147,7 +147,7 @@ public class UserController {
     /**
      * Obtiene los medicos con una cierta especialidad
      *
-     * @return Lista de medicos
+     * @return Lista de medicos, o una lista vacia si no existe ninguno.
      */
     @GetMapping("/medics/specialization")
     @ResponseBody
@@ -159,8 +159,8 @@ public class UserController {
     /**
      * Obtiene el medico a partir del id
      *
-     * @param id id del medico a filtrar
-     * @return medico
+     * @param id id del medico
+     * @return Si existe retorna el paciente, sino NOT FOUND.
      */
     @GetMapping("/medic/{id}")
     @ResponseBody
@@ -171,10 +171,10 @@ public class UserController {
     }
 
     /**
-     * Obtener los pacientes asociados al medico correspondiente
+     * Obtiene los pacientes asociados al medico dado
      *
-     * @param id id del medico a filtrar
-     * @return Lista de pacientes
+     * @param id id del medico
+     * @return Lista de pacientes, o una lista vacia si no existe ninguno.
      */
     @GetMapping("/medic/patients/{id}")
     @ResponseBody
@@ -184,10 +184,10 @@ public class UserController {
     }
 
     /**
-     * Obtener los medicos asociados al paciente correspondiente
+     * Obtiene los medicos asociados al paciente dado
      *
-     * @param id id del paciente a filtrar
-     * @return Lista de medicos
+     * @param id id del paciente
+     * @return Lista de medicos, o una lista vacia si no existe ninguno.
      */
     @GetMapping("/patient/medics/{id}")
     @ResponseBody
@@ -197,7 +197,7 @@ public class UserController {
     }
 
     /**
-     * Verifico el estado del dispositivo
+     * Verifica el estado del dispositivo
      *
      * @return SimulationResponse
      */
@@ -212,7 +212,8 @@ public class UserController {
     /**
      * Agrega un medico
      *
-     * @param request el cuerpo json del medico
+     * @param request Informacion del medico a agregar
+     * @return El medico agregado
      */
     @PostMapping("/medic")
     @ResponseBody
@@ -226,7 +227,8 @@ public class UserController {
     /**
      * Agrega un paciente
      *
-     * @param request el cuerpo json del paciente
+     * @param request Informacion del paciente a agregar
+     * @return El paciente agregado
      */
     @PostMapping("/patient")
     @ResponseBody
@@ -243,10 +245,11 @@ public class UserController {
     }
 
     /**
-     * Setear el medico al paciente a partir de un id
+     * Asigna un medico a un paciente
      *
-     * @param idPatient id del paciente a filtrar
-     * @param idMedic   id del medico a setear
+     * @param idPatient id del paciente
+     * @param idMedic   id del medico
+     * @return El paciente con el id dado, sino NOT FOUND.
      */
     @PostMapping("/patient/{idPatient}")
     @ResponseBody
@@ -256,9 +259,9 @@ public class UserController {
     }
 
     /**
-     * Borrar un usuario a partir de su id
+     * Elimina un usuario a partir de su id
      *
-     * @param id id del usuario a filtrar
+     * @param id id del usuario
      */
     @DeleteMapping("/user/{id}")
     @ResponseStatus(code = HttpStatus.OK)
@@ -269,6 +272,11 @@ public class UserController {
         userService.delete(userToDelete);
     }
 
+    /**
+     * Cambia la disponibilidad de un medico
+     * @param id Id del medico
+     * @return El medico con el id dado, sino NOT FOUND.
+     */
     @PostMapping("/medic/available/{id}")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
@@ -276,6 +284,18 @@ public class UserController {
         return new MedicResponse(userService.changeAvailability(id));
     }
 
+
+    /**
+     * Se envia una alerta a los medicos para un paciente en particular.
+     * El orden de prioridad de los medicos a contactar es el siguiente:
+     * 1) Notifica a los medicos asociados al paciente que se encuentren disponibles, en la misma ciudad y con la especialidad solicitada.
+     * 2) Si ningun medico asociado al paciente puediera ser contactado, se buscan medicos en la ciudad y especialidad solicitadas.
+     * 3) Si ningun medico de la especialidad solicitada pudiera contactarse, se buscan medicos disponibles de cualquier especialidad en la ciudad.
+     * 4) Como ultima alternativa, se intenta notificar a los medicos de la ciudad
+     *
+     * @param alertRequest Informacion necesaria para realizar la notificacion de alerta para un paciente.
+     * @return El medico que fue alertado.
+     */
     @PostMapping("/emergencyAlert")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
@@ -288,6 +308,7 @@ public class UserController {
         String fecha = alertRequest.getFecha();
         String direccion = alertRequest.getDireccion();
 
+        //Notifica a los medicos asociados al paciente que se encuentren disponibles, en la misma ciudad y con la especialidad solicitada
         for (Medic medic : medicosAsociados){
             if (medic.isAvailability() &&
                     medic.getCity().equals(patient.getCity()) &&
@@ -301,6 +322,7 @@ public class UserController {
             }
         }
 
+        //Si ningun medico asociado al paciente puediera ser contactado, se buscan medicos en la ciudad y especialidad solicitadas
         List<MedicResponse> medicosEspecializados = userService.getMedicsBySpecialization(alertRequest.getEspecialista());
         for (MedicResponse medic : medicosEspecializados){
             if (medic.isAvailability() &&
@@ -316,6 +338,7 @@ public class UserController {
             }
         }
 
+        //Si ningun medico de la especialidad solicitada pudiera contactarse, se buscan medicos disponibles de cualquier especialidad en la ciudad
         List<MedicResponse> medicosEnCiudad = userService.getMedicsByCity(patient.getCity());
         for (MedicResponse medic : medicosEnCiudad){
             if (medic.isAvailability()){
@@ -328,6 +351,8 @@ public class UserController {
                 return medic;
             }
         }
+
+        //Como ultima alternativa, se intenta notificar a los medicos de la ciudad
         for (MedicResponse medic : medicosEnCiudad){
                 SenderMail senderMail = new SenderMail();
                 senderMail.addRecepient(medic.getEmail());
