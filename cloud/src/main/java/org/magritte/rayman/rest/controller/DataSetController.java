@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -183,16 +184,17 @@ public class DataSetController {
     @ResponseStatus(code = HttpStatus.OK)
     public SummaryResponse getPatientSummary(@PathVariable Integer id, @RequestParam String unit, @RequestParam String date) {
 
+        Date today = new Date();
+        Predicate<DataSet> pr_max_time = a->(!(TimeUnit.DAYS.convert(Math.abs(today.getTime() - a.getDateOfRealization().getTime()), TimeUnit.MILLISECONDS) < days));
         Predicate<DataSet> pr = a->(!a.getData().getUnit().equalsIgnoreCase(unit));
+
         Patient patient = (Patient) userService.getUserById(id);
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-
 
         try{
             Date limitDate = df.parse(date);
             List<DataSet> patient_dataset = dataSetService.getLatestDataSetByDate(patient, limitDate);;
             patient_dataset.removeIf(pr);
-
             SummaryResponse sum = this.getSummary(patient_dataset);
             SummaryPatientResponse out = new SummaryPatientResponse();
 
@@ -208,8 +210,6 @@ public class DataSetController {
         }
         catch(ParseException e){ e.getStackTrace(); }
         return null;
-
-
     }
 
     /**
@@ -220,13 +220,16 @@ public class DataSetController {
     @GetMapping("/stats/routine/{id}")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
-    public SummaryResponse getRoutineSummary(@PathVariable Integer id, @RequestParam String unit) {
+    public SummaryResponse getRoutineSummary(@PathVariable Integer id, @RequestParam String unit, @RequestParam Integer days) {
 
+        Date today = new Date();
+        Predicate<DataSet> pr_max_time = a->(!(TimeUnit.DAYS.convert(Math.abs(today.getTime() - a.getDateOfRealization().getTime()), TimeUnit.MILLISECONDS) < days));
         Predicate<DataSet> pr = a->(!a.getData().getUnit().equalsIgnoreCase(unit));
         Routine routine = routineService.getRoutineById(id);
 
         Set<DataSet> routine_dataset = routine.getDataSets();
         routine_dataset.removeIf(pr);
+        routine_dataset.removeIf(pr_max_time);
 
         SummaryResponse sum = this.getSummary(routine_dataset);
         SummaryRoutineResponse out = new SummaryRoutineResponse();
@@ -237,7 +240,7 @@ public class DataSetController {
         out.setMax(sum.getMax());
         out.setMin(sum.getMin());
         out.setVariance(sum.getVariance());
-
+        out.setDatasets(routine_dataset.stream().map(DataSetResponse::new).collect(Collectors.toList()));
         return out;
     }
 

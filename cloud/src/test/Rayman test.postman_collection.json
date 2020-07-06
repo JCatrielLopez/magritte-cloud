@@ -1,0 +1,1468 @@
+{
+	"info": {
+		"_postman_id": "0d03ee8a-d6dd-4774-b6b8-4996d769ec29",
+		"name": "Rayman test",
+		"description": "# Testing - Rayman API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "CRUD Medic",
+					"item": [
+						{
+							"name": "Add Medic",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "cc6007ca-6e3d-4c07-a7a6-0ccb31c87ac5",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"postman.setEnvironmentVariable(\"new_medic\", jsonData.id); ",
+											"",
+											"pm.test(\"Agrego un medico\", function(){",
+											"    pm.response.to.have.status(200);",
+											"    pm.response.to.be.ok;",
+											"});",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n   \"dni\":\"34654771\",\n   \"firstname\":\"Nuevo\",\n   \"lastname\":\"Medico\",\n   \"password\":\"123\",\n   \"email\":\"dr.medico@gmail.com\",\n   \"specialization\":\"Cirugia Plastica\",\n   \"license\":69420\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://raymanmagritte.ddns.net/medic",
+									"protocol": "http",
+									"host": [
+										"raymanmagritte",
+										"ddns",
+										"net"
+									],
+									"path": [
+										"medic"
+									],
+									"query": [
+										{
+											"key": "dni",
+											"value": null,
+											"disabled": true
+										}
+									]
+								},
+								"description": "(POST) Agrego un paciente. \n\n**PatientRequest:**\n{\n   \"dni\":\"34654766\",\n   \"firstname\":\"Fulano\",\n   \"lastname\":\"Gerez\",\n   \"password\":\"123456\",\n   \"email\":\"fulanogerez@gmail.com\",\n   \"birthdate\":\"1985-08-25\",\n   \"gender\":\"M\",\n   \"height\":177,\n   \"weight\":85.5\n}\n"
+							},
+							"response": []
+						},
+						{
+							"name": "Get all medics",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "3a5f271f-f165-47a9-b71c-0bca924f38bf",
+										"exec": [
+											"pm.test(\"Obtener listado\", function(){",
+											"    pm.response.to.have.status(200);",
+											"    pm.response.to.be.ok;",
+											"});",
+											"",
+											"",
+											"pm.test(\"Response is an array\", () => {",
+											"    pm.expect(pm.response.json()).to.be.an(\"array\");",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://raymanmagritte.ddns.net/medics",
+									"protocol": "http",
+									"host": [
+										"raymanmagritte",
+										"ddns",
+										"net"
+									],
+									"path": [
+										"medics"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete medic",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "8bda711d-5c98-40c7-88a1-782215ef9b91",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{example_api_key}}"
+									},
+									{
+										"key": "Content-type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "http://raymanmagritte.ddns.net/user/{{new_medic}}",
+									"protocol": "http",
+									"host": [
+										"raymanmagritte",
+										"ddns",
+										"net"
+									],
+									"path": [
+										"user",
+										"{{new_medic}}"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Delete item from cart",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "Bearer {{example_api_key}}"
+											},
+											{
+												"key": "Content-type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "http://localhost:3002/{{memberId}}/cart/{{itemId}}?Authorization=Bearer {{example_api_key}}&Content-type=application/json",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3002",
+											"path": [
+												"{{memberId}}",
+												"cart",
+												"{{itemId}}"
+											],
+											"query": [
+												{
+													"key": "Authorization",
+													"value": "Bearer {{example_api_key}}"
+												},
+												{
+													"key": "Content-type",
+													"value": "application/json"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [],
+									"cookie": [],
+									"body": "{\n\t\"cart_id\": \"109\",\n\t\"status\": \"item removed\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Verify that medic is removed",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "c86a5c9b-77c0-41ef-ac13-9a0fe83af890",
+										"exec": [
+											"pm.test(\"Status code is 404\", function(){",
+											"    pm.response.to.have.status(404);",
+											"})",
+											"",
+											"pm.test(\"Body is correct\", function () {",
+											"    pm.response.to.have.body(\"User not found!\");",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{example_api_key}}"
+									},
+									{
+										"key": "Content-type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://raymanmagritte.ddns.net/medic/{{new_medic}}",
+									"protocol": "http",
+									"host": [
+										"raymanmagritte",
+										"ddns",
+										"net"
+									],
+									"path": [
+										"medic",
+										"{{new_medic}}"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Verify item removed",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "Bearer {{example_api_key}}"
+											},
+											{
+												"key": "Content-type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "http://localhost:3002/{{memberId}}/cart?Authorization=Bearer {{examples_api_key}}&Content-type=application/json",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3002",
+											"path": [
+												"{{memberId}}",
+												"cart"
+											],
+											"query": [
+												{
+													"key": "Authorization",
+													"value": "Bearer {{examples_api_key}}"
+												},
+												{
+													"key": "Content-type",
+													"value": "application/json"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [],
+									"cookie": [],
+									"body": "{\n\t\"member_id\": \"5489098\",\n\t\"cart_id\": \"109\",\n\t\"items\": [\n\t\t{\n\t\t\t\"item_id\": \"304832\",\n\t\t\t\"quantity\": \"1\"\n\t\t},\n\t\t{\n\t\t\t\"item_id\": \"304836\",\n\t\t\t\"quantity\": \"2\"\n\t\t}\n\t],\n\t\"subtotal\": \"2.09\",\n\t\"tax\": \"0.03\",\n\t\"freight\": \"0.05\",\n\t\"total\": \"2.27\"\n}"
+								}
+							]
+						}
+					],
+					"description": "Operaciones basicas sobre la entidad **Medic**.\n\n> **// TODO** Deberiamos devolver un MedicResponse al agregarlo? Porque eso me permite capturar el id del nuevo medico que agrego y engancharlo en consultas posteriores, para no hardcodear un id y hacerlo automatico.",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "3306149a-e4d3-47e9-85e8-1e40442d2185",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "073d2bae-4ade-44ff-82da-3a3f184e9057",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "CRUD Patient",
+					"item": [
+						{
+							"name": "Get all patients",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "1d11ddd9-186e-4694-b6e9-95f1035f5bbb",
+										"exec": [
+											"pm.test(\"Obtener listado\", function(){",
+											"    pm.response.to.have.status(200);",
+											"    pm.response.to.be.ok;",
+											"});",
+											"",
+											"",
+											"pm.test(\"Response is an array\", () => {",
+											"    pm.expect(pm.response.json()).to.be.an(\"array\");",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://raymanmagritte.ddns.net/patients",
+									"protocol": "http",
+									"host": [
+										"raymanmagritte",
+										"ddns",
+										"net"
+									],
+									"path": [
+										"patients"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "addPatient",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "05a69a1a-9010-4952-8adf-2755d3c4767a",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"postman.setEnvironmentVariable(\"new_patient\", jsonData.id); ",
+											"",
+											"pm.test(\"Agrego un paciente\", function(){",
+											"    pm.response.to.have.status(200);",
+											"    pm.response.to.be.ok;",
+											"});",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n   \"dni\":\"3465665\",\n   \"firstname\":\"julio\",\n   \"lastname\":\"cesar\",\n   \"password\":\"123456\",\n   \"email\":\"julio_cesar@gmail.com\",\n   \"birthdate\":\"1985-08-25\",\n   \"gender\":\"M\",\n   \"height\":176,\n   \"weight\":65.5\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://raymanmagritte.ddns.net/patient",
+									"protocol": "http",
+									"host": [
+										"raymanmagritte",
+										"ddns",
+										"net"
+									],
+									"path": [
+										"patient"
+									],
+									"query": [
+										{
+											"key": "dni",
+											"value": null,
+											"disabled": true
+										}
+									]
+								},
+								"description": "(POST) Agrego un paciente. \n\n**PatientRequest:**\n{\n   \"dni\":\"34654766\",\n   \"firstname\":\"Fulano\",\n   \"lastname\":\"Gerez\",\n   \"password\":\"123456\",\n   \"email\":\"fulanogerez@gmail.com\",\n   \"birthdate\":\"1985-08-25\",\n   \"gender\":\"M\",\n   \"height\":177,\n   \"weight\":85.5\n}\n"
+							},
+							"response": []
+						},
+						{
+							"name": "Verify new patient",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "66af0ee6-7d72-4770-9bb4-5692587deaec",
+										"exec": [
+											"pm.test(\"El paciente existe\", function(){",
+											"    pm.response.to.have.status(200);",
+											"    pm.response.to.be.ok;",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://raymanmagritte.ddns.net/patient/{{new_patient}}",
+									"protocol": "http",
+									"host": [
+										"raymanmagritte",
+										"ddns",
+										"net"
+									],
+									"path": [
+										"patient",
+										"{{new_patient}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Set medic to patient",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "b02e26f1-e07e-45f8-996a-7626294844d2",
+										"exec": [
+											"pm.test(\"Agrego un medico a un paciente\", function(){",
+											"    pm.response.to.have.status(200);",
+											"    pm.response.to.be.ok;",
+											"});",
+											"",
+											"pm.test(\"Medic id matches parameter\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.medic_id).to.eql(Number(pm.variables.get(\"new_medic\")));",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "http://raymanmagritte.ddns.net/patient/{{new_patient}}?idMedic={{new_medic}}",
+									"protocol": "http",
+									"host": [
+										"raymanmagritte",
+										"ddns",
+										"net"
+									],
+									"path": [
+										"patient",
+										"{{new_patient}}"
+									],
+									"query": [
+										{
+											"key": "idMedic",
+											"value": "{{new_medic}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete patient",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "fe11f737-0711-43ef-9aea-302815b56fac",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{example_api_key}}"
+									},
+									{
+										"key": "Content-type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {}
+									}
+								},
+								"url": {
+									"raw": "http://raymanmagritte.ddns.net/user/{{new_patient}}",
+									"protocol": "http",
+									"host": [
+										"raymanmagritte",
+										"ddns",
+										"net"
+									],
+									"path": [
+										"user",
+										"{{new_patient}}"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Delete item from cart",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "Bearer {{example_api_key}}"
+											},
+											{
+												"key": "Content-type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "http://localhost:3002/{{memberId}}/cart/{{itemId}}?Authorization=Bearer {{example_api_key}}&Content-type=application/json",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3002",
+											"path": [
+												"{{memberId}}",
+												"cart",
+												"{{itemId}}"
+											],
+											"query": [
+												{
+													"key": "Authorization",
+													"value": "Bearer {{example_api_key}}"
+												},
+												{
+													"key": "Content-type",
+													"value": "application/json"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [],
+									"cookie": [],
+									"body": "{\n\t\"cart_id\": \"109\",\n\t\"status\": \"item removed\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Verify that patient is removed",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "b133a37e-c363-42b0-bfb4-956db1810813",
+										"exec": [
+											"pm.test(\"Status code is 404\", function(){",
+											"    pm.response.to.have.status(404);",
+											"})",
+											"",
+											"pm.test(\"Body is correct\", function () {",
+											"    pm.response.to.have.body(\"User not found!\");",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{example_api_key}}"
+									},
+									{
+										"key": "Content-type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://raymanmagritte.ddns.net/patient/{{new_patient}}",
+									"protocol": "http",
+									"host": [
+										"raymanmagritte",
+										"ddns",
+										"net"
+									],
+									"path": [
+										"patient",
+										"{{new_patient}}"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Verify item removed",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "Bearer {{example_api_key}}"
+											},
+											{
+												"key": "Content-type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "http://localhost:3002/{{memberId}}/cart?Authorization=Bearer {{examples_api_key}}&Content-type=application/json",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3002",
+											"path": [
+												"{{memberId}}",
+												"cart"
+											],
+											"query": [
+												{
+													"key": "Authorization",
+													"value": "Bearer {{examples_api_key}}"
+												},
+												{
+													"key": "Content-type",
+													"value": "application/json"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [],
+									"cookie": [],
+									"body": "{\n\t\"member_id\": \"5489098\",\n\t\"cart_id\": \"109\",\n\t\"items\": [\n\t\t{\n\t\t\t\"item_id\": \"304832\",\n\t\t\t\"quantity\": \"1\"\n\t\t},\n\t\t{\n\t\t\t\"item_id\": \"304836\",\n\t\t\t\"quantity\": \"2\"\n\t\t}\n\t],\n\t\"subtotal\": \"2.09\",\n\t\"tax\": \"0.03\",\n\t\"freight\": \"0.05\",\n\t\"total\": \"2.27\"\n}"
+								}
+							]
+						}
+					],
+					"description": "Operaciones basicas sobre la entidad **Patient**.\n\n> **// TODO** Deberiamos devolver un PatientResponse al agregarlo?",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "714087a1-ac91-4667-a66d-cbd0eb5c4e5b",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "ba561b2b-345c-4037-b79c-4203ab6e6a29",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "wrong login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0240a332-ee8a-4c6c-8614-1cb57d164d4f",
+								"exec": [
+									"pm.test(\"Status code is 404\", function(){",
+									"    pm.response.to.have.status(404);",
+									"})",
+									"",
+									"pm.test(\"Body is correct\", function () {",
+									"    pm.response.to.have.body(\"User not found!\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://raymanmagritte.ddns.net/user/login?dni=346544522&password=1234",
+							"protocol": "http",
+							"host": [
+								"raymanmagritte",
+								"ddns",
+								"net"
+							],
+							"path": [
+								"user",
+								"login"
+							],
+							"query": [
+								{
+									"key": "dni",
+									"value": "346544522"
+								},
+								{
+									"key": "password",
+									"value": "1234"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Tests for UserController endpoints",
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Accessory",
+			"item": [
+				{
+					"name": "Add accesory",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0305f28d-c709-42dc-8be5-33491cccd934",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"new_acc\", jsonData.idAccessory); ",
+									"postman.setEnvironmentVariable(\"new_data\", jsonData.data[0].idData);",
+									"",
+									"pm.test(\"Agrego un nuevo accesorio\", function(){",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"acc1\",\n    \"data\": [{\"dataType\": \"pulso\"}]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://raymanmagritte.ddns.net/accessory",
+							"protocol": "http",
+							"host": [
+								"raymanmagritte",
+								"ddns",
+								"net"
+							],
+							"path": [
+								"accessory"
+							],
+							"query": [
+								{
+									"key": "dni",
+									"value": null,
+									"disabled": true
+								}
+							]
+						},
+						"description": "(POST) Agrego un paciente. \n\n**PatientRequest:**\n{\n   \"dni\":\"34654766\",\n   \"firstname\":\"Fulano\",\n   \"lastname\":\"Gerez\",\n   \"password\":\"123456\",\n   \"email\":\"fulanogerez@gmail.com\",\n   \"birthdate\":\"1985-08-25\",\n   \"gender\":\"M\",\n   \"height\":177,\n   \"weight\":85.5\n}\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Get all accesories",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9c10e688-ed7c-45b5-9923-447fee942da2",
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response is an array\", () => {",
+									"    pm.expect(pm.response.json()).to.be.an(\"array\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://raymanmagritte.ddns.net/accessories",
+							"protocol": "http",
+							"host": [
+								"raymanmagritte",
+								"ddns",
+								"net"
+							],
+							"path": [
+								"accessories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove wrong data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "27c5d927-a49e-4459-b629-71fb6cc8804b",
+								"exec": [
+									"pm.test(\"Status code is 500\", function () {",
+									"    pm.response.to.have.status(500);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://raymanmagritte.ddns.net/accessory/{{new_acc}}/data/699999",
+							"protocol": "http",
+							"host": [
+								"raymanmagritte",
+								"ddns",
+								"net"
+							],
+							"path": [
+								"accessory",
+								"{{new_acc}}",
+								"data",
+								"699999"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove right data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0eb660cc-e92c-4fbb-b998-803ab697b0d8",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://raymanmagritte.ddns.net/accessory/{{new_acc}}/data/{{new_data}}",
+							"protocol": "http",
+							"host": [
+								"raymanmagritte",
+								"ddns",
+								"net"
+							],
+							"path": [
+								"accessory",
+								"{{new_acc}}",
+								"data",
+								"{{new_data}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete accesory",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e59f0f56-b8d5-4a57-ab8a-2b6358dbab03",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{example_api_key}}"
+							},
+							{
+								"key": "Content-type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "http://raymanmagritte.ddns.net/accessory/{{new_acc}}",
+							"protocol": "http",
+							"host": [
+								"raymanmagritte",
+								"ddns",
+								"net"
+							],
+							"path": [
+								"accessory",
+								"{{new_acc}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Delete item from cart",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{example_api_key}}"
+									},
+									{
+										"key": "Content-type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:3002/{{memberId}}/cart/{{itemId}}?Authorization=Bearer {{example_api_key}}&Content-type=application/json",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3002",
+									"path": [
+										"{{memberId}}",
+										"cart",
+										"{{itemId}}"
+									],
+									"query": [
+										{
+											"key": "Authorization",
+											"value": "Bearer {{example_api_key}}"
+										},
+										{
+											"key": "Content-type",
+											"value": "application/json"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"cookie": [],
+							"body": "{\n\t\"cart_id\": \"109\",\n\t\"status\": \"item removed\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Verify that accesory is removed",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "16cb3fac-6c34-4ea5-ac3a-855718d54d04",
+								"exec": [
+									"pm.test(\"Status code is 404\", function(){",
+									"    pm.response.to.have.status(404);",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{example_api_key}}"
+							},
+							{
+								"key": "Content-type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://raymanmagritte.ddns.net/accessory/{{new_acc}}",
+							"protocol": "http",
+							"host": [
+								"raymanmagritte",
+								"ddns",
+								"net"
+							],
+							"path": [
+								"accessory",
+								"{{new_acc}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Verify item removed",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{example_api_key}}"
+									},
+									{
+										"key": "Content-type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3002/{{memberId}}/cart?Authorization=Bearer {{examples_api_key}}&Content-type=application/json",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3002",
+									"path": [
+										"{{memberId}}",
+										"cart"
+									],
+									"query": [
+										{
+											"key": "Authorization",
+											"value": "Bearer {{examples_api_key}}"
+										},
+										{
+											"key": "Content-type",
+											"value": "application/json"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"cookie": [],
+							"body": "{\n\t\"member_id\": \"5489098\",\n\t\"cart_id\": \"109\",\n\t\"items\": [\n\t\t{\n\t\t\t\"item_id\": \"304832\",\n\t\t\t\"quantity\": \"1\"\n\t\t},\n\t\t{\n\t\t\t\"item_id\": \"304836\",\n\t\t\t\"quantity\": \"2\"\n\t\t}\n\t],\n\t\"subtotal\": \"2.09\",\n\t\"tax\": \"0.03\",\n\t\"freight\": \"0.05\",\n\t\"total\": \"2.27\"\n}"
+						}
+					]
+				}
+			],
+			"description": "Tests for AccessoryController's endpoints\n\n> **// TODO** Hay errores con status code 500 que deberian ser 404, mas descriptivos.",
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Dataset",
+			"item": [
+				{
+					"name": "Add dataset",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c9c4393a-fa59-41dc-ae02-495f316f3b60",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"new_dataset\", jsonData.idDataSet);",
+									"postman.setEnvironmentVariable(\"new_dataset_patient\", jsonData.idPatient);",
+									"postman.setEnvironmentVariable(\"new_dataset_routine\", jsonData.idRoutine);",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"idPatient\" : \"1\",\n   \"idRoutine\" : \"3\",\n   \"dataType\" : \"pulso\",\n   \"measurement\" : \"90\",\n   \"unit\" : \"bpm\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://raymanmagritte.ddns.net/dataset",
+							"protocol": "http",
+							"host": [
+								"raymanmagritte",
+								"ddns",
+								"net"
+							],
+							"path": [
+								"dataset"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get patient's dataset",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3da5d1bf-a9a6-4647-af22-58cd8433cbbf",
+								"exec": [
+									"pm.test(\"Obtener listado\", function(){",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response is an array\", () => {",
+									"    pm.expect(pm.response.json()).to.be.an(\"array\");",
+									"});",
+									"",
+									"",
+									"var jsonData = pm.response.json();",
+									"pm.test(\"The response contains a valid id in the response\", function () {",
+									"    pm.expect(_isContains(jsonData, \"idDataSet\" ,Number(pm.variables.get(\"new_dataset\")))).to.be.true;",
+									"});",
+									"",
+									"function _isContains(json, keyname, value) {",
+									" return Object.keys(json).some(key => {",
+									"        return typeof json[key] === 'object' ? ",
+									"        _isContains(json[key], keyname, value) : key === keyname && json[key] === value;",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://raymanmagritte.ddns.net/dataset/patient/{{new_dataset_patient}}",
+							"protocol": "http",
+							"host": [
+								"raymanmagritte",
+								"ddns",
+								"net"
+							],
+							"path": [
+								"dataset",
+								"patient",
+								"{{new_dataset_patient}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get wrong id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ae970bc4-ec25-4dda-abf3-b5d091efabd3",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://raymanmagritte.ddns.net/dataset/69",
+							"protocol": "http",
+							"host": [
+								"raymanmagritte",
+								"ddns",
+								"net"
+							],
+							"path": [
+								"dataset",
+								"69"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Tests for DatasetController's endpoints",
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Routine",
+			"item": [
+				{
+					"name": "Add routine",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c376406c-e5d4-4eb2-a02e-5a3c32c829a3",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"new_routine\", jsonData.idRoutine); ",
+									"postman.setEnvironmentVariable(\"new_session\", jsonData.sessions[0].id);",
+									"postman.setEnvironmentVariable(\"new_session_name\", jsonData.sessions[0].name);",
+									"",
+									"pm.test(\"Agrego una nueva rutina\", function(){",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"idUser\": 1,\n\t\"name\": \"rutina 1\",\n\t\"totalTime\": 30,\n\t\"difficulty\": 1,\n\t\"sessions\":[{\n\t\t\"name\": \"sesion 1\",\n\t\t\"numberOfSeries\": 5,\n\t\t\"exerciseTime\": 60,\n\t\t\"breaktime\":1\n\t}]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://raymanmagritte.ddns.net/routine",
+							"protocol": "http",
+							"host": [
+								"raymanmagritte",
+								"ddns",
+								"net"
+							],
+							"path": [
+								"routine"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Session",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c64ed071-f215-40e3-963d-f96c03df44f2",
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"sesion 2\",\n    \"numberOfSeries\": 10,\n    \"exerciseTime\": 600,\n    \"breaktime\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://raymanmagritte.ddns.net/routine/{{new_routine}}/session",
+							"protocol": "http",
+							"host": [
+								"raymanmagritte",
+								"ddns",
+								"net"
+							],
+							"path": [
+								"routine",
+								"{{new_routine}}",
+								"session"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Session",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "97919471-fd49-451c-a715-b190076a12f8",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://raymanmagritte.ddns.net/routine/{{new_routine}}/session/{{new_session_name}}",
+							"protocol": "http",
+							"host": [
+								"raymanmagritte",
+								"ddns",
+								"net"
+							],
+							"path": [
+								"routine",
+								"{{new_routine}}",
+								"session",
+								"{{new_session_name}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Tests for RoutineController's endpoints",
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
